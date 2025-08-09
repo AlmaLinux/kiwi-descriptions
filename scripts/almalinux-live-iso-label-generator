@@ -1,0 +1,89 @@
+#!/usr/bin/env python3
+
+# Simple tool to generate volume IDs and application IDs for ISOs for kiwi image builds
+# Author: Neal Gompa <ngompa@velocitylimitless.com>
+# SPDX-License-Identifier: Apache-2.0
+
+# Used to map kiwi profiles to application IDs (which may also
+# may be used for connecting to volume ID substitutions).
+profile_to_application_id = {
+          "GNOME-Desktop": "GNOME_Desktop",
+          "KDE-Desktop": "KDE_Desktop",
+           "KDE-Mobile": "KDE_Mobile",
+}
+
+# Used by Pungi to replace "Cloud" with "C" (etc.) in ISO volume IDs.
+# There is a hard 32-character limit on ISO volume IDs, so we use
+# these to try and produce short enough but legible IDs. Note this is
+# duplicated in Koji for live images, as livemedia-creator does not
+# allow Pungi to tell it what volume ID to use. Note:
+# https://fedoraproject.org/wiki/User:Adamwill/Draft_fedora_image_naming_policy
+# "-Workstation-" is a temporary workaround. See
+# https://pagure.io/pungi-fedora/pull-request/525
+# Replace "Cloud" with "C" in volume id etc.
+# WARNING: This list *MUST* remain in sync with pungi-fedora!
+# https://pagure.io/pungi-fedora/blob/main/f/general.conf
+volume_id_substitutions = {
+                 "Beta": "B",
+               "Kitten": "Kit",
+                "Cloud": "C",
+               "COSMIC": "CSMC",
+        "COSMIC-Atomic": "CSMCA",
+        "COSMIC_Atomic": "CSMCA",
+           "Everything": "E",
+               "Images": "img",
+          "KDE_Desktop": "KDE",
+           "KDE_Mobile": "KDEM",
+        "GNOME_Desktop": "GNOME",
+}
+
+
+
+from argparse import ArgumentParser
+from pathlib import Path
+
+import xml.etree.ElementTree as ET
+
+
+parser = ArgumentParser(description="Generator of ISO labels for AlmaLinux live media builds")
+parser.add_argument("kiwi_file", type=Path, default="AlmaLinux-OS-Kitten.kiwi", help="kiwi description file")
+parser.add_argument("image_profile", type=str, help="kiwi image profile")
+parser.add_argument("--output-kiwi-args", "-k", action="store_true", help="generate kiwi args instead of csv")
+args = parser.parse_args()
+
+xml_tree = ET.parse(args.kiwi_file)
+image_root = xml_tree.getroot()
+
+image_basename = image_root.attrib["name"]
+image_version = image_root.find("preferences/version").text
+
+image_volid_version = image_version
+
+if image_volid_version == "Kitten":
+	image_volid_version = "Kit"
+
+image_profile = args.image_profile
+if image_profile.endswith("-Live"):
+	image_profile_baseprefix = image_profile[:-5]
+else:
+	image_profile_baseprefix = image_profile
+
+image_profile_variant_appid_prefix = image_profile_baseprefix
+
+if image_profile_baseprefix in profile_to_application_id.keys():
+	image_profile_variant_appid_prefix = profile_to_application_id[image_profile_baseprefix]
+else:
+	image_profile_variant_appid_prefix = image_profile_baseprefix
+
+if image_profile_variant_appid_prefix in volume_id_substitutions.keys():
+	image_profile_variant_volid_prefix = volume_id_substitutions[image_profile_variant_appid_prefix]
+else:
+	image_profile_variant_volid_prefix = image_profile_variant_appid_prefix
+
+image_appid = f"{image_basename}-{image_profile_variant_appid_prefix}-Live-{image_version}"
+image_volid = f"{image_basename}-{image_profile_variant_volid_prefix}-Live-{image_volid_version}"
+
+if args.output_kiwi_args:
+	print(f"--set-type-attr=application_id={image_appid} --set-type-attr=volid={image_volid}")
+else:
+	print(f"application_id,{image_appid},volid,{image_volid}")

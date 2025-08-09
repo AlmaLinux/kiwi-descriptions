@@ -1,0 +1,58 @@
+<image>
+	<profiles>
+		<profile name="WSL-Base" description="Windows Subsystem for Linux Base"/>
+	</profiles>
+	<preferences profiles="WSL-Base">
+		<type image="wsl"/>
+		<rpm-locale-filtering>false</rpm-locale-filtering>
+		<rpm-excludedocs>false</rpm-excludedocs>
+	</preferences>
+	<packages type="image" patternType="plusRecommended" profiles="WSL-Base">
+		<package name="attr"/>
+		<package name="acl"/>
+		<package name="bash-completion"/>
+		<package name="bind-utils"/>
+		<package name="bzip2"/>
+		<package name="cloud-init"/>
+		<package name="curl"/>
+		<package name="dbus"/>
+		<package name="file"/>
+		<package name="glibc-all-langpacks"/>
+		<package name="gnupg2"/>
+		<package name="iproute"/>
+		<package name="iputils"/>
+		<package name="less"/>
+		<package name="lsof"/>
+		<package name="man-db"/>
+		<package name="man-pages"/>
+		<package name="mesa-dri-drivers"/>
+		<package name="mesa-vulkan-drivers"/>
+		<package name="nano"/>
+		<package name="NetworkManager"/>
+		<package name="nmap-ncat"/>
+		<package name="openssh-clients"/>
+		<package name="passwd"/>
+		<package name="pciutils"/>
+		<package name="procps-ng"/>
+		<package name="rsync"/>
+		<package name="shadow-utils"/>
+		<package name="sudo"/>
+		<package name="symlinks"/>
+		<package name="systemd-udev"/>
+		<package name="systemd-resolved"/>
+		<package name="tar"/>
+		<package name="tcpdump"/>
+		<package name="time"/>
+		<package name="traceroute"/>
+		<package name="tree"/>
+		<package name="unzip"/>
+		<package name="usbutils"/>
+		<package name="util-linux"/>
+		<package name="vim-enhanced"/>
+		<package name="wget"/>
+		<package name="which"/>
+		<package name="whois"/>
+		<package name="wsl-setup"/>
+		<package name="zip"/>
+	</packages>
+</image>

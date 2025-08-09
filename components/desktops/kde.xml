@@ -1,0 +1,19 @@
+<image>
+	<profiles>
+		<profile name="KDE-Desktop" description="KDE Plasma Desktop">
+			<requires profile="DesktopCommon"/>
+		</profile>
+	</profiles>
+	<packages type="image" patternType="plusRecommended" profiles="KDE-Desktop">
+		<namedCollection name="kde-desktop"/>
+		<namedCollection name="kde-apps"/>
+		<namedCollection name="kde-media"/>
+		<namedCollection name="kde-pim"/>
+		<namedCollection name="kde-spin-initial-setup"/>
+		<package name="fuse3"/>
+		<ignore name="gnome-disk-utility"/>
+		<ignore name="system-config-printer"/>
+		<ignore name="digikam"/>
+		<ignore name="k3b"/>
+	</packages>
+</image>

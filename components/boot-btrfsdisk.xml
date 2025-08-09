@@ -1,0 +1,66 @@
+<image>
+	<profiles>
+		<profile name="BootDiskBtrfs" description="Boot disk configuration using Btrfs">
+			<requires profile="BootDiskCore"/>
+		</profile>
+	</profiles>
+	<preferences profiles="BootDiskBtrfs" arch="aarch64,x86_64">
+		<type image="oem"
+		      filesystem="btrfs" btrfs_root_is_subvolume="true" btrfs_set_default_volume="false" fsmountoptions="x-systemd.growfs,compress=zstd:1"
+		      kernelcmdline="rhgb quiet" devicepersistency="by-uuid"
+		      bootpartition="true" bootpartsize="1000" bootfilesystem="ext4" efipartsize="500" firmware="uefi"
+		      rootfs_label="almalinux"
+		      >
+			<bootloader name="grub2" bls="true" console="console" timeout="5"/>
+			<systemdisk name="almalinux">
+				<volume name="@root=root"/>
+				<volume name="home" parent="/"/>
+				<volume name="var" parent="/"/>
+			</systemdisk>
+			<oemconfig>
+				<oem-resize>false</oem-resize>
+			</oemconfig>
+		</type>
+	</preferences>
+	<preferences profiles="BootDiskBtrfs" arch="ppc64le">
+		<type image="oem"
+		      filesystem="btrfs" btrfs_root_is_subvolume="true" btrfs_set_default_volume="false" fsmountoptions="x-systemd.growfs,compress=zstd:1"
+		      kernelcmdline="rhgb quiet" devicepersistency="by-uuid"
+		      bootpartition="true" bootpartsize="1000" bootfilesystem="ext4" firmware="ofw"
+		      rootfs_label="almalinux"
+		      >
+			<bootloader name="grub2" bls="true" console="console" timeout="5"/>
+			<systemdisk name="almalinux">
+				<volume name="@root=root"/>
+				<volume name="home" parent="/"/>
+				<volume name="var" parent="/"/>
+			</systemdisk>
+			<oemconfig>
+				<oem-resize>false</oem-resize>
+			</oemconfig>
+		</type>
+	</preferences>
+	<preferences profiles="BootDiskBtrfs" arch="s390x">
+		<type image="oem"
+		      filesystem="btrfs" btrfs_root_is_subvolume="true" btrfs_set_default_volume="false" fsmountoptions="x-systemd.growfs,compress=zstd:1"
+		      kernelcmdline="no_timer_check console=tty1 console=ttyS0,115200n8"
+		      devicepersistency="by-uuid"
+		      bootpartition="true" bootpartsize="1000" bootfilesystem="ext4"
+		      rootfs_label="almalinux"
+		      >
+			<bootloader name="zipl" timeout="1"/>
+			<systemdisk name="almalinux">
+				<volume name="@root=root"/>
+				<volume name="home" parent="/"/>
+				<volume name="var" parent="/"/>
+			</systemdisk>
+			<oemconfig>
+				<oem-resize>false</oem-resize>
+			</oemconfig>
+		</type>
+	</preferences>
+	<packages type="image" patternType="plusRecommended" profiles="BootDiskBtrfs">
+		<package name="e2fsprogs"/>
+		<package name="btrfs-progs"/>
+	</packages>
+</image>

@@ -1,0 +1,50 @@
+<image>
+	<profiles>
+		<profile name="BootDiskXFS" description="Boot disk configuration using XFS">
+			<requires profile="BootDiskCore"/>
+		</profile>
+	</profiles>
+	<preferences profiles="BootDiskXFS" arch="aarch64,x86_64">
+		<type image="oem"
+		      filesystem="xfs"
+		      kernelcmdline="rhgb quiet" devicepersistency="by-uuid"
+		      bootpartition="true" bootpartsize="1000" bootfilesystem="xfs" efipartsize="500" firmware="uefi"
+		      rootfs_label="almalinux"
+		      >
+			<bootloader name="grub2" bls="true" console="console" timeout="5"/>
+			<oemconfig>
+				<oem-resize>false</oem-resize>
+			</oemconfig>
+		</type>
+	</preferences>
+	<preferences profiles="BootDiskXFS" arch="ppc64le">
+		<type image="oem"
+		      filesystem="xfs"
+		      kernelcmdline="rhgb quiet" devicepersistency="by-uuid"
+		      bootpartition="true" bootpartsize="1000" bootfilesystem="xfs" firmware="ofw"
+		      rootfs_label="almalinux"
+		      >
+			<bootloader name="grub2" bls="true" console="console" timeout="5"/>
+			<oemconfig>
+				<oem-resize>false</oem-resize>
+			</oemconfig>
+		</type>
+	</preferences>
+	<preferences profiles="BootDiskXFS" arch="s390x">
+		<type image="oem"
+		      filesystem="xfs"
+		      kernelcmdline="no_timer_check console=tty1 console=ttyS0,115200n8"
+		      devicepersistency="by-uuid"
+		      bootpartition="true" bootpartsize="1000" bootfilesystem="xfs"
+		      rootfs_label="almalinux"
+		      >
+			<bootloader name="zipl" timeout="1"/>
+			<oemconfig>
+				<oem-resize>false</oem-resize>
+			</oemconfig>
+		</type>
+	</preferences>
+	<packages type="image" patternType="plusRecommended" profiles="BootDiskXFS">
+		<package name="xfsprogs"/>
+	</packages>
+</image>

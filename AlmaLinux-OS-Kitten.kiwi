@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<image schemaversion="7.4" name="AlmaLinux-Kitten">
+	<description type="system">
+		<author>AlmaLinux OS Contributors</author>
+		<contact>devel@lists.almalinux.org</contact>
+		<specification>AlmaLinux OS Kitten</specification>
+	</description>
+	<preferences>
+		<version>10</version>
+		<packagemanager>dnf4</packagemanager>
+		<locale>C</locale>
+		<keytable>us</keytable>
+		<timezone>Etc/UTC</timezone>
+		<rpm-check-signatures>true</rpm-check-signatures>
+		<release-version>10</release-version>
+	</preferences>
+	<include from="this://./repositories/core.xml"/>
+	<include from="this://./repositories/epel.xml"/>
+	<include from="this://./components/boot.xml"/>
+	<include from="this://./components/boot-xfsdisk.xml"/>
+	<include from="this://./components/boot-btrfsdisk.xml"/>
+	<include from="this://./components/desktops/common.xml"/>
+	<include from="this://./components/desktops/kde.xml"/>
+	<include from="this://./components/desktops/gnome.xml"/>
+	<include from="this://./components/liveinstall.xml"/>
+	<include from="this://./components/users.xml"/>
+	<include from="this://./platforms/base.xml"/>
+	<include from="this://./platforms/cloud.xml"/>
+	<include from="this://./platforms/container.xml"/>
+	<include from="this://./platforms/vagrant.xml"/>
+	<include from="this://./platforms/workstation/gnome.xml"/>
+	<include from="this://./platforms/workstation/kde.xml"/>
+	<include from="this://./platforms/wsl.xml"/>
+	<packages type="image" patternType="plusRecommended">
+		<namedCollection name="core"/>
+		<package name="nano"/>
+		<package name="yum-utils"/>
+	</packages>
+	<packages type="bootstrap">
+		<package name="basesystem"/>
+		<package name="almalinux-release"/>
+		<package name="filesystem"/>
+	</packages>
+</image>

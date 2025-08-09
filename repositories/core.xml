@@ -1,0 +1,22 @@
+<image>
+	<repository type="rpm-md" alias="extras-common" sourcetype="mirrorlist">
+		<source path="https://kitten.mirrors.almalinux.org/mirrorlist/$releasever-kitten/extras-common">
+			<signing key="file:///usr/share/distribution-gpg-keys/alma/RPM-GPG-KEY-AlmaLinux-$releasever"/>
+		</source>
+	</repository>
+	<repository type="rpm-md" alias="crb" sourcetype="mirrorlist">
+		<source path="https://kitten.mirrors.almalinux.org/mirrorlist/$releasever-kitten/crb">
+			<signing key="file:///usr/share/distribution-gpg-keys/alma/RPM-GPG-KEY-AlmaLinux-$releasever"/>
+		</source>
+	</repository>
+	<repository type="rpm-md" alias="appstream" sourcetype="mirrorlist">
+		<source path="https://kitten.mirrors.almalinux.org/mirrorlist/$releasever-kitten/appstream">
+			<signing key="file:///usr/share/distribution-gpg-keys/alma/RPM-GPG-KEY-AlmaLinux-$releasever"/>
+		</source>
+	</repository>
+	<repository type="rpm-md" alias="baseos" sourcetype="mirrorlist">
+		<source path="https://kitten.mirrors.almalinux.org/mirrorlist/$releasever-kitten/baseos">
+			<signing key="file:///usr/share/distribution-gpg-keys/alma/RPM-GPG-KEY-AlmaLinux-$releasever"/>
+		</source>
+	</repository>
+</image>

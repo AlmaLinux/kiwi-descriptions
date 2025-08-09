@@ -1,0 +1,11 @@
+<image>
+	<profiles>
+		<profile name="GNOME-Desktop" description="GNOME Desktop">
+			<requires profile="DesktopCommon"/>
+		</profile>
+	</profiles>
+	<packages type="image" patternType="plusRecommended" profiles="GNOME-Desktop">
+		<namedCollection name="gnome-desktop"/>
+		<namedCollection name="workstation-product"/>
+	</packages>
+</image>

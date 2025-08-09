@@ -1,0 +1,99 @@
+<image>
+	<profiles>
+		<profile name="VagrantCore" description="Vagrant core packages">
+			<requires profile="CloudCore"/>
+		</profile>
+		<profile name="Vagrant-Base-libvirt" description="Vagrant Base guest image for libvirt">
+			<requires profile="VagrantCore"/>
+		</profile>
+		<profile name="Vagrant-Base-VirtualBox" description="Vagrant Base guest image for VirtualBox">
+			<requires profile="VagrantCore"/>
+		</profile>
+	</profiles>
+	<preferences profiles="Vagrant-Base-libvirt" arch="x86_64">
+		<type image="oem" format="vagrant"
+		      filesystem="xfs"
+		      kernelcmdline="no_timer_check console=tty1 console=ttyS0,115200n8"
+		      devicepersistency="by-uuid"
+		      bootpartition="false" efipartsize="500" firmware="uefi"
+		      rootfs_label="centos"
+		      >
+			<bootloader name="grub2" bls="true" console="serial" timeout="1"/>
+			<size unit="G">5</size>
+			<vagrantconfig provider="libvirt" virtualsize="5"/>
+			<oemconfig>
+				<oem-resize>false</oem-resize>
+			</oemconfig>
+		</type>
+	</preferences>
+	<preferences profiles="Vagrant-Base-libvirt" arch="aarch64">
+		<type image="oem" format="vagrant"
+		      filesystem="xfs"
+		      kernelcmdline="no_timer_check console=tty1 console=ttyAMA0,115200n8"
+		      devicepersistency="by-uuid"
+		      bootpartition="false" efipartsize="500" firmware="uefi"
+		      rootfs_label="centos"
+		      >
+			<bootloader name="grub2" bls="true" console="serial" timeout="1"/>
+			<size unit="G">5</size>
+			<vagrantconfig provider="libvirt" virtualsize="5"/>
+			<oemconfig>
+				<oem-resize>false</oem-resize>
+			</oemconfig>
+		</type>
+	</preferences>
+	<preferences profiles="Vagrant-Base-VirtualBox" arch="x86_64">
+		<type image="oem" format="vagrant"
+		      filesystem="xfs"
+		      kernelcmdline="no_timer_check console=tty1 console=ttyS0,115200n8"
+		      devicepersistency="by-uuid"
+		      bootpartition="false" efipartsize="500" firmware="uefi"
+		      rootfs_label="centos"
+		      >
+			<bootloader name="grub2" bls="true" console="serial" timeout="1"/>
+			<size unit="G">5</size>
+			<!-- The VirtualBox guest additions are not included in RHEL -->
+			<vagrantconfig provider="virtualbox" virtualbox_guest_additions_present="false" virtualsize="5"/>
+			<oemconfig>
+				<oem-resize>false</oem-resize>
+			</oemconfig>
+		</type>
+	</preferences>
+	<preferences profiles="Vagrant-Base-VirtualBox" arch="aarch64">
+		<type image="oem" format="vagrant"
+		      filesystem="xfs"
+		      kernelcmdline="no_timer_check console=tty1 console=ttyAMA0,115200n8"
+		      devicepersistency="by-uuid"
+		      bootpartition="false" efipartsize="500" firmware="uefi"
+		      rootfs_label="centos"
+		      >
+			<bootloader name="grub2" bls="true" console="serial" timeout="1"/>
+			<size unit="G">5</size>
+			<!-- The VirtualBox guest additions are not included in RHEL -->
+			<vagrantconfig provider="virtualbox" virtualbox_guest_additions_present="false" virtualsize="5"/>
+			<oemconfig>
+				<oem-resize>false</oem-resize>
+			</oemconfig>
+		</type>
+	</preferences>
+	<users profiles="VagrantCore">
+		<!-- Standard password for the vagrant user, used by all images -->
+		<user name="vagrant" groups="vagrant" password="vagrant" home="/home/vagrant" pwdformat="plain" />
+		<user password="$1$wYJUgpM5$RXMMeASDc035eX.NbYWFl0" home="/root" name="root" groups="root"/>
+	</users>
+	<packages type="image" patternType="plusRecommended" profiles="VagrantCore">
+		<package name="rsync"/>
+		<package name="glibc-langpack-en"/>
+	</packages>
+	<packages type="image" patternType="plusRecommended" profiles="Vagrant-Base-libvirt">
+		<package name="qemu-guest-agent"/>
+	</packages>
+	<!-- These packages aren't available in RHEL
+	<packages type="image" patternType="plusRecommended" profiles="Vagrant-Base-VirtualBox">
+		<package name="virtualbox-guest-additions"/>
+	</packages>
+	-->
+	<packages type="uninstall" profiles="VagrantCore">
+		<package name="cloud-init"/>
+	</packages>
+</image>

@@ -1,0 +1,22 @@
+<image>
+	<repository type="rpm-md" alias="extras-common" sourcetype="mirrorlist">
+		<source path="https://mirrors.almalinux.org/mirrorlist/$releasever/extras-common">
+			<signing key="file:///usr/share/distribution-gpg-keys/alma/RPM-GPG-KEY-AlmaLinux-$releasever"/>
+		</source>
+	</repository>
+	<repository type="rpm-md" alias="crb" sourcetype="mirrorlist">
+		<source path="https://mirrors.almalinux.org/mirrorlist/$releasever/crb">
+			<signing key="file:///usr/share/distribution-gpg-keys/alma/RPM-GPG-KEY-AlmaLinux-$releasever"/>
+		</source>
+	</repository>
+	<repository type="rpm-md" alias="appstream" sourcetype="mirrorlist">
+		<source path="https://mirrors.almalinux.org/mirrorlist/$releasever/appstream">
+			<signing key="file:///usr/share/distribution-gpg-keys/alma/RPM-GPG-KEY-AlmaLinux-$releasever"/>
+		</source>
+	</repository>
+	<repository type="rpm-md" alias="baseos" sourcetype="mirrorlist">
+		<source path="https://mirrors.almalinux.org/mirrorlist/$releasever/baseos">
+			<signing key="file:///usr/share/distribution-gpg-keys/alma/RPM-GPG-KEY-AlmaLinux-$releasever"/>
+		</source>
+	</repository>
+</image>

@@ -1,0 +1,10 @@
+<image>
+	<repository type="rpm-md" alias="epel" sourcetype="metalink">
+		<source path="https://mirrors.fedoraproject.org/metalink?repo=epel-$releasever&amp;arch=$basearch">
+			<signing key="file:///usr/share/distribution-gpg-keys/epel/RPM-GPG-KEY-EPEL-$releasever"/>
+		</source>
+	</repository>
+	<packages type="image" patternType="plusRecommended">
+		<package name="epel-release"/>
+	</packages>
+</image>

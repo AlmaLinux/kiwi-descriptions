@@ -1,0 +1,16 @@
+<image>
+	<profiles>
+		<profile name="KDE-Desktop-Live" description="KDE Plasma Desktop Live DVD">
+			<requires profile="KDE-Desktop"/>
+			<requires profile="LiveInstall"/>
+		</profile>
+		<profile name="KDE-Desktop-BtrfsDisk" description="KDE Plasma Desktop Install Disk using Btrfs">
+			<requires profile="BootDiskBtrfs"/>
+			<requires profile="KDE-Desktop"/>
+		</profile>
+		<profile name="KDE-Desktop-XFSDisk" description="KDE Plasma Desktop Install Disk using XFS">
+			<requires profile="BootDiskXFS"/>
+			<requires profile="KDE-Desktop"/>
+		</profile>
+	</profiles>
+</image>

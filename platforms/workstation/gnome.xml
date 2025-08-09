@@ -1,0 +1,16 @@
+<image>
+	<profiles>
+		<profile name="GNOME-Live" description="GNOME Live DVD">
+			<requires profile="GNOME-Desktop"/>
+			<requires profile="LiveInstall"/>
+		</profile>
+		<profile name="GNOME-BtrfsDisk" description="GNOME Install Disk using Btrfs">
+			<requires profile="GNOME-Desktop"/>
+			<requires profile="BootDiskBtrfs"/>
+		</profile>
+		<profile name="GNOME-XFSDisk" description="GNOME Install Disk using XFS">
+			<requires profile="GNOME-Desktop"/>
+			<requires profile="BootDiskXFS"/>
+		</profile>
+	</profiles>
+</image>

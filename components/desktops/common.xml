@@ -1,0 +1,19 @@
+<image>
+	<profiles>
+		<profile name="DesktopCommon" description="Common desktop packages"/>
+	</profiles>
+	<packages type="image" patternType="plusRecommended" profiles="DesktopCommon">
+		<package name="almalinux-backgrounds"/>
+		<package name="firefox"/>
+		<package name="flatpak"/>
+		<package name="plymouth-theme-spinner"/>
+		<namedCollection name="container-management"/>
+		<namedCollection name="fonts"/>
+		<namedCollection name="guest-desktop-agents"/>
+		<namedCollection name="hardware-support"/>
+		<namedCollection name="multimedia"/>
+		<namedCollection name="networkmanager-submodules"/>
+		<namedCollection name="print-client"/>
+		<namedCollection name="standard"/>
+	</packages>
+</image>

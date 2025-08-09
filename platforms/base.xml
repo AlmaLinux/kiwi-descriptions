@@ -1,0 +1,16 @@
+<image>
+	<profiles>
+		<profile name="Minimal-Disk-XFS" description="Minimal Install Disk with XFS">
+			<requires profile="BootDiskCore"/>
+			<requires profile="BootDiskXFS"/>
+		</profile>
+		<profile name="Minimal-Disk-Btrfs" description="Minimal Install Disk with Btrfs">
+			<requires profile="BootDiskCore"/>
+			<requires profile="BootDiskBtrfs"/>
+		</profile>
+	</profiles>
+	<packages type="image" patternType="plusRecommended" profiles="Minimal-Disk-XFS,Minimal-Disk-Btrfs">
+		<namedCollection name="standard"/>
+		<namedCollection name="networkmanager-submodules"/>
+	</packages>
+</image>

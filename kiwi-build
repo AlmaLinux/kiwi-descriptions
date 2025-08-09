@@ -1,0 +1,79 @@
+#!/bin/bash
+
+# Simple wrapper to call kiwi properly for image builds
+# Author: Neal Gompa <ngompa@velocitylimitless.com>
+# SPDX-License-Identifier: Apache-2.0
+
+set -eu -o pipefail
+
+kiwibuildsh="$(basename "$0")"
+kiwibuild_scriptdir="$(dirname "$0")"
+
+usage() {
+	echo >&2 "usage: $kiwibuildsh [--kiwi-description-dir=DIR] [--kiwi-file=FILE] [--isolated] --output-dir=DIR --image-type=TYPE --image-profile=PROFILE [--image-release=RELEASEID] [--debug]"
+	echo >&2 "   eg: $kiwibuildsh --kiwi-description-dir=/var/tmp/desc --kiwi-file=config.kiwi --output-dir=/var/tmp/work --image-type=oem --image-profile=Cloud-Base-Generic --image-release=0 --debug"
+	echo >&2 "   eg: $kiwibuildsh --output-dir=/var/tmp/work --image-type=oem --image-profile=Cloud-Base-Generic"
+	echo >&2 "   eg: $kiwibuildsh --isolated --output-dir=/var/tmp/work --image-type=oem --image-profile=Cloud-Base-Generic"
+	exit 255
+}
+
+optTemp=$(getopt --options '+k:,f:,i,o:,t:,p:,r:,d,h' --longoptions 'kiwi-description-dir:,kiwi-file:,isolated,output-dir:,image-type:,image-profile:,image-release:,debug,help' --name "$kiwibuildsh" -- "$@")
+eval set -- "$optTemp"
+unset optTemp
+
+output_dir=
+image_type=
+image_profile=
+image_release=
+debug=
+kiwi_isolated=
+# For compatibility with older scripts where these did not exist
+kiwi_description_dir="./"
+kiwi_file="AlmaLinux-OS-Kitten.kiwi"
+kiwibuild_extra_args=
+
+while true; do
+	case "$1" in
+		-i|--isolated) kiwi_isolated=1; shift ;;
+		-k|--kiwi-description-dir) kiwi_description_dir="$2" ; shift 2 ;;
+		-f|--kiwi-file) kiwi_file="$2" ; shift 2 ;;
+		-o|--output-dir) output_dir="$2" ; shift 2 ;;
+		-t|--image-type) image_type="$2" ; shift 2 ;;
+		-p|--image-profile) image_profile="$2" ; shift 2 ;;
+		-r|--image-release) image_release="$2" ; shift 2 ;;
+		-d|--debug) debug="--debug" ; shift ;;
+		-h|--help) usage ;;
+		--) shift ; break ;;
+	esac
+done
+
+# Capture arguments after --
+kiwibuild_extra_args=("$@")
+
+if [ -z "$output_dir" ] || [ -z "$image_type" ] || [ -z "$image_profile" ] || [ -z "$kiwi_file" ]; then
+	echo "Options not set!"
+	usage
+fi
+
+# Set the bundle format after we know the profile
+kiwi_bundle_format=$("${kiwibuild_scriptdir}/scripts/almalinux-kiwi-bundle-format-generator" "${kiwi_file}" "${image_profile}")
+
+if [ "$image_type" = "iso" ]; then
+	# Add parameters for embedded ISO IDs
+	kiwibuild_iso_extra_args=$("${kiwibuild_scriptdir}/scripts/almalinux-live-iso-label-generator" "${kiwi_file}" "${image_profile}" --output-kiwi-args)
+	kiwibuild_extra_args="${kiwibuild_extra_args:+${kiwibuild_extra_args}} ${kiwibuild_iso_extra_args}"
+fi
+
+set +e
+if [ ! ${kiwi_isolated} ]; then
+	kiwi-ng ${debug} --type="${image_type}" --profile="${image_profile}" --kiwi-file="${kiwi_file}" --color-output system build --description "${kiwi_description_dir}" --target-dir "${output_dir}-build" ${kiwibuild_extra_args:+${kiwibuild_extra_args}}
+else
+	kiwi-ng ${debug} --type="${image_type}" --profile="${image_profile}" --kiwi-file="${kiwi_file}" --color-output system boxbuild --box universal --sshfs-sharing -- --description "${kiwi_description_dir}" --target-dir "${output_dir}-build" ${kiwibuild_extra_args:+${kiwibuild_extra_args}}
+fi
+kiwi_status=$?
+set -e
+
+if [ "${kiwi_status}" = "0" ] && [ -n "$image_release" ]; then
+	kiwi-ng ${debug} result bundle --bundle-format="${kiwi_bundle_format}" --target-dir "${output_dir}-build" --bundle-dir "${output_dir}" --id="${image_release}"
+fi
+exit $kiwi_status
