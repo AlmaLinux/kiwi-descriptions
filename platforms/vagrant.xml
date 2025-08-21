@@ -15,7 +15,7 @@
 		      filesystem="xfs"
 		      kernelcmdline="no_timer_check console=tty1 console=ttyS0,115200n8"
 		      devicepersistency="by-uuid"
-		      bootpartition="false" efipartsize="500" firmware="uefi"
+		      bootpartition="false" efipartsize="200" firmware="uefi"
 		      rootfs_label="centos"
 		      >
 			<bootloader name="grub2" bls="true" console="serial" timeout="1"/>
@@ -31,7 +31,7 @@
 		      filesystem="xfs"
 		      kernelcmdline="no_timer_check console=tty1 console=ttyAMA0,115200n8"
 		      devicepersistency="by-uuid"
-		      bootpartition="false" efipartsize="500" firmware="uefi"
+		      bootpartition="false" efipartsize="200" firmware="uefi"
 		      rootfs_label="centos"
 		      >
 			<bootloader name="grub2" bls="true" console="serial" timeout="1"/>
@@ -47,7 +47,7 @@
 		      filesystem="xfs"
 		      kernelcmdline="no_timer_check console=tty1 console=ttyS0,115200n8"
 		      devicepersistency="by-uuid"
-		      bootpartition="false" efipartsize="500" firmware="uefi"
+		      bootpartition="false" efipartsize="200" firmware="uefi"
 		      rootfs_label="centos"
 		      >
 			<bootloader name="grub2" bls="true" console="serial" timeout="1"/>
@@ -64,7 +64,7 @@
 		      filesystem="xfs"
 		      kernelcmdline="no_timer_check console=tty1 console=ttyAMA0,115200n8"
 		      devicepersistency="by-uuid"
-		      bootpartition="false" efipartsize="500" firmware="uefi"
+		      bootpartition="false" efipartsize="200" firmware="uefi"
 		      rootfs_label="centos"
 		      >
 			<bootloader name="grub2" bls="true" console="serial" timeout="1"/>

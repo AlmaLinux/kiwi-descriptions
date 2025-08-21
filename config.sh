@@ -76,6 +76,18 @@ if [[ "$kiwi_profiles" == *"Cloud"* ]] || [[ "$kiwi_profiles" == *"WSL"* ]]; the
 	systemctl enable cloud-config.service cloud-final.service cloud-init.service cloud-init-local.service cloud-init.target
 fi
 
+if [[ "$kiwi_profiles" == *"Cloud"* ]]; then
+	## Enable tuned
+	systemctl enable tuned.service
+
+	## Enabled Xen Project PVHVM drivers only on x86_64
+	## https://bugzilla.redhat.com/show_bug.cgi?id=1849082#c7
+	if [[ "$(uname -m)" == "x86_64" ]]; then
+		echo 'add_drivers+="xen-netfront xen-blkfront"' >> /etc/dracut.conf.d/xen_pvhvm.conf
+		dracut -f --regenerate-all
+	fi
+fi
+
 if [[ "$kiwi_profiles" == *"Azure"* ]]; then
 	## Enable Azure service
 	systemctl enable waagent.service
