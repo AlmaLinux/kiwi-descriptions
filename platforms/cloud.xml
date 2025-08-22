@@ -33,7 +33,7 @@
 		      filesystem="xfs"
 		      kernelcmdline="no_timer_check console=tty1 console=ttyS0,115200n8 earlyprintk=ttyS0 systemd.firstboot=off"
 		      devicepersistency="by-uuid"
-		      bootpartition="false" efipartsize="500" firmware="uefi"
+		      bootpartition="false" efipartsize="200" firmware="uefi"
 		      rootfs_label="almalinux"
 		      >
 			<bootloader name="grub2" bls="true" console="serial" timeout="0"/>
@@ -48,7 +48,7 @@
 		      filesystem="xfs"
 		      kernelcmdline="no_timer_check console=tty1 console=ttyAMA0,115200n8 earlyprintk=ttyAMA0 systemd.firstboot=off"
 		      devicepersistency="by-uuid"
-		      bootpartition="false" efipartsize="500" firmware="uefi"
+		      bootpartition="false" efipartsize="200" firmware="uefi"
 		      rootfs_label="almalinux"
 		      >
 			<bootloader name="grub2" bls="true" console="serial" timeout="0"/>
@@ -63,7 +63,7 @@
 		      filesystem="xfs"
 		      kernelcmdline="no_timer_check console=tty1 console=ttyS0,115200n8 systemd.firstboot=off"
 		      devicepersistency="by-uuid"
-		      bootpartition="false" efipartsize="500" firmware="uefi"
+		      bootpartition="false" efipartsize="200" firmware="uefi"
 		      rootfs_label="almalinux"
 		      >
 			<bootloader name="grub2" bls="true" console="serial" timeout="0"/>
@@ -78,7 +78,7 @@
 		      filesystem="xfs"
 		      kernelcmdline="no_timer_check console=tty1 console=ttyAMA0,115200n8 systemd.firstboot=off"
 		      devicepersistency="by-uuid"
-		      bootpartition="false" efipartsize="500" firmware="uefi"
+		      bootpartition="false" efipartsize="200" firmware="uefi"
 		      rootfs_label="almalinux"
 		      >
 			<bootloader name="grub2" bls="true" console="serial" timeout="0"/>
@@ -93,7 +93,7 @@
 		      filesystem="xfs"
 		      kernelcmdline="no_timer_check console=ttyS0,38400n8d systemd.firstboot=off"
 		      devicepersistency="by-uuid"
-		      bootpartition="false" efipartsize="500" firmware="uefi"
+		      bootpartition="false" efipartsize="200" firmware="uefi"
 		      rootfs_label="almalinux"
 		      >
 			<bootloader name="grub2" bls="true" console="serial" timeout="0"/>
@@ -109,7 +109,7 @@
 		      filesystem="xfs"
 		      kernelcmdline="no_timer_check console=ttyAMA0,38400n8d systemd.firstboot=off"
 		      devicepersistency="by-uuid"
-		      bootpartition="false" efipartsize="500" firmware="uefi"
+		      bootpartition="false" efipartsize="200" firmware="uefi"
 		      rootfs_label="almalinux"
 		      >
 			<bootloader name="grub2" bls="true" console="serial" timeout="0"/>
@@ -125,7 +125,7 @@
 		      filesystem="xfs"
 		      kernelcmdline="no_timer_check console=tty1 console=ttyS0,115200n8 systemd.firstboot=off"
 		      devicepersistency="by-uuid"
-		      bootpartition="false" efipartsize="500" firmware="uefi"
+		      bootpartition="false" efipartsize="200" firmware="uefi"
 		      rootfs_label="almalinux"
 		      >
 			<bootloader name="grub2" bls="true" console="serial" timeout="0"/>
@@ -140,7 +140,7 @@
 		      filesystem="xfs"
 		      kernelcmdline="no_timer_check console=tty1 console=ttyAMA0,115200n8 systemd.firstboot=off"
 		      devicepersistency="by-uuid"
-		      bootpartition="false" efipartsize="500" firmware="uefi"
+		      bootpartition="false" efipartsize="200" firmware="uefi"
 		      rootfs_label="almalinux"
 		      >
 			<bootloader name="grub2" bls="true" console="serial" timeout="0"/>
@@ -206,12 +206,30 @@
 		<ignore name="geolite2-city"/>
 		<ignore name="geolite2-country"/>
 		<ignore name="plymouth"/>
+		<ignore name="libblockdev"/>
+        <ignore name="volume_key-libs"/>
+		<ignore name="dracut-network"/>
+		<ignore name="dracut-squash"/>
+		<ignore name="flashrom"/>
+		<ignore name="nss*"/>
+		<ignore name="ntfs-*"/>
+		<ignore name="xkeyboard-config"/>
+		<ignore name="pcsc-*"/>
+		<ignore name="pinentry"/>
 		<!-- Decompose cloud-server-environment since the group doesn't exist in RHEL -->
 		<namedCollection name="standard"/>
 		<package name="cloud-init"/>
 		<package name="cloud-utils-growpart"/>
 		<package name="dracut-config-generic"/>
 		<package name="glibc-langpack-en"/>
+		<package name="virt-what"/>
+		<package name="tuned"/>
+		<package name="tar"/>
+		<package name="tcpdump"/>
+		<package name="rsync"/>
+		<package name="quota"/>
+		<package name="nfs-utils"/>
+		<package name="hdparm"/>
 	</packages>
 	<packages type="image" patternType="plusRecommended" profiles="Cloud-Base-AmazonEC2">
 		<package name="awscli2"/>
