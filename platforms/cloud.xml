@@ -165,6 +165,21 @@
 			</oemconfig>
 		</type>
 	</preferences>
+	<preferences profiles="Cloud-Base-Generic" arch="riscv64">
+		<type image="oem" format="qcow2"
+		      filesystem="ext4"
+		      kernelcmdline="no_timer_check console=tty1 console=ttyS0,115200n8 systemd.firstboot=off"
+		      devicepersistency="by-uuid"
+		      bootpartition="false" efipartsize="500" firmware="uefi"
+		      rootfs_label="almalinux"
+		      >
+			<bootloader name="grub2" bls="true" console="serial" timeout="0"/>
+			<size unit="G">5</size>
+			<oemconfig>
+				<oem-resize>false</oem-resize>
+			</oemconfig>
+		</type>
+	</preferences>
 	<preferences profiles="Cloud-Base-Generic" arch="s390x">
 		<type image="oem" format="qcow2"
 		      filesystem="xfs"

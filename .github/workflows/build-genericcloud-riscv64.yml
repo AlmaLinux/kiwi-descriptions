@@ -1,4 +1,4 @@
-name: Build AlmaLinux Kitten P550 (RISC-V)
+name: Build AlmaLinux Kitten GenericCloud (RISC-V)
 
 on:
   workflow_dispatch:
@@ -34,32 +34,31 @@ jobs:
           docker exec riscv64-build \
             dnf install -y kiwi-cli distribution-gpg-keys
 
-      - name: Build P550 disk image
+      - name: Build GenericCloud image
         run: |
           docker exec riscv64-build \
-            kiwi-ng --debug --type=oem --profile=PremierP550-Disk \
+            kiwi-ng --debug --type=oem --profile=Cloud-Base-Generic \
               --kiwi-file=AlmaLinux-OS-Kitten-P550.kiwi \
               system build \
               --description /kiwi-descriptions \
               --target-dir /var/tmp/build
 
-      - name: Extract, rename and compress artifacts
+      - name: Extract and rename artifacts
         run: |
           BUILD_DATE=$(date +%Y%m%d)
-          IMAGE_NAME="AlmaLinux-Kitten-P550-10-${BUILD_DATE}.0.riscv64"
+          IMAGE_NAME="AlmaLinux-Kitten-GenericCloud-10-${BUILD_DATE}.0.riscv64"
           echo "IMAGE_NAME=${IMAGE_NAME}" >> "$GITHUB_ENV"
           mkdir -p output
-          docker cp riscv64-build:/var/tmp/build/AlmaLinux-Kitten-P550.riscv64-10.raw "output/${IMAGE_NAME}.raw"
+          docker cp riscv64-build:/var/tmp/build/AlmaLinux-Kitten-P550.riscv64-10.qcow2 "output/${IMAGE_NAME}.qcow2"
           docker cp riscv64-build:/var/tmp/build/AlmaLinux-Kitten-P550.riscv64-10.packages "output/${IMAGE_NAME}.packages"
           docker cp riscv64-build:/var/tmp/build/AlmaLinux-Kitten-P550.riscv64-10.verified "output/${IMAGE_NAME}.verified"
           docker cp riscv64-build:/var/tmp/build/AlmaLinux-Kitten-P550.riscv64-10.changes "output/${IMAGE_NAME}.changes"
-          xz -T0 -9 "output/${IMAGE_NAME}.raw"
 
       - name: Upload disk image
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.IMAGE_NAME }}.raw.xz
-          path: output/${{ env.IMAGE_NAME }}.raw.xz
+          name: ${{ env.IMAGE_NAME }}.qcow2
+          path: output/${{ env.IMAGE_NAME }}.qcow2
           compression-level: 0
 
       - name: Upload packages list

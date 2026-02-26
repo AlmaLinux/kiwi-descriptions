@@ -18,6 +18,7 @@
 	<include from="this://./repositories/core-riscv64.xml"/>
 	<include from="this://./components/boot.xml"/>
 	<include from="this://./components/users.xml"/>
+	<include from="this://./platforms/cloud.xml"/>
 	<include from="this://./platforms/p550.xml"/>
 	<packages type="bootstrap">
 		<package name="basesystem"/>
