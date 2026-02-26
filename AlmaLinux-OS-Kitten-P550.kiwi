@@ -15,7 +15,7 @@
 		<rpm-check-signatures>false</rpm-check-signatures>
 		<release-version>10</release-version>
 	</preferences>
-	<include from="this://./repositories/core-riscv64.xml"/>
+	<include from="this://./repositories/core.xml"/>
 	<include from="this://./components/boot.xml"/>
 	<include from="this://./components/users.xml"/>
 	<include from="this://./platforms/p550.xml"/>
