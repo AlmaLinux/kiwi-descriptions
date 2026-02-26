@@ -167,7 +167,7 @@
 	</preferences>
 	<preferences profiles="Cloud-Base-Generic" arch="riscv64">
 		<type image="oem" format="qcow2"
-		      filesystem="ext4"
+		      filesystem="xfs"
 		      kernelcmdline="no_timer_check console=tty1 console=ttyS0,115200n8 systemd.firstboot=off"
 		      devicepersistency="by-uuid"
 		      bootpartition="false" efipartsize="500" firmware="uefi"

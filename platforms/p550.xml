@@ -6,7 +6,7 @@
 	</profiles>
 	<preferences profiles="PremierP550-Disk" arch="riscv64">
 		<type image="oem"
-		      filesystem="ext4"
+		      filesystem="xfs"
 		      kernelcmdline="earlycon"
 		      devicepersistency="by-uuid"
 		      bootpartition="true" bootpartsize="2000" bootfilesystem="ext4" efipartsize="500" firmware="uefi"
