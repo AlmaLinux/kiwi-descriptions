@@ -1,5 +1,5 @@
 <image>
-	<repository type="rpm-md" alias="epel" sourcetype="metalink">
+	<repository type="rpm-md" alias="epel" sourcetype="metalink" arch="x86_64,aarch64,ppc64le,s390x">
 		<source path="https://mirrors.fedoraproject.org/metalink?repo=epel-$releasever&amp;arch=$basearch">
 			<signing key="file:///usr/share/distribution-gpg-keys/epel/RPM-GPG-KEY-EPEL-$releasever"/>
 		</source>

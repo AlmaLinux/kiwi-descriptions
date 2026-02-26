@@ -1,17 +1,27 @@
 <image>
 	<repository type="rpm-md" alias="baseos-riscv64" sourcetype="baseurl" arch="riscv64">
-		<source path="https://riscv64-pungi-10.almalinux.dev:8443/almalinux/10/riscv64/latest_result_almalinux-kitten/compose/BaseOS/$basearch/os"/>
+		<source path="https://riscv64-pungi-10.almalinux.dev:8443/almalinux/10/riscv64/latest_result_almalinux-kitten/compose/BaseOS/$basearch/os">
+			<signing key="file:///usr/share/distribution-gpg-keys/alma/RPM-GPG-KEY-AlmaLinux-$releasever"/>
+		</source>
 	</repository>
 	<repository type="rpm-md" alias="appstream-riscv64" sourcetype="baseurl" arch="riscv64">
-		<source path="https://riscv64-pungi-10.almalinux.dev:8443/almalinux/10/riscv64/latest_result_almalinux-kitten/compose/AppStream/$basearch/os"/>
+		<source path="https://riscv64-pungi-10.almalinux.dev:8443/almalinux/10/riscv64/latest_result_almalinux-kitten/compose/AppStream/$basearch/os">
+			<signing key="file:///usr/share/distribution-gpg-keys/alma/RPM-GPG-KEY-AlmaLinux-$releasever"/>
+		</source>
 	</repository>
 	<repository type="rpm-md" alias="crb-riscv64" sourcetype="baseurl" arch="riscv64">
-		<source path="https://riscv64-pungi-10.almalinux.dev:8443/almalinux/10/riscv64/latest_result_almalinux-kitten/compose/CRB/$basearch/os"/>
+		<source path="https://riscv64-pungi-10.almalinux.dev:8443/almalinux/10/riscv64/latest_result_almalinux-kitten/compose/CRB/$basearch/os">
+			<signing key="file:///usr/share/distribution-gpg-keys/alma/RPM-GPG-KEY-AlmaLinux-$releasever"/>
+		</source>
 	</repository>
 	<repository type="rpm-md" alias="extras-common-riscv64" sourcetype="baseurl" arch="riscv64">
-		<source path="https://riscv64-pungi-10.almalinux.dev:8443/almalinux/10/riscv64/latest_result_almalinux-kitten/compose/extras-common/$basearch/os"/>
+		<source path="https://riscv64-pungi-10.almalinux.dev:8443/almalinux/10/riscv64/latest_result_almalinux-kitten/compose/extras-common/$basearch/os">
+			<signing key="file:///usr/share/distribution-gpg-keys/alma/RPM-GPG-KEY-AlmaLinux-$releasever"/>
+		</source>
 	</repository>
 	<repository type="rpm-md" alias="devel-riscv64" sourcetype="baseurl" arch="riscv64">
-		<source path="https://riscv64-pungi-10.almalinux.dev:8443/almalinux/10/riscv64/latest_result_almalinux-kitten/compose/devel/$basearch/os"/>
+		<source path="https://riscv64-pungi-10.almalinux.dev:8443/almalinux/10/riscv64/latest_result_almalinux-kitten/compose/devel/$basearch/os">
+			<signing key="file:///usr/share/distribution-gpg-keys/alma/RPM-GPG-KEY-AlmaLinux-$releasever"/>
+		</source>
 	</repository>
 </image>

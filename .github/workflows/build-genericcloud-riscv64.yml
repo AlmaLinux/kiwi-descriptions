@@ -38,7 +38,7 @@ jobs:
         run: |
           docker exec riscv64-build \
             kiwi-ng --debug --type=oem --profile=Cloud-Base-Generic \
-              --kiwi-file=AlmaLinux-OS-Kitten-P550.kiwi \
+              --kiwi-file=AlmaLinux-OS-Kitten.kiwi \
               system build \
               --description /kiwi-descriptions \
               --target-dir /var/tmp/build
@@ -49,10 +49,10 @@ jobs:
           IMAGE_NAME="AlmaLinux-Kitten-GenericCloud-10-${BUILD_DATE}.0.riscv64"
           echo "IMAGE_NAME=${IMAGE_NAME}" >> "$GITHUB_ENV"
           mkdir -p output
-          docker cp riscv64-build:/var/tmp/build/AlmaLinux-Kitten-P550.riscv64-10.qcow2 "output/${IMAGE_NAME}.qcow2"
-          docker cp riscv64-build:/var/tmp/build/AlmaLinux-Kitten-P550.riscv64-10.packages "output/${IMAGE_NAME}.packages"
-          docker cp riscv64-build:/var/tmp/build/AlmaLinux-Kitten-P550.riscv64-10.verified "output/${IMAGE_NAME}.verified"
-          docker cp riscv64-build:/var/tmp/build/AlmaLinux-Kitten-P550.riscv64-10.changes "output/${IMAGE_NAME}.changes"
+          docker cp riscv64-build:/var/tmp/build/AlmaLinux-Kitten.riscv64-10.qcow2 "output/${IMAGE_NAME}.qcow2"
+          docker cp riscv64-build:/var/tmp/build/AlmaLinux-Kitten.riscv64-10.packages "output/${IMAGE_NAME}.packages"
+          docker cp riscv64-build:/var/tmp/build/AlmaLinux-Kitten.riscv64-10.verified "output/${IMAGE_NAME}.verified"
+          docker cp riscv64-build:/var/tmp/build/AlmaLinux-Kitten.riscv64-10.changes "output/${IMAGE_NAME}.changes"
 
       - name: Upload disk image
         uses: actions/upload-artifact@v4
