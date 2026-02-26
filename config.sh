@@ -107,8 +107,9 @@ mkdir -p /var/log/journal
 # Setup firstboot initial setup
 #--------------------------------------
 
+installarch=$(uname -m)
 if [[ "$kiwi_profiles" == *"Disk"* ]]; then
-	if [[ "$kiwi_profiles" != *"GNOME"* ]]; then
+	if [[ "$kiwi_profiles" != *"GNOME"* ]] && [[ "$installarch" != "riscv64" ]]; then
 		## Enable initial-setup
 		systemctl enable initial-setup.service
 		## Enable reconfig mode

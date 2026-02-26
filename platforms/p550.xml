@@ -1,0 +1,38 @@
+<image>
+	<profiles>
+		<profile name="PremierP550-Disk" description="SiFive HiFive Premier P550 Disk Image">
+			<requires profile="BootCore"/>
+		</profile>
+	</profiles>
+	<preferences profiles="PremierP550-Disk" arch="riscv64">
+		<type image="oem"
+		      filesystem="ext4"
+		      kernelcmdline="earlycon"
+		      devicepersistency="by-uuid"
+		      bootpartition="true" bootpartsize="2000" bootfilesystem="ext4" efipartsize="500" firmware="uefi"
+		      rootfs_label="almalinux"
+		      >
+			<bootloader name="grub2" console="serial" timeout="3" timeout_style="countdown"/>
+			<size unit="G">10</size>
+			<oemconfig>
+				<oem-resize>false</oem-resize>
+			</oemconfig>
+		</type>
+	</preferences>
+	<packages type="image" patternType="plusRecommended" profiles="PremierP550-Disk">
+		<namedCollection name="core"/>
+		<namedCollection name="standard"/>
+		<namedCollection name="networkmanager-submodules"/>
+		<package name="e2fsprogs"/>
+		<package name="glibc-all-langpacks"/>
+		<package name="kernel"/>
+		<package name="kernel-modules"/>
+		<package name="kernel-modules-extra"/>
+		<package name="linux-firmware"/>
+		<package name="lvm2"/>
+		<package name="nano"/>
+		<package name="xfsprogs"/>
+		<package name="yum-utils"/>
+		<package name="dracut-config-rescue"/>
+	</packages>
+</image>

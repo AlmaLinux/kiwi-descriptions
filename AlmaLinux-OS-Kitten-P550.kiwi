@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<image schemaversion="7.4" name="AlmaLinux-Kitten-P550">
+	<description type="system">
+		<author>AlmaLinux OS Contributors</author>
+		<contact>devel@lists.almalinux.org</contact>
+		<specification>AlmaLinux OS Kitten for SiFive HiFive Premier P550</specification>
+	</description>
+	<preferences>
+		<version>10</version>
+		<packagemanager>dnf4</packagemanager>
+		<locale>C</locale>
+		<keytable>us</keytable>
+		<timezone>Etc/UTC</timezone>
+		<rpm-check-signatures>false</rpm-check-signatures>
+		<release-version>10</release-version>
+	</preferences>
+	<include from="this://./repositories/core-riscv64.xml"/>
+	<include from="this://./components/boot.xml"/>
+	<include from="this://./components/users.xml"/>
+	<include from="this://./platforms/p550.xml"/>
+	<packages type="bootstrap">
+		<package name="basesystem"/>
+		<package name="almalinux-release"/>
+		<package name="filesystem"/>
+	</packages>
+</image>
