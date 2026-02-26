@@ -19,9 +19,4 @@
 			<signing key="file:///usr/share/distribution-gpg-keys/alma/RPM-GPG-KEY-AlmaLinux-$releasever"/>
 		</source>
 	</repository>
-	<repository type="rpm-md" alias="devel-riscv64" sourcetype="baseurl" arch="riscv64">
-		<source path="https://riscv64-pungi-10.almalinux.dev:8443/almalinux/10/riscv64/latest_result_almalinux-kitten/compose/devel/$basearch/os">
-			<signing key="file:///usr/share/distribution-gpg-keys/alma/RPM-GPG-KEY-AlmaLinux-$releasever"/>
-		</source>
-	</repository>
 </image>
