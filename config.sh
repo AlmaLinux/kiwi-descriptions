@@ -14,11 +14,6 @@ test -f /.profile && . /.profile
 echo "Configure image: [$kiwi_iname]-[$kiwi_profiles]..."
 
 #======================================
-# Enable CRB repository
-#--------------------------------------
-dnf config-manager --set-enabled crb
-
-#======================================
 # Set SELinux booleans
 #--------------------------------------
 ## Fixes KDE Plasma, see rhbz#2058657
