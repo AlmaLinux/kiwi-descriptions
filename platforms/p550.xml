@@ -7,7 +7,7 @@
 	<preferences profiles="PremierP550-Disk" arch="riscv64">
 		<type image="oem"
 		      filesystem="xfs"
-		      kernelcmdline="earlycon"
+		      kernelcmdline="earlycon console=tty1 console=ttyS0,115200n8"
 		      devicepersistency="by-uuid"
 		      bootpartition="true" bootpartsize="2000" bootfilesystem="ext4" efipartsize="500" firmware="uefi"
 		      rootfs_label="almalinux"
