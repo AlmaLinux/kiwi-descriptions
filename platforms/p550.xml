@@ -33,6 +33,7 @@
 		<package name="nano"/>
 		<package name="xfsprogs"/>
 		<package name="yum-utils"/>
+		<package name="dracut-config-generic"/>
 		<package name="dracut-config-rescue"/>
 	</packages>
 </image>
