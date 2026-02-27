@@ -12,7 +12,7 @@
 		<locale>C</locale>
 		<keytable>us</keytable>
 		<timezone>Etc/UTC</timezone>
-		<rpm-check-signatures>false</rpm-check-signatures>
+		<rpm-check-signatures>true</rpm-check-signatures>
 		<release-version>10</release-version>
 	</preferences>
 	<include from="this://./repositories/core.xml"/>
