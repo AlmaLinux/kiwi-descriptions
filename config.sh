@@ -101,10 +101,11 @@ fi
 if [[ "$kiwi_profiles" != *"Container"* ]] && [[ "$kiwi_profiles" != *"WSL"* ]]; then
 	## Enable chrony
 	systemctl enable chronyd.service
-	## Enable oomd
-	systemctl enable systemd-oomd.service
-	## Enable resolved
-	systemctl enable systemd-resolved.service
+	## Enable oomd and resolved (not installed in cloud images)
+	if [[ "$kiwi_profiles" != *"Cloud"* ]]; then
+		systemctl enable systemd-oomd.service
+		systemctl enable systemd-resolved.service
+	fi
 fi
 ## Enable persistent journal
 mkdir -p /var/log/journal
