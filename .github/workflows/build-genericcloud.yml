@@ -143,8 +143,9 @@ jobs:
           mkdir -p output
           docker cp "build:/var/tmp/build/AlmaLinux-Kitten.${KIWI_ARCH}-10.qcow2" "output/${IMAGE_NAME}.qcow2"
           docker cp "build:/var/tmp/build/AlmaLinux-Kitten.${KIWI_ARCH}-10.packages" "output/${IMAGE_NAME}.packages"
-          docker cp "build:/var/tmp/build/AlmaLinux-Kitten.${KIWI_ARCH}-10.verified" "output/${IMAGE_NAME}.verified"
-          docker cp "build:/var/tmp/build/AlmaLinux-Kitten.${KIWI_ARCH}-10.changes" "output/${IMAGE_NAME}.changes"
+          cut -d'|' -f1 "output/${IMAGE_NAME}.packages" | sort > "output/${IMAGE_NAME}.qcow2.txt"
+          rm -f "output/${IMAGE_NAME}.packages"
+          sha256sum "output/${IMAGE_NAME}.qcow2" | sed 's|output/||' > "output/${IMAGE_NAME}.qcow2.sha256sum"
 
       - name: Upload disk image
         uses: actions/upload-artifact@v4
@@ -153,20 +154,14 @@ jobs:
           path: output/${{ env.IMAGE_NAME }}.qcow2
           compression-level: 0
 
+      - name: Upload SHA256 checksum
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.IMAGE_NAME }}.qcow2.sha256sum
+          path: output/${{ env.IMAGE_NAME }}.qcow2.sha256sum
+
       - name: Upload packages list
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.IMAGE_NAME }}.packages
-          path: output/${{ env.IMAGE_NAME }}.packages
-
-      - name: Upload verified log
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.IMAGE_NAME }}.verified
-          path: output/${{ env.IMAGE_NAME }}.verified
-
-      - name: Upload changes log
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.IMAGE_NAME }}.changes
-          path: output/${{ env.IMAGE_NAME }}.changes
+          name: ${{ env.IMAGE_NAME }}.qcow2.txt
+          path: output/${{ env.IMAGE_NAME }}.qcow2.txt
