@@ -207,19 +207,22 @@ runs:
 
         if [ "${{ inputs.arch }}" = "aarch64" ]; then
           QEMU_BIN="qemu-system-aarch64"
-          QEMU_MACHINE="-M virt"
-          FIRMWARE_CODE="/usr/share/AAVMF/AAVMF_CODE.fd"
+          QEMU_MACHINE="-M virt,secure=on"
+          QEMU_EXTRA=""
+          FIRMWARE_CODE="/usr/share/AAVMF/AAVMF_CODE.secboot.fd"
           cp /usr/share/AAVMF/AAVMF_VARS.fd "$TEST_DIR/efivars.fd"
         else
           QEMU_BIN="qemu-system-x86_64"
-          QEMU_MACHINE=""
-          FIRMWARE_CODE="/usr/share/OVMF/OVMF_CODE_4M.fd"
-          cp /usr/share/OVMF/OVMF_VARS_4M.fd "$TEST_DIR/efivars.fd"
+          QEMU_MACHINE="-machine q35,smm=on"
+          QEMU_EXTRA="-global driver=cfi.pflash01,property=secure,value=on"
+          FIRMWARE_CODE="/usr/share/OVMF/OVMF_CODE_4M.secboot.fd"
+          cp /usr/share/OVMF/OVMF_VARS_4M.secboot.fd "$TEST_DIR/efivars.fd"
         fi
 
         cat > "$TEST_DIR/run-qemu.sh" <<QEMUEOF
         #!/bin/bash
         exec $QEMU_BIN -enable-kvm -cpu host $QEMU_MACHINE -smp 2 -m 2048 -nographic \
+          $QEMU_EXTRA \
           -drive if=pflash,format=raw,readonly=on,file=$FIRMWARE_CODE \
           -drive if=pflash,format=raw,file=$TEST_DIR/efivars.fd \
           -drive file=output/${IMAGE_NAME}.qcow2,format=qcow2,if=virtio \
