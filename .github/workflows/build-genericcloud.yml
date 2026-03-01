@@ -4,10 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       arch:
-        description: 'Architecture to build'
+        description: 'Architecture to build (all = build all in parallel)'
         required: true
         type: choice
+        default: all
         options:
+          - all
           - x86_64
           - x86_64_v2
           - aarch64
@@ -16,8 +18,26 @@ on:
           - s390x
 
 jobs:
+  matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      arches: ${{ steps.set.outputs.arches }}
+    steps:
+      - id: set
+        run: |
+          if [ "${{ inputs.arch }}" = "all" ]; then
+            echo 'arches=["x86_64","x86_64_v2","aarch64","ppc64le","riscv64","s390x"]' >> "$GITHUB_OUTPUT"
+          else
+            echo 'arches=["${{ inputs.arch }}"]' >> "$GITHUB_OUTPUT"
+          fi
+
   build:
-    runs-on: ${{ inputs.arch == 'aarch64' && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
+    needs: matrix
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: ${{ fromJSON(needs.matrix.outputs.arches) }}
+    runs-on: ${{ matrix.arch == 'aarch64' && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
     timeout-minutes: 180
 
     steps:
@@ -27,7 +47,7 @@ jobs:
       - name: Set build variables
         id: vars
         run: |
-          ARCH="${{ inputs.arch }}"
+          ARCH="${{ matrix.arch }}"
           case "$ARCH" in
             x86_64)
               DOCKER_PLATFORM="linux/amd64"
@@ -84,7 +104,7 @@ jobs:
 
       - name: Install kiwi-cli
         run: |
-          if [ "${{ inputs.arch }}" = "riscv64" ]; then
+          if [ "${{ matrix.arch }}" = "riscv64" ]; then
             docker exec build \
               dnf install -y almalinux-kitten-release-devel
           else
@@ -95,7 +115,7 @@ jobs:
             dnf install -y kiwi-cli distribution-gpg-keys
 
       - name: Patch repositories for x86_64_v2
-        if: inputs.arch == 'x86_64_v2'
+        if: matrix.arch == 'x86_64_v2'
         run: |
           cd ${{ github.workspace }}
           sed -i 's|\(mirrorlist/\$releasever-kitten/[^"?]*\)"|\1?arch=x86_64_v2"|g' repositories/core.xml
@@ -115,7 +135,7 @@ jobs:
 
       - name: Extract and rename artifacts
         run: |
-          ARCH="${{ inputs.arch }}"
+          ARCH="${{ matrix.arch }}"
           KIWI_ARCH="${{ steps.vars.outputs.kiwi_arch }}"
           BUILD_DATE=$(date +%Y%m%d)
           IMAGE_NAME="AlmaLinux-Kitten-GenericCloud-10-${BUILD_DATE}.0.${ARCH}"
