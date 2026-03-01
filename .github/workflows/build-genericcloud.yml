@@ -1,0 +1,137 @@
+name: Build AlmaLinux Kitten GenericCloud
+
+on:
+  workflow_dispatch:
+    inputs:
+      arch:
+        description: 'Architecture to build'
+        required: true
+        type: choice
+        options:
+          - x86_64
+          - x86_64_v2
+          - aarch64
+          - ppc64le
+          - riscv64
+          - s390x
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set build variables
+        id: vars
+        run: |
+          ARCH="${{ inputs.arch }}"
+          case "$ARCH" in
+            x86_64|x86_64_v2)
+              DOCKER_PLATFORM="linux/amd64"
+              QEMU_PLATFORM=""
+              KIWI_ARCH="x86_64"
+              ;;
+            aarch64)
+              DOCKER_PLATFORM="linux/arm64"
+              QEMU_PLATFORM="aarch64"
+              KIWI_ARCH="aarch64"
+              ;;
+            ppc64le)
+              DOCKER_PLATFORM="linux/ppc64le"
+              QEMU_PLATFORM="ppc64le"
+              KIWI_ARCH="ppc64le"
+              ;;
+            riscv64)
+              DOCKER_PLATFORM="linux/riscv64"
+              QEMU_PLATFORM="riscv64"
+              KIWI_ARCH="riscv64"
+              ;;
+            s390x)
+              DOCKER_PLATFORM="linux/s390x"
+              QEMU_PLATFORM="s390x"
+              KIWI_ARCH="s390x"
+              ;;
+          esac
+          echo "docker_platform=${DOCKER_PLATFORM}" >> "$GITHUB_OUTPUT"
+          echo "qemu_platform=${QEMU_PLATFORM}" >> "$GITHUB_OUTPUT"
+          echo "kiwi_arch=${KIWI_ARCH}" >> "$GITHUB_OUTPUT"
+
+      - name: Set up QEMU
+        if: steps.vars.outputs.qemu_platform != ''
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: ${{ steps.vars.outputs.qemu_platform }}
+
+      - name: Start build container
+        run: |
+          sudo modprobe loop max_part=16
+          docker run -d \
+            --platform=${{ steps.vars.outputs.docker_platform }} \
+            --name build \
+            --privileged \
+            -v /dev:/dev \
+            -v ${{ github.workspace }}:/kiwi-descriptions:Z \
+            almalinux:10-kitten \
+            sleep infinity
+
+      - name: Install kiwi-cli
+        run: |
+          if [ "${{ inputs.arch }}" = "riscv64" ]; then
+            docker exec build \
+              dnf install -y almalinux-kitten-release-devel
+          else
+            docker exec build \
+              dnf install -y epel-release
+          fi
+          docker exec build \
+            dnf install -y kiwi-cli distribution-gpg-keys
+
+      - name: Build GenericCloud image
+        run: |
+          docker exec build \
+            kiwi-ng --debug --type=oem --profile=Cloud-Base-Generic \
+              --kiwi-file=AlmaLinux-OS-Kitten.kiwi \
+              system build \
+              --description /kiwi-descriptions \
+              --target-dir /var/tmp/build
+
+      - name: Extract and rename artifacts
+        run: |
+          ARCH="${{ inputs.arch }}"
+          KIWI_ARCH="${{ steps.vars.outputs.kiwi_arch }}"
+          BUILD_DATE=$(date +%Y%m%d)
+          IMAGE_NAME="AlmaLinux-Kitten-GenericCloud-10-${BUILD_DATE}.0.${ARCH}"
+          echo "IMAGE_NAME=${IMAGE_NAME}" >> "$GITHUB_ENV"
+          mkdir -p output
+          docker cp "build:/var/tmp/build/AlmaLinux-Kitten.${KIWI_ARCH}-10.qcow2" "output/${IMAGE_NAME}.qcow2"
+          docker cp "build:/var/tmp/build/AlmaLinux-Kitten.${KIWI_ARCH}-10.packages" "output/${IMAGE_NAME}.packages"
+          docker cp "build:/var/tmp/build/AlmaLinux-Kitten.${KIWI_ARCH}-10.verified" "output/${IMAGE_NAME}.verified"
+          docker cp "build:/var/tmp/build/AlmaLinux-Kitten.${KIWI_ARCH}-10.changes" "output/${IMAGE_NAME}.changes"
+
+      - name: Upload disk image
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.IMAGE_NAME }}.qcow2
+          path: output/${{ env.IMAGE_NAME }}.qcow2
+          compression-level: 0
+
+      - name: Upload packages list
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.IMAGE_NAME }}.packages
+          path: output/${{ env.IMAGE_NAME }}.packages
+
+      - name: Upload verified log
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.IMAGE_NAME }}.verified
+          path: output/${{ env.IMAGE_NAME }}.verified
+
+      - name: Upload changes log
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.IMAGE_NAME }}.changes
+          path: output/${{ env.IMAGE_NAME }}.changes
