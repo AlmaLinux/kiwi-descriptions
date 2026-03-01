@@ -17,9 +17,7 @@ echo "Configure image: [$kiwi_iname]-[$kiwi_profiles]..."
 # Set SELinux booleans
 #--------------------------------------
 ## Fixes KDE Plasma, see rhbz#2058657
-if command -v setsebool &>/dev/null && sestatus &>/dev/null; then
-	setsebool -P selinuxuser_execmod 1
-fi
+setsebool -P selinuxuser_execmod 1
 
 #======================================
 # Clear machine specific configuration
