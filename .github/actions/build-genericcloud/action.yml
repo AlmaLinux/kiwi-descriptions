@@ -210,13 +210,13 @@ runs:
           QEMU_MACHINE="-M virt,secure=on"
           QEMU_EXTRA=""
           FIRMWARE_CODE="/usr/share/AAVMF/AAVMF_CODE.secboot.fd"
-          cp /usr/share/AAVMF/AAVMF_VARS.fd "$TEST_DIR/efivars.fd"
+          cp /usr/share/AAVMF/AAVMF_VARS.ms.fd "$TEST_DIR/efivars.fd"
         else
           QEMU_BIN="qemu-system-x86_64"
           QEMU_MACHINE="-machine q35,smm=on"
           QEMU_EXTRA="-global driver=cfi.pflash01,property=secure,value=on"
           FIRMWARE_CODE="/usr/share/OVMF/OVMF_CODE_4M.secboot.fd"
-          cp /usr/share/OVMF/OVMF_VARS_4M.secboot.fd "$TEST_DIR/efivars.fd"
+          cp /usr/share/OVMF/OVMF_VARS_4M.ms.fd "$TEST_DIR/efivars.fd"
         fi
 
         cat > "$TEST_DIR/run-qemu.sh" <<QEMUEOF
