@@ -19,6 +19,7 @@ on:
 
 jobs:
   matrix:
+    name: Initialize
     runs-on: ubuntu-latest
     outputs:
       arches: ${{ steps.set.outputs.arches }}
@@ -32,6 +33,7 @@ jobs:
           fi
 
   build:
+    name: Build GenericCloud for ${{ matrix.arch }}
     needs: matrix
     strategy:
       fail-fast: false
