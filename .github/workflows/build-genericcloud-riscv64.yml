@@ -26,11 +26,13 @@ jobs:
             --privileged \
             -v /dev:/dev \
             -v ${{ github.workspace }}:/kiwi-descriptions:Z \
-            quay.io/almalinuxorg/10-kitten-riscv64-development \
+            almalinux:10-kitten \
             sleep infinity
 
       - name: Install kiwi-cli
         run: |
+          docker exec riscv64-build \
+            dnf install -y almalinux-kitten-release-devel
           docker exec riscv64-build \
             dnf install -y kiwi-cli distribution-gpg-keys
 
