@@ -25,8 +25,6 @@
 		<package name="shim-x64" arch="x86_64"/>
 		<package name="kernel-core"/>
 		<package name="chrony"/>
-		<package name="systemd-oomd"/>
-		<package name="systemd-resolved"/>
 	</packages>
 	<packages type="image" patternType="plusRecommended" profiles="BootCoreUKI">
 		<package name="shim-aa64" arch="aarch64"/>
@@ -44,8 +42,11 @@
 	</packages>
 	<packages type="image" patternType="plusRecommended" profiles="BootDiskCore">
 		<package name="glibc-all-langpacks"/>
+		<package name="grub2-efi-x64-modules" arch="x86_64"/>
 		<package name="kernel"/>
 		<package name="kernel-modules"/>
 		<package name="kernel-modules-extra"/>
+		<package name="systemd-oomd"/>
+		<package name="systemd-resolved"/>
 	</packages>
 </image>

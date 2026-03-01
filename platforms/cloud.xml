@@ -218,9 +218,6 @@
 		<ignore name="firewalld"/>
 		<ignore name="*-firmware"/>
 		<ignore name="glibc-minimal-langpack"/>
-		<ignore name="grub2-efi-x64-modules"/>
-		<ignore name="systemd-oomd"/>
-		<ignore name="systemd-resolved"/>
 		<package name="cloud-init"/>
 		<package name="cloud-utils-growpart"/>
 		<package name="dosfstools"/>
