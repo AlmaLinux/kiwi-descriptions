@@ -1,0 +1,58 @@
+name: Build AlmaLinux Kitten 10 GenericCloud
+
+on:
+  workflow_dispatch:
+    inputs:
+      arch:
+        description: 'Architecture to build (all = build all in parallel)'
+        required: true
+        type: choice
+        default: all
+        options:
+          - all
+          - x86_64
+          - x86_64_v2
+          - aarch64
+          - ppc64le
+          - riscv64
+          - s390x
+
+jobs:
+  matrix:
+    name: Initialize
+    runs-on: ubuntu-latest
+    outputs:
+      arches: ${{ steps.set.outputs.arches }}
+    steps:
+      - id: set
+        run: |
+          if [ "${{ inputs.arch }}" = "all" ]; then
+            echo 'arches=["x86_64","x86_64_v2","aarch64","ppc64le","riscv64","s390x"]' >> "$GITHUB_OUTPUT"
+          else
+            echo 'arches=["${{ inputs.arch }}"]' >> "$GITHUB_OUTPUT"
+          fi
+
+  build:
+    name: Build for ${{ matrix.arch }}
+    needs: matrix
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: ${{ fromJSON(needs.matrix.outputs.arches) }}
+    runs-on: ${{ matrix.arch == 'aarch64' && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
+    timeout-minutes: 180
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build GenericCloud image
+        uses: ./.github/actions/build-genericcloud
+        with:
+          arch: ${{ matrix.arch }}
+          docker-image: almalinux:10-kitten
+          kiwi-file: AlmaLinux-OS-Kitten.kiwi
+          kiwi-name: AlmaLinux-Kitten
+          image-name-prefix: AlmaLinux-Kitten-GenericCloud
+          x86_64_v2-repo-sed: >-
+            sed -i 's|\(mirrorlist/\$releasever-kitten/[^"?]*\)"|\1?arch=x86_64_v2"|g' repositories/core.xml

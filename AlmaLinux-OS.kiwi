@@ -9,14 +9,13 @@
 	<preferences>
 		<version>10</version>
 		<packagemanager>dnf4</packagemanager>
-		<locale>C</locale>
+		<locale>en_US</locale>
 		<keytable>us</keytable>
 		<timezone>Etc/UTC</timezone>
 		<rpm-check-signatures>true</rpm-check-signatures>
 		<release-version>10</release-version>
 	</preferences>
 	<include from="this://./repositories/core-release.xml"/>
-	<include from="this://./repositories/epel-minor.xml"/>
 	<include from="this://./components/boot.xml"/>
 	<include from="this://./components/boot-xfsdisk.xml"/>
 	<include from="this://./components/boot-btrfsdisk.xml"/>
@@ -32,10 +31,10 @@
 	<include from="this://./platforms/workstation/gnome.xml"/>
 	<include from="this://./platforms/workstation/kde.xml"/>
 	<include from="this://./platforms/wsl.xml"/>
-	<packages type="image" patternType="plusRecommended">
+	<packages type="image" patternType="onlyRequired">
 		<namedCollection name="core"/>
-		<package name="nano"/>
-		<package name="yum-utils"/>
+		<ignore name="nano"/>
+		<ignore name="yum-utils"/>
 	</packages>
 	<packages type="bootstrap">
 		<package name="basesystem"/>
