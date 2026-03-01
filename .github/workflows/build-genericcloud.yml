@@ -106,6 +106,7 @@ jobs:
           docker exec build \
             kiwi-ng --debug --type=oem --profile=Cloud-Base-Generic \
               --kiwi-file=AlmaLinux-OS-Kitten.kiwi \
+              --target-arch=${{ steps.vars.outputs.kiwi_arch }} \
               system build \
               --description /kiwi-descriptions \
               --target-dir /var/tmp/build
