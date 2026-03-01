@@ -10,7 +10,7 @@
 			<requires profile="VagrantCore"/>
 		</profile>
 	</profiles>
-	<preferences profiles="Vagrant-Base-libvirt" arch="x86_64,x86_64_v2">
+	<preferences profiles="Vagrant-Base-libvirt" arch="x86_64">
 		<type image="oem" format="vagrant"
 		      filesystem="xfs"
 		      kernelcmdline="no_timer_check console=tty1 console=ttyS0,115200n8"
@@ -42,7 +42,7 @@
 			</oemconfig>
 		</type>
 	</preferences>
-	<preferences profiles="Vagrant-Base-VirtualBox" arch="x86_64,x86_64_v2">
+	<preferences profiles="Vagrant-Base-VirtualBox" arch="x86_64">
 		<type image="oem" format="vagrant"
 		      filesystem="xfs"
 		      kernelcmdline="no_timer_check console=tty1 console=ttyS0,115200n8"
