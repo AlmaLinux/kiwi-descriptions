@@ -6,10 +6,10 @@
 			<requires profile="BootCore"/>
 		</profile>
 	</profiles>
-	<packages type="bootstrap" patternType="plusRecommended" profiles="BootCore,BootCoreUKI">
+	<packages type="bootstrap" patternType="onlyRequired" profiles="BootCore,BootCoreUKI">
 		<package name="grubby"/>
 	</packages>
-	<packages type="image" patternType="plusRecommended" profiles="BootCore">
+	<packages type="image" patternType="onlyRequired" profiles="BootCore">
 		<package name="grub2-efi-aa64" arch="aarch64"/>
 		<package name="grub2-efi-aa64-modules" arch="aarch64"/>
 		<package name="grub2-efi-riscv64" arch="riscv64"/>
