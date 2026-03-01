@@ -37,7 +37,7 @@ jobs:
             x86_64_v2)
               DOCKER_PLATFORM="linux/amd64"
               QEMU_PLATFORM=""
-              KIWI_ARCH="x86_64_v2"
+              KIWI_ARCH="x86_64"
               ;;
             aarch64)
               DOCKER_PLATFORM="linux/arm64"
@@ -94,19 +94,21 @@ jobs:
           docker exec build \
             dnf install -y kiwi-cli distribution-gpg-keys
 
-      - name: Patch kiwi schema for x86_64_v2
+      - name: Patch repositories for x86_64_v2
         if: inputs.arch == 'x86_64_v2'
         run: |
-          docker exec build bash -c \
-            "find /usr -path '*/kiwi/schema/kiwi.rn*' \
-              -exec sed -i 's/x86_64|i586/x86_64|x86_64_v2|i586/g' {} +"
+          cd ${{ github.workspace }}
+          sed -i 's|\(mirrorlist/\$releasever-kitten/[^"?]*\)"|\1?arch=x86_64_v2"|g' repositories/core.xml
+          sed -i \
+            's|sourcetype="metalink" arch="x86_64,aarch64,ppc64le,s390x">|arch="x86_64">|;
+             s|https://mirrors.fedoraproject.org/metalink?repo=epel-\$releasever\&amp;arch=\$basearch|https://epel.repo.almalinux.org/$releasever/x86_64_v2/|;
+             /signing key.*epel/d' repositories/epel.xml
 
       - name: Build GenericCloud image
         run: |
           docker exec build \
             kiwi-ng --debug --type=oem --profile=Cloud-Base-Generic \
               --kiwi-file=AlmaLinux-OS-Kitten.kiwi \
-              --target-arch=${{ steps.vars.outputs.kiwi_arch }} \
               system build \
               --description /kiwi-descriptions \
               --target-dir /var/tmp/build
