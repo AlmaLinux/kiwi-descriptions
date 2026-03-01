@@ -166,3 +166,117 @@ runs:
       with:
         name: ${{ env.IMAGE_NAME }}.qcow2.txt
         path: output/${{ env.IMAGE_NAME }}.qcow2.txt
+
+    - name: Boot test - Install dependencies
+      if: inputs.arch == 'x86_64' || inputs.arch == 'x86_64_v2' || inputs.arch == 'aarch64'
+      shell: bash
+      run: |
+        sudo apt-get update -q
+        if [ "${{ inputs.arch }}" = "aarch64" ]; then
+          sudo apt-get install -y -q qemu-system-arm qemu-efi-aarch64 expect genisoimage
+        else
+          sudo apt-get install -y -q qemu-system-x86 ovmf expect genisoimage
+        fi
+
+    - name: Boot test - Validate image
+      if: inputs.arch == 'x86_64' || inputs.arch == 'x86_64_v2' || inputs.arch == 'aarch64'
+      shell: bash
+      run: |
+        if [ ! -e /dev/kvm ]; then
+          echo "WARNING: /dev/kvm not available, skipping boot test"
+          exit 0
+        fi
+
+        TEST_DIR=$(mktemp -d)
+
+        cat > "$TEST_DIR/meta-data" <<'METAEOF'
+        instance-id: test
+        local-hostname: test
+        METAEOF
+
+        cat > "$TEST_DIR/user-data" <<'USEREOF'
+        #cloud-config
+        password: almalinux
+        chpasswd:
+          expire: false
+        ssh_pwauth: true
+        USEREOF
+
+        genisoimage -output "$TEST_DIR/cidata.iso" -volid cidata -joliet -rock \
+          "$TEST_DIR/user-data" "$TEST_DIR/meta-data"
+
+        if [ "${{ inputs.arch }}" = "aarch64" ]; then
+          QEMU_BIN="qemu-system-aarch64"
+          QEMU_MACHINE="-M virt"
+          FIRMWARE_CODE="/usr/share/AAVMF/AAVMF_CODE.fd"
+          cp /usr/share/AAVMF/AAVMF_VARS.fd "$TEST_DIR/efivars.fd"
+        else
+          QEMU_BIN="qemu-system-x86_64"
+          QEMU_MACHINE=""
+          FIRMWARE_CODE="/usr/share/OVMF/OVMF_CODE_4M.fd"
+          cp /usr/share/OVMF/OVMF_VARS_4M.fd "$TEST_DIR/efivars.fd"
+        fi
+
+        cat > "$TEST_DIR/run-qemu.sh" <<QEMUEOF
+        #!/bin/bash
+        exec $QEMU_BIN -enable-kvm -cpu host $QEMU_MACHINE -smp 2 -m 2048 -nographic \
+          -drive if=pflash,format=raw,readonly=on,file=$FIRMWARE_CODE \
+          -drive if=pflash,format=raw,file=$TEST_DIR/efivars.fd \
+          -drive file=output/${IMAGE_NAME}.qcow2,format=qcow2,if=virtio \
+          -drive file=$TEST_DIR/cidata.iso,format=raw,if=virtio
+        QEMUEOF
+        chmod +x "$TEST_DIR/run-qemu.sh"
+
+        cat > "$TEST_DIR/boot-test.exp" <<'EXPEOF'
+        log_user 1
+        set timeout 300
+
+        spawn [lindex $argv 0]
+
+        expect {
+            "login:" {}
+            timeout { puts "FAIL: No login prompt"; exit 1 }
+        }
+        send "almalinux\r"
+
+        expect {
+            "Password:" {}
+            timeout { puts "FAIL: No password prompt"; exit 1 }
+        }
+        send "almalinux\r"
+
+        expect {
+            "\$ " {}
+            timeout { puts "FAIL: No shell prompt"; exit 1 }
+        }
+
+        send "cat /etc/os-release\r"
+        expect {
+            "AlmaLinux" { puts "PASS: os-release" }
+            timeout { puts "FAIL: os-release check"; exit 1 }
+        }
+        expect "\$ "
+
+        send "cloud-init status --wait\r"
+        expect {
+            "done" { puts "PASS: cloud-init" }
+            timeout { puts "FAIL: cloud-init not done"; exit 1 }
+        }
+        expect "\$ "
+
+        send "tuned-adm active\r"
+        expect {
+            "virtual-guest" { puts "PASS: tuned profile" }
+            timeout { puts "FAIL: tuned profile"; exit 1 }
+        }
+        expect "\$ "
+
+        send "sudo poweroff\r"
+        expect eof
+
+        puts "\nAll boot tests passed!"
+        exit 0
+        EXPEOF
+
+        expect "$TEST_DIR/boot-test.exp" "$TEST_DIR/run-qemu.sh"
+        rm -rf "$TEST_DIR"
