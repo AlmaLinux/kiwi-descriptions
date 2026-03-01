@@ -125,7 +125,7 @@
 		      filesystem="xfs"
 		      kernelcmdline="no_timer_check net.ifnames=0 console=tty0 console=ttyS0,115200n8 systemd.firstboot=off"
 		      devicepersistency="by-uuid"
-		      bootpartition="false" efipartsize="500" firmware="uefi"
+		      bootpartition="true" bootpartsize="1000" bootfilesystem="xfs" efipartsize="200" firmware="uefi"
 		      rootfs_label="almalinux"
 		      >
 			<bootloader name="grub2" bls="true" console="serial" timeout="0"/>
@@ -140,7 +140,7 @@
 		      filesystem="xfs"
 		      kernelcmdline="no_timer_check net.ifnames=0 console=tty0 console=ttyAMA0,115200n8 systemd.firstboot=off"
 		      devicepersistency="by-uuid"
-		      bootpartition="false" efipartsize="500" firmware="uefi"
+		      bootpartition="true" bootpartsize="1000" bootfilesystem="xfs" efipartsize="200" firmware="uefi"
 		      rootfs_label="almalinux"
 		      >
 			<bootloader name="grub2" bls="true" console="serial" timeout="0"/>
@@ -155,7 +155,7 @@
 		      filesystem="xfs"
 		      kernelcmdline="no_timer_check net.ifnames=0 console=tty0 console=ttyS0,115200n8 systemd.firstboot=off"
 		      devicepersistency="by-uuid"
-		      bootpartition="false" firmware="ofw"
+		      bootpartition="true" bootpartsize="1000" bootfilesystem="xfs" firmware="ofw"
 		      rootfs_label="almalinux"
 		      >
 			<bootloader name="grub2" bls="true" console="serial" timeout="0"/>
@@ -170,7 +170,7 @@
 		      filesystem="xfs"
 		      kernelcmdline="no_timer_check net.ifnames=0 console=tty0 console=ttyS0,115200n8 systemd.firstboot=off"
 		      devicepersistency="by-uuid"
-		      bootpartition="false" efipartsize="500" firmware="uefi"
+		      bootpartition="true" bootpartsize="1000" bootfilesystem="xfs" efipartsize="200" firmware="uefi"
 		      rootfs_label="almalinux"
 		      >
 			<bootloader name="grub2" bls="true" console="serial" timeout="0"/>
@@ -185,7 +185,7 @@
 		      filesystem="xfs"
 		      kernelcmdline="no_timer_check net.ifnames=0 console=tty0 console=ttyS0,115200n8 systemd.firstboot=off"
 		      devicepersistency="by-uuid"
-		      bootpartition="false"
+		      bootpartition="true" bootpartsize="1000" bootfilesystem="xfs"
 		      rootfs_label="almalinux"
 		      >
 			<bootloader name="zipl" timeout="1"/>
@@ -216,7 +216,6 @@
 	<packages type="image" patternType="onlyRequired" profiles="CloudCore,CloudCoreUKI">
 		<ignore name="dracut-config-rescue"/>
 		<ignore name="firewalld"/>
-		<ignore name="kernel"/>
 		<ignore name="*-firmware"/>
 		<ignore name="geolite2-city"/>
 		<ignore name="geolite2-country"/>
