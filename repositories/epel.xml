@@ -4,7 +4,7 @@
 			<signing key="file:///usr/share/distribution-gpg-keys/epel/RPM-GPG-KEY-EPEL-$releasever"/>
 		</source>
 	</repository>
-	<repository type="rpm-md" alias="epel-v2" repo_gpgcheck="false" package_gpgcheck="false" arch="x86_64_v2">
+	<repository type="rpm-md" alias="epel-v2" repository_gpgcheck="false" package_gpgcheck="false" arch="x86_64_v2">
 		<source path="https://epel.repo.almalinux.org/$releasever/x86_64_v2/"/>
 	</repository>
 	<packages type="image" patternType="plusRecommended">
