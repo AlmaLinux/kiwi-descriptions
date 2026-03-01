@@ -213,7 +213,7 @@
 			</oemconfig>
 		</type>
 	</preferences>
-	<packages type="image" patternType="plusRecommended" profiles="CloudCore,CloudCoreUKI">
+	<packages type="image" patternType="onlyRequired" profiles="CloudCore,CloudCoreUKI">
 		<ignore name="dracut-config-rescue"/>
 		<ignore name="firewalld"/>
 		<ignore name="kernel"/>
@@ -228,14 +228,14 @@
 		<package name="dracut-config-generic"/>
 		<package name="glibc-langpack-en"/>
 	</packages>
-	<packages type="image" patternType="plusRecommended" profiles="Cloud-Base-AmazonEC2">
+	<packages type="image" patternType="onlyRequired" profiles="Cloud-Base-AmazonEC2">
 		<package name="awscli2"/>
 		<!-- These packages aren't available in RHEL
 		<package name="amazon-ec2-utils"/>
 		<package name="ec2-instance-connect"/>
 		-->
 	</packages>
-	<packages type="image" patternType="plusRecommended" profiles="Cloud-Base-Azure">
+	<packages type="image" patternType="onlyRequired" profiles="Cloud-Base-Azure">
 		<package name="WALinuxAgent"/>
 		<package name="kernel-modules"/>
 		<package name="hyperv-daemons"/>
@@ -247,10 +247,10 @@
 		<package name="google-guest-agent"/>
 	</packages>
 	-->
-	<packages type="image" patternType="plusRecommended" profiles="Cloud-Base-Generic,Cloud-Base-UEFI-UKI">
+	<packages type="image" patternType="onlyRequired" profiles="Cloud-Base-Generic,Cloud-Base-UEFI-UKI">
 		<package name="qemu-guest-agent"/>
 	</packages>
-	<packages type="image" patternType="plusRecommended" profiles="Cloud-Base-Generic">
+	<packages type="image" patternType="onlyRequired" profiles="Cloud-Base-Generic">
 		<package name="nfs-utils"/>
 		<package name="rsync"/>
 		<package name="jq"/>
