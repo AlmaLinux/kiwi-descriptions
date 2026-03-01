@@ -9,7 +9,7 @@
 	<preferences>
 		<version>10</version>
 		<packagemanager>dnf4</packagemanager>
-		<locale>C</locale>
+		<locale>en_US.UTF-8</locale>
 		<keytable>us</keytable>
 		<timezone>Etc/UTC</timezone>
 		<rpm-check-signatures>true</rpm-check-signatures>

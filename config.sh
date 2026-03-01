@@ -20,6 +20,12 @@ echo "Configure image: [$kiwi_iname]-[$kiwi_profiles]..."
 setsebool -P selinuxuser_execmod 1
 
 #======================================
+# Fix system defaults
+#--------------------------------------
+echo UTC >> /etc/adjtime
+sed -i '/^KEYMAP=/a FONT="eurlatgr"' /etc/vconsole.conf
+
+#======================================
 # Clear machine specific configuration
 #--------------------------------------
 ## Clear machine-id on pre generated images
