@@ -4,7 +4,7 @@
 			<requires profile="BootDiskCore"/>
 		</profile>
 	</profiles>
-	<preferences profiles="BootDiskXFS" arch="aarch64,x86_64">
+	<preferences profiles="BootDiskXFS" arch="aarch64,x86_64,x86_64_v2">
 		<type image="oem"
 		      filesystem="xfs"
 		      kernelcmdline="rhgb quiet" devicepersistency="by-uuid"

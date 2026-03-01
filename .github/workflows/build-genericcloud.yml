@@ -9,6 +9,7 @@ on:
         type: choice
         options:
           - x86_64
+          - x86_64_v2
           - aarch64
           - ppc64le
           - riscv64
@@ -32,6 +33,11 @@ jobs:
               DOCKER_PLATFORM="linux/amd64"
               QEMU_PLATFORM=""
               KIWI_ARCH="x86_64"
+              ;;
+            x86_64_v2)
+              DOCKER_PLATFORM="linux/amd64"
+              QEMU_PLATFORM=""
+              KIWI_ARCH="x86_64_v2"
               ;;
             aarch64)
               DOCKER_PLATFORM="linux/arm64"
@@ -87,6 +93,13 @@ jobs:
           fi
           docker exec build \
             dnf install -y kiwi-cli distribution-gpg-keys
+
+      - name: Patch kiwi schema for x86_64_v2
+        if: inputs.arch == 'x86_64_v2'
+        run: |
+          docker exec build bash -c \
+            "find /usr -path '*/kiwi/schema/kiwi.rn*' \
+              -exec sed -i 's/x86_64|i586/x86_64|x86_64_v2|i586/g' {} +"
 
       - name: Build GenericCloud image
         run: |

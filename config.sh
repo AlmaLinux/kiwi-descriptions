@@ -133,7 +133,7 @@ fi
 # Remove Xen dracut config on non-x86_64 or non-Cloud
 #--------------------------------------
 installarch=$(uname -m)
-if [[ "$kiwi_profiles" != *"Cloud"* ]] || [[ "$installarch" != "x86_64" ]]; then
+if [[ "$kiwi_profiles" != *"Cloud"* ]] || { [[ "$installarch" != "x86_64" ]] && [[ "$installarch" != "x86_64_v2" ]]; }; then
 	rm -f /etc/dracut.conf.d/xen_pvhvm.conf
 fi
 
