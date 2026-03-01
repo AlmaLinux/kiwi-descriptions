@@ -1,6 +1,6 @@
 <image>
-	<repository type="rpm-md" alias="extras-common" sourcetype="mirrorlist">
-		<source path="https://mirrors.almalinux.org/mirrorlist/$releasever/extras-common">
+	<repository type="rpm-md" alias="extras" sourcetype="mirrorlist">
+		<source path="https://mirrors.almalinux.org/mirrorlist/$releasever/extras">
 			<signing key="file:///usr/share/distribution-gpg-keys/alma/RPM-GPG-KEY-AlmaLinux-$releasever"/>
 		</source>
 	</repository>
