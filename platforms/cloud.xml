@@ -217,15 +217,32 @@
 		<ignore name="dracut-config-rescue"/>
 		<ignore name="firewalld"/>
 		<ignore name="*-firmware"/>
-		<ignore name="geolite2-city"/>
-		<ignore name="geolite2-country"/>
-		<ignore name="plymouth"/>
-		<!-- Decompose cloud-server-environment since the group doesn't exist in RHEL -->
-		<namedCollection name="core"/>
+		<ignore name="bluez"/>
+		<ignore name="btrfs-progs"/>
+		<ignore name="exfatprogs"/>
+		<ignore name="flashrom"/>
+		<ignore name="fwupd-efi"/>
+		<ignore name="fwupd-plugin-flashrom"/>
+		<ignore name="gawk-all-langpacks"/>
+		<ignore name="glibc-all-langpacks"/>
+		<ignore name="llvm-filesystem"/>
+		<ignore name="llvm-libs"/>
+		<ignore name="mdadm"/>
+		<ignore name="memstrack"/>
+		<ignore name="python3-perf"/>
+		<ignore name="tpm2-tools"/>
+		<ignore name="tpm2-tss-fapi"/>
+		<ignore name="udisks2"/>
 		<package name="cloud-init"/>
 		<package name="cloud-utils-growpart"/>
 		<package name="dracut-config-generic"/>
+		<package name="efibootmgr" arch="x86_64,aarch64,riscv64"/>
 		<package name="glibc-langpack-en"/>
+		<package name="grub2-tools-extra" arch="x86_64,aarch64,ppc64le,riscv64"/>
+		<package name="kernel"/>
+		<package name="kernel-modules"/>
+		<package name="langpacks-en"/>
+		<package name="mtools" arch="x86_64,aarch64,riscv64"/>
 		<package name="tar"/>
 	</packages>
 	<packages type="image" patternType="onlyRequired" profiles="Cloud-Base-AmazonEC2">

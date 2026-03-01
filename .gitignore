@@ -1,2 +1,4 @@
 outdir-build/
 outdir/
+tmp/
+.DS_Store
