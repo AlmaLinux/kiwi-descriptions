@@ -36,4 +36,9 @@
 		<package name="almalinux-release"/>
 		<package name="filesystem"/>
 	</packages>
+	<packages type="image" patternType="onlyRequired">
+		<namedCollection name="core"/>
+		<ignore name="nano"/>
+		<ignore name="yum-utils"/>
+	</packages>
 </image>

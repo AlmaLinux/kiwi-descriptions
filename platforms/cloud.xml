@@ -228,7 +228,6 @@
 		<package name="kernel-modules"/>
 		<package name="langpacks-en"/>
 		<package name="mtools" arch="x86_64,aarch64,riscv64"/>
-		<package name="selinux-policy-targeted"/>
 		<package name="tar"/>
 	</packages>
 	<packages type="image" patternType="onlyRequired" profiles="Cloud-Base-AmazonEC2">
