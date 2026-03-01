@@ -31,9 +31,6 @@
 	<include from="this://./platforms/workstation/gnome.xml"/>
 	<include from="this://./platforms/workstation/kde.xml"/>
 	<include from="this://./platforms/wsl.xml"/>
-	<packages type="image" patternType="onlyRequired">
-		<namedCollection name="core"/>
-	</packages>
 	<packages type="bootstrap">
 		<package name="basesystem"/>
 		<package name="almalinux-release"/>
