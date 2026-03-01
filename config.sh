@@ -81,7 +81,8 @@ fi
 if [[ "$kiwi_profiles" == *"Generic"* ]]; then
 	## Enable tuned with virtual-guest profile
 	systemctl enable tuned.service
-	tuned-adm profile virtual-guest
+	echo virtual-guest > /etc/tuned/active_profile
+	echo "" > /etc/tuned/profile_mode
 	## Use full kernel package as default for future updates
 	sed -i 's/^DEFAULTKERNEL=.*/DEFAULTKERNEL=kernel/' /etc/sysconfig/kernel
 fi
