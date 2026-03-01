@@ -17,6 +17,10 @@ inputs:
   image-name-prefix:
     description: Artifact name prefix (e.g. AlmaLinux-Kitten-GenericCloud)
     required: true
+  version:
+    description: Image version string (e.g. 10.1). If empty, auto-detected from almalinux-release RPM in the container.
+    required: false
+    default: ''
   x86_64_v2-repo-sed:
     description: sed command to patch core repo XML for x86_64_v2
     required: true
@@ -97,6 +101,17 @@ runs:
         docker exec build \
           dnf install -y kiwi-cli distribution-gpg-keys
 
+    - name: Detect release version
+      id: release
+      shell: bash
+      run: |
+        if [ -n "${{ inputs.version }}" ]; then
+          echo "version=${{ inputs.version }}" >> "$GITHUB_OUTPUT"
+        else
+          VERSION=$(rpm -qp --qf '%{VERSION}' "https://repo.almalinux.org/almalinux/almalinux-release-latest-10.${{ inputs.arch }}.rpm")
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+        fi
+
     - name: Patch repositories for x86_64_v2
       if: inputs.arch == 'x86_64_v2'
       shell: bash
@@ -124,7 +139,7 @@ runs:
         ARCH="${{ inputs.arch }}"
         KIWI_ARCH="${{ steps.vars.outputs.kiwi_arch }}"
         BUILD_DATE=$(date +%Y%m%d)
-        IMAGE_NAME="${{ inputs.image-name-prefix }}-10-${BUILD_DATE}.0.${ARCH}"
+        IMAGE_NAME="${{ inputs.image-name-prefix }}-${{ steps.release.outputs.version }}-${BUILD_DATE}.0.${ARCH}"
         echo "IMAGE_NAME=${IMAGE_NAME}" >> "$GITHUB_ENV"
         mkdir -p output
         docker cp "build:/var/tmp/build/${{ inputs.kiwi-name }}.${KIWI_ARCH}-10.qcow2" "output/${IMAGE_NAME}.qcow2"

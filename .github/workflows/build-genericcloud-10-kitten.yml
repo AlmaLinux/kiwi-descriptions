@@ -53,6 +53,7 @@ jobs:
           docker-image: almalinux:10-kitten
           kiwi-file: AlmaLinux-OS-Kitten.kiwi
           kiwi-name: AlmaLinux-Kitten
+          version: '10'
           image-name-prefix: AlmaLinux-Kitten-GenericCloud
           x86_64_v2-repo-sed: >-
             sed -i 's|\(mirrorlist/\$releasever-kitten/[^"?]*\)"|\1?arch=x86_64_v2"|g' repositories/core.xml
