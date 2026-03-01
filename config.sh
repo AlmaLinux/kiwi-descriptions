@@ -37,7 +37,8 @@ rm -f /var/lib/systemd/random-seed
 #======================================
 # Configure grub correctly
 #--------------------------------------
-if [[ "$kiwi_profiles" != *"Container"* ]] && [[ "$kiwi_profiles" != *"WSL"* ]]; then
+installarch=$(uname -m)
+if [[ "$kiwi_profiles" != *"Container"* ]] && [[ "$kiwi_profiles" != *"WSL"* ]] && [[ "$installarch" != "s390x" ]]; then
 	## Disable submenus to match Fedora
 	echo "GRUB_DISABLE_SUBMENU=true" >> /etc/default/grub
 	## Disable recovery entries to match Fedora
@@ -45,7 +46,6 @@ if [[ "$kiwi_profiles" != *"Container"* ]] && [[ "$kiwi_profiles" != *"WSL"* ]];
 	## Write `menu_auto_hide=1` into grubenv to match Fedora anaconda installs
 	## Set boot_success to avoid displaying the grub menu on first boot
 	grub2-editenv /boot/grub2/grubenv set menu_auto_hide=1 boot_success=1
-
 fi
 
 #======================================
