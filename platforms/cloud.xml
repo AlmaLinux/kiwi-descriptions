@@ -217,6 +217,10 @@
 		<ignore name="dracut-config-rescue"/>
 		<ignore name="firewalld"/>
 		<ignore name="*-firmware"/>
+		<ignore name="glibc-minimal-langpack"/>
+		<ignore name="grub2-efi-x64-modules"/>
+		<ignore name="systemd-oomd"/>
+		<ignore name="systemd-resolved"/>
 		<package name="cloud-init"/>
 		<package name="cloud-utils-growpart"/>
 		<package name="dosfstools"/>
@@ -227,6 +231,7 @@
 		<package name="kernel"/>
 		<package name="kernel-modules"/>
 		<package name="langpacks-en"/>
+		<package name="lvm2"/>
 		<package name="mtools" arch="x86_64,aarch64,riscv64"/>
 		<package name="tar"/>
 	</packages>
