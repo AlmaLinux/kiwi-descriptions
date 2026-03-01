@@ -30,9 +30,8 @@ Set up your development environment and run the image build (substitute `<image_
 A separate kiwi file is provided for building a disk image targeting the
 [SiFive HiFive Premier P550](https://www.sifive.com/boards/hifive-premier-p550) board.
 
-The image uses UEFI boot with GRUB2 on serial console, ext4 root filesystem,
-and a 10 GB OEM disk layout. Packages are sourced from the AlmaLinux Kitten
-RISC-V compose.
+The image uses UEFI boot with GRUB2 on serial console, xfs root filesystem,
+and a 10 GB OEM disk layout.
 
 ### Building natively on riscv64
 
@@ -49,7 +48,8 @@ RISC-V compose.
 []$ podman run -d --platform=linux/riscv64 \
     --name almalinux-p550-build --privileged \
     -v $(pwd):/kiwi-descriptions:Z \
-    quay.io/almalinuxorg/10-kitten-riscv64-development sleep infinity
+    almalinux:10-kitten sleep infinity
+[]$ podman exec almalinux-p550-build dnf install -y almalinux-kitten-release-devel
 []$ podman exec almalinux-p550-build dnf install -y kiwi-cli distribution-gpg-keys
 []$ podman exec almalinux-p550-build kiwi-ng --type=oem --profile=PremierP550-Disk \
     --kiwi-file=AlmaLinux-OS-Kitten-P550.kiwi \
