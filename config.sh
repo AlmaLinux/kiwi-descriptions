@@ -76,6 +76,14 @@ if [[ "$kiwi_profiles" == *"Azure"* ]]; then
 	systemctl enable waagent.service
 fi
 
+if [[ "$kiwi_profiles" == *"Generic"* ]]; then
+	## Enable tuned with virtual-guest profile
+	systemctl enable tuned.service
+	tuned-adm profile virtual-guest
+	## Use full kernel package as default for future updates
+	sed -i 's/^DEFAULTKERNEL=.*/DEFAULTKERNEL=kernel/' /etc/sysconfig/kernel
+fi
+
 if [[ "$kiwi_profiles" == *"Live"* ]]; then
 	## Enable livesys services
 	systemctl enable livesys.service livesys-late.service
@@ -119,6 +127,24 @@ if [[ "$kiwi_profiles" == *"Live"* ]]; then
 	systemctl set-default graphical.target
 else
 	systemctl set-default multi-user.target
+fi
+
+#======================================
+# Remove Xen dracut config on non-x86_64 or non-Cloud
+#--------------------------------------
+installarch=$(uname -m)
+if [[ "$kiwi_profiles" != *"Cloud"* ]] || [[ "$installarch" != "x86_64" && "$installarch" != "x86_64_v2" ]]; then
+	rm -f /etc/dracut.conf.d/xen_pvhvm.conf
+fi
+
+#======================================
+# Cloud image cleanup
+#--------------------------------------
+if [[ "$kiwi_profiles" == *"Cloud"* ]]; then
+	truncate -s 0 /etc/resolv.conf
+	rm -f /var/lib/systemd/credential.secret
+	dnf clean all
+	rm -f /var/lib/dnf/history*
 fi
 
 #======================================

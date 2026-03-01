@@ -28,7 +28,7 @@
 			<requires profile="Cloud-Base-Generic"/>
 		</profile>
 	</profiles>
-	<preferences profiles="Cloud-Base-Azure" arch="x86_64">
+	<preferences profiles="Cloud-Base-Azure" arch="x86_64,x86_64_v2">
 		<type image="oem" format="vhd-fixed" formatoptions="force_size"
 		      filesystem="xfs"
 		      kernelcmdline="no_timer_check console=tty1 console=ttyS0,115200n8 earlyprintk=ttyS0 systemd.firstboot=off"
@@ -58,7 +58,7 @@
 			</oemconfig>
 		</type>
 	</preferences>
-	<preferences profiles="Cloud-Base-AmazonEC2" arch="x86_64">
+	<preferences profiles="Cloud-Base-AmazonEC2" arch="x86_64,x86_64_v2">
 		<type image="oem"
 		      filesystem="xfs"
 		      kernelcmdline="no_timer_check console=tty1 console=ttyS0,115200n8 systemd.firstboot=off"
@@ -88,7 +88,7 @@
 			</oemconfig>
 		</type>
 	</preferences>
-	<preferences profiles="Cloud-Base-GCE" arch="x86_64">
+	<preferences profiles="Cloud-Base-GCE" arch="x86_64,x86_64_v2">
 		<type image="oem" format="gce"
 		      filesystem="xfs"
 		      kernelcmdline="no_timer_check console=ttyS0,38400n8d systemd.firstboot=off"
@@ -120,10 +120,10 @@
 			</oemconfig>
 		</type>
 	</preferences>
-	<preferences profiles="Cloud-Base-Generic" arch="x86_64">
+	<preferences profiles="Cloud-Base-Generic" arch="x86_64,x86_64_v2">
 		<type image="oem" format="qcow2"
 		      filesystem="xfs"
-		      kernelcmdline="no_timer_check console=tty1 console=ttyS0,115200n8 systemd.firstboot=off"
+		      kernelcmdline="no_timer_check net.ifnames=0 console=tty0 console=ttyS0,115200n8 systemd.firstboot=off"
 		      devicepersistency="by-uuid"
 		      bootpartition="false" efipartsize="500" firmware="uefi"
 		      rootfs_label="almalinux"
@@ -138,7 +138,7 @@
 	<preferences profiles="Cloud-Base-Generic" arch="aarch64">
 		<type image="oem" format="qcow2"
 		      filesystem="xfs"
-		      kernelcmdline="no_timer_check console=tty1 console=ttyAMA0,115200n8 systemd.firstboot=off"
+		      kernelcmdline="no_timer_check net.ifnames=0 console=tty0 console=ttyAMA0,115200n8 systemd.firstboot=off"
 		      devicepersistency="by-uuid"
 		      bootpartition="false" efipartsize="500" firmware="uefi"
 		      rootfs_label="almalinux"
@@ -153,7 +153,7 @@
 	<preferences profiles="Cloud-Base-Generic" arch="ppc64le">
 		<type image="oem" format="qcow2"
 		      filesystem="xfs"
-		      kernelcmdline="no_timer_check console=tty1 console=ttyS0,115200n8 systemd.firstboot=off"
+		      kernelcmdline="no_timer_check net.ifnames=0 console=tty0 console=ttyS0,115200n8 systemd.firstboot=off"
 		      devicepersistency="by-uuid"
 		      bootpartition="false" firmware="ofw"
 		      rootfs_label="almalinux"
@@ -168,7 +168,7 @@
 	<preferences profiles="Cloud-Base-Generic" arch="riscv64">
 		<type image="oem" format="qcow2"
 		      filesystem="xfs"
-		      kernelcmdline="no_timer_check console=tty1 console=ttyS0,115200n8 systemd.firstboot=off"
+		      kernelcmdline="no_timer_check net.ifnames=0 console=tty0 console=ttyS0,115200n8 systemd.firstboot=off"
 		      devicepersistency="by-uuid"
 		      bootpartition="false" efipartsize="500" firmware="uefi"
 		      rootfs_label="almalinux"
@@ -183,7 +183,7 @@
 	<preferences profiles="Cloud-Base-Generic" arch="s390x">
 		<type image="oem" format="qcow2"
 		      filesystem="xfs"
-		      kernelcmdline="no_timer_check console=tty1 console=ttyS0,115200n8 systemd.firstboot=off"
+		      kernelcmdline="no_timer_check net.ifnames=0 console=tty0 console=ttyS0,115200n8 systemd.firstboot=off"
 		      devicepersistency="by-uuid"
 		      bootpartition="false"
 		      rootfs_label="almalinux"
@@ -195,7 +195,7 @@
 			</oemconfig>
 		</type>
 	</preferences>
-	<preferences profiles="Cloud-Base-UEFI-UKI" arch="x86_64,aarch64">
+	<preferences profiles="Cloud-Base-UEFI-UKI" arch="x86_64,x86_64_v2,aarch64">
 		<type image="oem" format="qcow2"
 		      firmware="uefi" efipartsize="1000"
 		      bootpartition="false"
@@ -249,6 +249,13 @@
 	-->
 	<packages type="image" patternType="plusRecommended" profiles="Cloud-Base-Generic,Cloud-Base-UEFI-UKI">
 		<package name="qemu-guest-agent"/>
+	</packages>
+	<packages type="image" patternType="plusRecommended" profiles="Cloud-Base-Generic">
+		<package name="nfs-utils"/>
+		<package name="rsync"/>
+		<package name="jq"/>
+		<package name="tcpdump"/>
+		<package name="tuned"/>
 	</packages>
 	<!-- We don't have the Google support tools above, so we need cloud-init
 	<packages type="uninstall" profiles="Cloud-Base-GCE">
