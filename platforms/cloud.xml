@@ -217,24 +217,9 @@
 		<ignore name="dracut-config-rescue"/>
 		<ignore name="firewalld"/>
 		<ignore name="*-firmware"/>
-		<ignore name="bluez"/>
-		<ignore name="btrfs-progs"/>
-		<ignore name="exfatprogs"/>
-		<ignore name="flashrom"/>
-		<ignore name="fwupd-efi"/>
-		<ignore name="fwupd-plugin-flashrom"/>
-		<ignore name="gawk-all-langpacks"/>
-		<ignore name="glibc-all-langpacks"/>
-		<ignore name="llvm-filesystem"/>
-		<ignore name="llvm-libs"/>
-		<ignore name="mdadm"/>
-		<ignore name="memstrack"/>
-		<ignore name="python3-perf"/>
-		<ignore name="tpm2-tools"/>
-		<ignore name="tpm2-tss-fapi"/>
-		<ignore name="udisks2"/>
 		<package name="cloud-init"/>
 		<package name="cloud-utils-growpart"/>
+		<package name="dosfstools"/>
 		<package name="dracut-config-generic"/>
 		<package name="efibootmgr" arch="x86_64,aarch64,riscv64"/>
 		<package name="glibc-langpack-en"/>

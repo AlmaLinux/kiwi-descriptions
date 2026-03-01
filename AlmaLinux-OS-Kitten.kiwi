@@ -31,10 +31,8 @@
 	<include from="this://./platforms/workstation/gnome.xml"/>
 	<include from="this://./platforms/workstation/kde.xml"/>
 	<include from="this://./platforms/wsl.xml"/>
-	<packages type="image" patternType="plusRecommended">
+	<packages type="image" patternType="onlyRequired">
 		<namedCollection name="core"/>
-		<package name="nano"/>
-		<package name="yum-utils"/>
 	</packages>
 	<packages type="bootstrap">
 		<package name="basesystem"/>
