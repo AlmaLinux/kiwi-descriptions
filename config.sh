@@ -69,6 +69,8 @@ fi
 if [[ "$kiwi_profiles" == *"Cloud"* ]] || [[ "$kiwi_profiles" == *"WSL"* ]]; then
 	## Enable cloud-init
 	systemctl enable cloud-config.service cloud-final.service cloud-init.service cloud-init-local.service cloud-init.target
+	## Set cloud-init default user to almalinux
+	sed -i 's/^\(\s\+name:\).*$/\1 almalinux/' /etc/cloud/cloud.cfg
 fi
 
 if [[ "$kiwi_profiles" == *"Azure"* ]]; then

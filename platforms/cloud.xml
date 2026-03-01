@@ -222,11 +222,12 @@
 		<ignore name="geolite2-country"/>
 		<ignore name="plymouth"/>
 		<!-- Decompose cloud-server-environment since the group doesn't exist in RHEL -->
-		<namedCollection name="standard"/>
+		<namedCollection name="core"/>
 		<package name="cloud-init"/>
 		<package name="cloud-utils-growpart"/>
 		<package name="dracut-config-generic"/>
 		<package name="glibc-langpack-en"/>
+		<package name="tar"/>
 	</packages>
 	<packages type="image" patternType="onlyRequired" profiles="Cloud-Base-AmazonEC2">
 		<package name="awscli2"/>
