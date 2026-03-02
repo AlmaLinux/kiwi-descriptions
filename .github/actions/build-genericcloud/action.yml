@@ -190,8 +190,8 @@ runs:
         if [ -e /dev/kvm ]; then
           KVM_OPTS="-enable-kvm -cpu host"
         elif [ "${{ inputs.arch }}" = "aarch64" ]; then
-          echo "SKIP: aarch64 boot test requires KVM (TCG ARM-on-ARM is unsupported)"
-          exit 0
+          echo "NOTE: /dev/kvm not available, using TCG with cortex-a57"
+          KVM_OPTS="-accel tcg,thread=multi -cpu cortex-a57"
         else
           echo "NOTE: /dev/kvm not available, falling back to TCG emulation (slow)"
           KVM_OPTS="-cpu max"
