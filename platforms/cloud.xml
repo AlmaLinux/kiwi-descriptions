@@ -123,12 +123,12 @@
 	<preferences profiles="Cloud-Base-Generic" arch="x86_64">
 		<type image="oem" format="qcow2"
 		      filesystem="xfs"
-		      kernelcmdline="no_timer_check net.ifnames=0 console=tty0 console=ttyS0,115200n8 systemd.firstboot=off"
+		      kernelcmdline="ro no_timer_check biosdevname=0 net.ifnames=0 console=tty0 console=ttyS0,115200n8 systemd.firstboot=off"
 		      devicepersistency="by-uuid"
 		      bootpartition="true" bootpartsize="1024" bootfilesystem="xfs" efipartsize="200" firmware="uefi"
 		      rootfs_label="almalinux"
 		      >
-			<bootloader name="grub2" bls="true" console="serial" timeout="0"/>
+			<bootloader name="grub2" bls="true" timeout="0"/>
 			<size unit="G">10</size>
 			<oemconfig>
 				<oem-resize>false</oem-resize>
@@ -138,12 +138,12 @@
 	<preferences profiles="Cloud-Base-Generic" arch="aarch64">
 		<type image="oem" format="qcow2"
 		      filesystem="xfs"
-		      kernelcmdline="no_timer_check net.ifnames=0 console=tty0 console=ttyAMA0,115200n8 systemd.firstboot=off"
+		      kernelcmdline="ro no_timer_check biosdevname=0 net.ifnames=0 console=tty0 console=ttyS0,115200n8 systemd.firstboot=off"
 		      devicepersistency="by-uuid"
 		      bootpartition="true" bootpartsize="1024" bootfilesystem="xfs" efipartsize="200" firmware="uefi"
 		      rootfs_label="almalinux"
 		      >
-			<bootloader name="grub2" bls="true" console="serial" timeout="0"/>
+			<bootloader name="grub2" bls="true" timeout="0"/>
 			<size unit="G">10</size>
 			<oemconfig>
 				<oem-resize>false</oem-resize>
@@ -153,12 +153,12 @@
 	<preferences profiles="Cloud-Base-Generic" arch="ppc64le">
 		<type image="oem" format="qcow2"
 		      filesystem="xfs"
-		      kernelcmdline="no_timer_check net.ifnames=0 console=tty0 console=ttyS0,115200n8 systemd.firstboot=off"
+		      kernelcmdline="ro no_timer_check biosdevname=0 net.ifnames=0 console=tty0 console=ttyS0,115200n8 systemd.firstboot=off"
 		      devicepersistency="by-uuid"
 		      bootpartition="true" bootpartsize="1024" bootfilesystem="xfs" firmware="ofw"
 		      rootfs_label="almalinux"
 		      >
-			<bootloader name="grub2" bls="true" console="serial" timeout="0"/>
+			<bootloader name="grub2" bls="true" timeout="0"/>
 			<size unit="G">10</size>
 			<oemconfig>
 				<oem-resize>false</oem-resize>
@@ -168,12 +168,12 @@
 	<preferences profiles="Cloud-Base-Generic" arch="riscv64">
 		<type image="oem" format="qcow2"
 		      filesystem="xfs"
-		      kernelcmdline="no_timer_check net.ifnames=0 console=tty0 console=ttyS0,115200n8 systemd.firstboot=off"
+		      kernelcmdline="ro no_timer_check biosdevname=0 net.ifnames=0 console=tty0 console=ttyS0,115200n8 systemd.firstboot=off"
 		      devicepersistency="by-uuid"
 		      bootpartition="true" bootpartsize="1024" bootfilesystem="xfs" efipartsize="200" firmware="uefi"
 		      rootfs_label="almalinux"
 		      >
-			<bootloader name="grub2" bls="true" console="serial" timeout="0"/>
+			<bootloader name="grub2" bls="true" timeout="0"/>
 			<size unit="G">10</size>
 			<oemconfig>
 				<oem-resize>false</oem-resize>
@@ -183,7 +183,7 @@
 	<preferences profiles="Cloud-Base-Generic" arch="s390x">
 		<type image="oem" format="qcow2"
 		      filesystem="xfs"
-		      kernelcmdline="no_timer_check net.ifnames=0 console=tty0 console=ttyS0,115200n8 systemd.firstboot=off"
+		      kernelcmdline="ro no_timer_check biosdevname=0 net.ifnames=0 console=tty0 console=ttyS0,115200n8 systemd.firstboot=off"
 		      devicepersistency="by-uuid"
 		      bootpartition="true" bootpartsize="1024" bootfilesystem="xfs"
 		      rootfs_label="almalinux"
@@ -261,6 +261,10 @@
 		<package name="jq"/>
 		<package name="tcpdump"/>
 		<package name="tuned"/>
+	</packages>
+	<packages type="uninstall" profiles="CloudCore" arch="ppc64le">
+		<package name="dosfstools"/>
+		<package name="grub2-tools-extra"/>
 	</packages>
 	<!-- We don't have the Google support tools above, so we need cloud-init
 	<packages type="uninstall" profiles="Cloud-Base-GCE">
