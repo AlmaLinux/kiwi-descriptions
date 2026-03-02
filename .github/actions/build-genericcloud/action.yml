@@ -241,10 +241,16 @@ runs:
             ;;
           aarch64)
             QEMU_BIN="qemu-system-aarch64"
-            QEMU_MACHINE="-M virt,secure=on"
-            cp /usr/share/AAVMF/AAVMF_VARS.ms.fd "$TEST_DIR/efivars.fd"
-            FIRMWARE_OPTS="-drive if=pflash,format=raw,readonly=on,file=/usr/share/AAVMF/AAVMF_CODE.secboot.fd -drive if=pflash,format=raw,file=$TEST_DIR/efivars.fd"
-            SECUREBOOT=1
+            if [ -e /dev/kvm ] && [ "$HOST_ARCH" = "aarch64" ]; then
+              QEMU_MACHINE="-M virt,secure=on"
+              cp /usr/share/AAVMF/AAVMF_VARS.ms.fd "$TEST_DIR/efivars.fd"
+              FIRMWARE_OPTS="-drive if=pflash,format=raw,readonly=on,file=/usr/share/AAVMF/AAVMF_CODE.secboot.fd -drive if=pflash,format=raw,file=$TEST_DIR/efivars.fd"
+              SECUREBOOT=1
+            else
+              QEMU_MACHINE="-M virt"
+              cp /usr/share/AAVMF/AAVMF_VARS.fd "$TEST_DIR/efivars.fd"
+              FIRMWARE_OPTS="-drive if=pflash,format=raw,readonly=on,file=/usr/share/AAVMF/AAVMF_CODE.fd -drive if=pflash,format=raw,file=$TEST_DIR/efivars.fd"
+            fi
             ;;
           ppc64le)
             QEMU_BIN="qemu-system-ppc64"
