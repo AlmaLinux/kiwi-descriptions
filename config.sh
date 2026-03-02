@@ -39,6 +39,8 @@ rm -f /var/lib/systemd/random-seed
 #--------------------------------------
 installarch=$(uname -m)
 if [[ "$kiwi_profiles" != *"Container"* ]] && [[ "$kiwi_profiles" != *"WSL"* ]] && [[ "$installarch" != "s390x" ]]; then
+	## Set distributor name for GRUB menu entries
+	echo 'GRUB_DISTRIBUTOR="$(sed '"'"'s, release .*$,,g'"'"' /etc/system-release)"' >> /etc/default/grub
 	## Disable submenus to match Fedora
 	echo "GRUB_DISABLE_SUBMENU=true" >> /etc/default/grub
 	## Disable recovery entries to match Fedora
