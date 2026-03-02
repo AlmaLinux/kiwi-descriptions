@@ -97,7 +97,7 @@ runs:
           docker exec build \
             dnf install -y kiwi-cli distribution-gpg-keys \
               kiwi-systemdeps-bootloaders kiwi-systemdeps-containers \
-              kiwi-systemdeps-core kiwi-systemdeps-disk-images \
+              kiwi-systemdeps-core \
               kiwi-systemdeps-filesystems kiwi-systemdeps-iso-media \
               gdisk
         else
