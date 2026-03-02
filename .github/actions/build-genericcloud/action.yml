@@ -94,12 +94,17 @@ runs:
         if [ "${{ inputs.arch }}" = "riscv64" ]; then
           docker exec build \
             dnf install -y almalinux-kitten-release-devel
+          docker exec build \
+            dnf install -y kiwi-cli distribution-gpg-keys \
+              kiwi-systemdeps-bootloaders kiwi-systemdeps-containers \
+              kiwi-systemdeps-core kiwi-systemdeps-disk-images \
+              kiwi-systemdeps-filesystems kiwi-systemdeps-iso-media
         else
           docker exec build \
             dnf install -y epel-release
+          docker exec build \
+            dnf install -y kiwi-cli distribution-gpg-keys
         fi
-        docker exec build \
-          dnf install -y kiwi-cli distribution-gpg-keys qemu-img
 
     - name: Detect release version
       id: release
