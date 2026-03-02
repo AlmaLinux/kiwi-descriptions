@@ -36,7 +36,7 @@
 		      bootpartition="false" efipartsize="500" firmware="uefi"
 		      rootfs_label="almalinux"
 		      >
-			<bootloader name="grub2" bls="true" console="serial" timeout="0"/>
+			<bootloader name="grub2" bls="true" timeout="0" output_console="serial"/>
 			<size unit="G">5</size>
 			<oemconfig>
 				<oem-resize>false</oem-resize>
@@ -51,7 +51,7 @@
 		      bootpartition="false" efipartsize="500" firmware="uefi"
 		      rootfs_label="almalinux"
 		      >
-			<bootloader name="grub2" bls="true" console="serial" timeout="0"/>
+			<bootloader name="grub2" bls="true" timeout="0" output_console="serial"/>
 			<size unit="G">5</size>
 			<oemconfig>
 				<oem-resize>false</oem-resize>
@@ -66,7 +66,7 @@
 		      bootpartition="false" efipartsize="500" firmware="uefi"
 		      rootfs_label="almalinux"
 		      >
-			<bootloader name="grub2" bls="true" console="serial" timeout="0"/>
+			<bootloader name="grub2" bls="true" timeout="0" output_console="serial"/>
 			<size unit="G">5</size>
 			<oemconfig>
 				<oem-resize>false</oem-resize>
@@ -81,7 +81,7 @@
 		      bootpartition="false" efipartsize="500" firmware="uefi"
 		      rootfs_label="almalinux"
 		      >
-			<bootloader name="grub2" bls="true" console="serial" timeout="0"/>
+			<bootloader name="grub2" bls="true" timeout="0" output_console="serial"/>
 			<size unit="G">5</size>
 			<oemconfig>
 				<oem-resize>false</oem-resize>
@@ -96,7 +96,7 @@
 		      bootpartition="false" efipartsize="500" firmware="uefi"
 		      rootfs_label="almalinux"
 		      >
-			<bootloader name="grub2" bls="true" console="serial" timeout="0"/>
+			<bootloader name="grub2" bls="true" timeout="0" output_console="serial"/>
 			<!-- GCP engineers have told us the disk images have bad performance if they are anything less than 10G -->
 			<size unit="G">10</size>
 			<oemconfig>
@@ -112,7 +112,7 @@
 		      bootpartition="false" efipartsize="500" firmware="uefi"
 		      rootfs_label="almalinux"
 		      >
-			<bootloader name="grub2" bls="true" console="serial" timeout="0"/>
+			<bootloader name="grub2" bls="true" timeout="0" output_console="serial"/>
 			<!-- GCP engineers have told us the disk images have bad performance if they are anything less than 10G -->
 			<size unit="G">10</size>
 			<oemconfig>
@@ -128,7 +128,7 @@
 		      bootpartition="true" bootpartsize="1024" bootfilesystem="xfs" efipartsize="200" firmware="uefi"
 		      rootfs_label="almalinux"
 		      >
-			<bootloader name="grub2" bls="true" console="console" timeout="0"/>
+			<bootloader name="grub2" bls="true" timeout="0" output_console="console"/>
 			<size unit="G">10</size>
 			<oemconfig>
 				<oem-resize>false</oem-resize>
@@ -143,7 +143,7 @@
 		      bootpartition="true" bootpartsize="1024" bootfilesystem="xfs" efipartsize="200" firmware="uefi"
 		      rootfs_label="almalinux"
 		      >
-			<bootloader name="grub2" bls="true" console="console" timeout="0"/>
+			<bootloader name="grub2" bls="true" timeout="0" output_console="console"/>
 			<size unit="G">10</size>
 			<oemconfig>
 				<oem-resize>false</oem-resize>
@@ -158,7 +158,7 @@
 		      bootpartition="true" bootpartsize="1024" bootfilesystem="xfs" firmware="ofw"
 		      rootfs_label="almalinux"
 		      >
-			<bootloader name="grub2" bls="true" console="console" timeout="0"/>
+			<bootloader name="grub2" bls="true" timeout="0" output_console="console"/>
 			<size unit="G">10</size>
 			<oemconfig>
 				<oem-resize>false</oem-resize>
@@ -173,7 +173,7 @@
 		      bootpartition="true" bootpartsize="1024" bootfilesystem="xfs" efipartsize="200" firmware="uefi"
 		      rootfs_label="almalinux"
 		      >
-			<bootloader name="grub2" bls="true" console="console" timeout="0"/>
+			<bootloader name="grub2" bls="true" timeout="0" output_console="console"/>
 			<size unit="G">10</size>
 			<oemconfig>
 				<oem-resize>false</oem-resize>
@@ -262,9 +262,9 @@
 		<package name="tcpdump"/>
 		<package name="tuned"/>
 	</packages>
-	<packages type="uninstall" profiles="CloudCore" arch="ppc64le">
-		<package name="dosfstools"/>
-		<package name="grub2-tools-extra"/>
+	<packages type="uninstall" profiles="CloudCore">
+		<package name="dosfstools" arch="ppc64le"/>
+		<package name="grub2-tools-extra" arch="ppc64le"/>
 	</packages>
 	<!-- We don't have the Google support tools above, so we need cloud-init
 	<packages type="uninstall" profiles="Cloud-Base-GCE">
