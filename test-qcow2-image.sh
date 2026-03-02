@@ -1,9 +1,17 @@
 #!/bin/bash
 set -euo pipefail
 
-for cmd in genisoimage virt-install virsh; do
+for cmd in virt-install virsh; do
   command -v "$cmd" &>/dev/null || { echo "Error: $cmd not found"; exit 1; }
 done
+
+if command -v genisoimage &>/dev/null; then
+  MKISO="genisoimage"
+elif command -v xorriso &>/dev/null; then
+  MKISO="xorriso"
+else
+  echo "Error: neither genisoimage nor xorriso found"; exit 1
+fi
 
 QCOW2="${1:?Usage: $0 <image.qcow2>}"
 VM_NAME="test-$(date +%s)"
@@ -32,8 +40,13 @@ chpasswd:
 ssh_pwauth: true
 EOF
 
-genisoimage -output "$WORK_DIR/cidata.iso" -volid cidata -joliet -rock \
-  "$WORK_DIR/user-data" "$WORK_DIR/meta-data"
+if [[ "$MKISO" == "genisoimage" ]]; then
+  genisoimage -output "$WORK_DIR/cidata.iso" -volid cidata -joliet -rock \
+    "$WORK_DIR/user-data" "$WORK_DIR/meta-data"
+else
+  xorriso -as genisoimage -output "$WORK_DIR/cidata.iso" -volid cidata -joliet -rock \
+    "$WORK_DIR/user-data" "$WORK_DIR/meta-data"
+fi
 
 virt-install \
   --name "$VM_NAME" \

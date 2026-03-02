@@ -183,6 +183,103 @@ runs:
             sudo apt-get install -y -q qemu-system-s390x expect genisoimage ;;
         esac
 
+    - name: Boot test - Validate riscv64 image (container)
+      if: inputs.arch == 'riscv64'
+      shell: bash
+      run: |
+        docker run --rm \
+          -v "$PWD/output:/output:ro" \
+          ubuntu:25.10 bash -c '
+        set -euo pipefail
+        apt-get update -q >/dev/null 2>&1
+        apt-get install -y -q qemu-system-misc qemu-efi-riscv64 expect genisoimage >/dev/null 2>&1
+
+        TEST_DIR=$(mktemp -d)
+
+        cat > "$TEST_DIR/meta-data" <<METAEOF
+        instance-id: test
+        local-hostname: test
+        METAEOF
+
+        cat > "$TEST_DIR/user-data" <<USEREOF
+        #cloud-config
+        password: almalinux
+        chpasswd:
+          expire: false
+        ssh_pwauth: true
+        USEREOF
+
+        genisoimage -output "$TEST_DIR/cidata.iso" -volid cidata -joliet -rock \
+          "$TEST_DIR/user-data" "$TEST_DIR/meta-data" 2>/dev/null
+
+        cp /usr/share/qemu-efi-riscv64/RISCV_VIRT_VARS.fd "$TEST_DIR/efivars.fd"
+
+        cat > "$TEST_DIR/run-qemu.sh" <<QEMUEOF
+        #!/bin/bash
+        exec qemu-system-riscv64 -accel tcg,tb-size=1024 -M virt -smp 2 -m 4096 -nographic \
+          -device virtio-rng-pci \
+          -drive if=pflash,format=raw,readonly=on,file=/usr/share/qemu-efi-riscv64/RISCV_VIRT_CODE.fd \
+          -drive if=pflash,format=raw,file=$TEST_DIR/efivars.fd \
+          -drive file=/output/'"${IMAGE_NAME}"'.qcow2,format=qcow2,if=virtio \
+          -drive file=$TEST_DIR/cidata.iso,format=raw,if=virtio
+        QEMUEOF
+        chmod +x "$TEST_DIR/run-qemu.sh"
+
+        cat > "$TEST_DIR/boot-test.exp" <<EXPEOF
+        log_user 1
+        set timeout 1800
+
+        spawn [lindex \$argv 0]
+
+        expect {
+            "login:" {}
+            timeout { puts "FAIL: No login prompt"; exit 1 }
+        }
+        send "almalinux\r"
+
+        expect {
+            "Password:" {}
+            timeout { puts "FAIL: No password prompt"; exit 1 }
+        }
+        send "almalinux\r"
+
+        expect {
+            "\\\$ " {}
+            timeout { puts "FAIL: No shell prompt"; exit 1 }
+        }
+
+        send "cat /etc/os-release\r"
+        expect {
+            "AlmaLinux" { puts "PASS: os-release" }
+            timeout { puts "FAIL: os-release check"; exit 1 }
+        }
+        expect "\\\$ "
+
+        send "cloud-init status --wait\r"
+        expect {
+            "done" { puts "PASS: cloud-init" }
+            timeout { puts "FAIL: cloud-init not done"; exit 1 }
+        }
+        expect "\\\$ "
+
+        send "tuned-adm active\r"
+        expect {
+            "virtual-guest" { puts "PASS: tuned profile" }
+            timeout { puts "FAIL: tuned profile"; exit 1 }
+        }
+        expect "\\\$ "
+
+        send "sudo poweroff\r"
+        expect eof
+
+        puts "\nAll boot tests passed!"
+        exit 0
+        EXPEOF
+
+        expect "$TEST_DIR/boot-test.exp" "$TEST_DIR/run-qemu.sh"
+        rm -rf "$TEST_DIR"
+        '
+
     - name: Boot test - Validate image
       if: inputs.arch != 'riscv64'
       shell: bash
