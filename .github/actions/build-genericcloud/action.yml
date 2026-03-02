@@ -200,7 +200,7 @@ runs:
           KVM_OPTS="-accel tcg,thread=multi -cpu cortex-a57"
         else
           echo "NOTE: Using TCG emulation (slow)"
-          KVM_OPTS="-cpu max"
+          KVM_OPTS="-accel tcg -cpu max"
         fi
 
         TEST_DIR=$(mktemp -d)
