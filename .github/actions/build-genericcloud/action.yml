@@ -168,18 +168,23 @@ runs:
         path: output/${{ env.IMAGE_NAME }}.qcow2.txt
 
     - name: Boot test - Install dependencies
-      if: inputs.arch == 'x86_64' || inputs.arch == 'x86_64_v2' || inputs.arch == 'aarch64'
+      if: inputs.arch != 'riscv64'
       shell: bash
       run: |
         sudo apt-get update -q
-        if [ "${{ inputs.arch }}" = "aarch64" ]; then
-          sudo apt-get install -y -q qemu-system-arm qemu-efi-aarch64 expect genisoimage
-        else
-          sudo apt-get install -y -q qemu-system-x86 ovmf expect genisoimage
-        fi
+        case "${{ inputs.arch }}" in
+          x86_64|x86_64_v2)
+            sudo apt-get install -y -q qemu-system-x86 ovmf expect genisoimage ;;
+          aarch64)
+            sudo apt-get install -y -q qemu-system-arm qemu-efi-aarch64 expect genisoimage ;;
+          ppc64le)
+            sudo apt-get install -y -q qemu-system-ppc expect genisoimage ;;
+          s390x)
+            sudo apt-get install -y -q qemu-system-s390x expect genisoimage ;;
+        esac
 
     - name: Boot test - Validate image
-      if: inputs.arch == 'x86_64' || inputs.arch == 'x86_64_v2' || inputs.arch == 'aarch64'
+      if: inputs.arch != 'riscv64'
       shell: bash
       run: |
         if [ -e /dev/kvm ]; then
@@ -207,26 +212,41 @@ runs:
         genisoimage -output "$TEST_DIR/cidata.iso" -volid cidata -joliet -rock \
           "$TEST_DIR/user-data" "$TEST_DIR/meta-data"
 
-        if [ "${{ inputs.arch }}" = "aarch64" ]; then
-          QEMU_BIN="qemu-system-aarch64"
-          QEMU_MACHINE="-M virt,secure=on"
-          QEMU_EXTRA=""
-          FIRMWARE_CODE="/usr/share/AAVMF/AAVMF_CODE.secboot.fd"
-          cp /usr/share/AAVMF/AAVMF_VARS.ms.fd "$TEST_DIR/efivars.fd"
-        else
-          QEMU_BIN="qemu-system-x86_64"
-          QEMU_MACHINE="-machine q35,smm=on"
-          QEMU_EXTRA="-global driver=cfi.pflash01,property=secure,value=on"
-          FIRMWARE_CODE="/usr/share/OVMF/OVMF_CODE_4M.secboot.fd"
-          cp /usr/share/OVMF/OVMF_VARS_4M.ms.fd "$TEST_DIR/efivars.fd"
-        fi
+        SECUREBOOT=0
+        FIRMWARE_OPTS=""
+        QEMU_EXTRA=""
+
+        case "${{ inputs.arch }}" in
+          x86_64|x86_64_v2)
+            QEMU_BIN="qemu-system-x86_64"
+            QEMU_MACHINE="-machine q35,smm=on"
+            QEMU_EXTRA="-global driver=cfi.pflash01,property=secure,value=on"
+            cp /usr/share/OVMF/OVMF_VARS_4M.ms.fd "$TEST_DIR/efivars.fd"
+            FIRMWARE_OPTS="-drive if=pflash,format=raw,readonly=on,file=/usr/share/OVMF/OVMF_CODE_4M.secboot.fd -drive if=pflash,format=raw,file=$TEST_DIR/efivars.fd"
+            SECUREBOOT=1
+            ;;
+          aarch64)
+            QEMU_BIN="qemu-system-aarch64"
+            QEMU_MACHINE="-M virt,secure=on"
+            cp /usr/share/AAVMF/AAVMF_VARS.ms.fd "$TEST_DIR/efivars.fd"
+            FIRMWARE_OPTS="-drive if=pflash,format=raw,readonly=on,file=/usr/share/AAVMF/AAVMF_CODE.secboot.fd -drive if=pflash,format=raw,file=$TEST_DIR/efivars.fd"
+            SECUREBOOT=1
+            ;;
+          ppc64le)
+            QEMU_BIN="qemu-system-ppc64"
+            QEMU_MACHINE="-M pseries"
+            ;;
+          s390x)
+            QEMU_BIN="qemu-system-s390x"
+            QEMU_MACHINE="-M s390-ccw-virtio"
+            ;;
+        esac
 
         cat > "$TEST_DIR/run-qemu.sh" <<QEMUEOF
         #!/bin/bash
         exec $QEMU_BIN $KVM_OPTS $QEMU_MACHINE -smp 2 -m 2048 -nographic \
           $QEMU_EXTRA \
-          -drive if=pflash,format=raw,readonly=on,file=$FIRMWARE_CODE \
-          -drive if=pflash,format=raw,file=$TEST_DIR/efivars.fd \
+          $FIRMWARE_OPTS \
           -drive file=output/${IMAGE_NAME}.qcow2,format=qcow2,if=virtio \
           -drive file=$TEST_DIR/cidata.iso,format=raw,if=virtio
         QEMUEOF
@@ -236,6 +256,17 @@ runs:
           EXPECT_TIMEOUT=300
         else
           EXPECT_TIMEOUT=1800
+        fi
+
+        EXP_SECUREBOOT=""
+        if [ "$SECUREBOOT" = "1" ]; then
+          EXP_SECUREBOOT='
+        send "mokutil --sb-state\r"
+        expect {
+            "SecureBoot enabled" { puts "PASS: SecureBoot enabled" }
+            timeout { puts "FAIL: SecureBoot not enabled"; exit 1 }
+        }
+        expect "\\\$ "'
         fi
 
         cat > "$TEST_DIR/boot-test.exp" <<EXPEOF
@@ -281,13 +312,7 @@ runs:
             timeout { puts "FAIL: tuned profile"; exit 1 }
         }
         expect "\\\$ "
-
-        send "mokutil --sb-state\r"
-        expect {
-            "SecureBoot enabled" { puts "PASS: SecureBoot enabled" }
-            timeout { puts "FAIL: SecureBoot not enabled"; exit 1 }
-        }
-        expect "\\\$ "
+        $EXP_SECUREBOOT
 
         send "sudo poweroff\r"
         expect eof
