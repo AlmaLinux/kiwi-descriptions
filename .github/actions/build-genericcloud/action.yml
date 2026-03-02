@@ -219,18 +219,29 @@ runs:
         case "${{ inputs.arch }}" in
           x86_64|x86_64_v2)
             QEMU_BIN="qemu-system-x86_64"
-            QEMU_MACHINE="-machine q35,smm=on"
-            QEMU_EXTRA="-global driver=cfi.pflash01,property=secure,value=on"
-            cp /usr/share/OVMF/OVMF_VARS_4M.ms.fd "$TEST_DIR/efivars.fd"
-            FIRMWARE_OPTS="-drive if=pflash,format=raw,readonly=on,file=/usr/share/OVMF/OVMF_CODE_4M.secboot.fd -drive if=pflash,format=raw,file=$TEST_DIR/efivars.fd"
-            SECUREBOOT=1
+            if [ -e /dev/kvm ]; then
+              QEMU_MACHINE="-machine q35,smm=on"
+              QEMU_EXTRA="-global driver=cfi.pflash01,property=secure,value=on"
+              cp /usr/share/OVMF/OVMF_VARS_4M.ms.fd "$TEST_DIR/efivars.fd"
+              FIRMWARE_OPTS="-drive if=pflash,format=raw,readonly=on,file=/usr/share/OVMF/OVMF_CODE_4M.secboot.fd -drive if=pflash,format=raw,file=$TEST_DIR/efivars.fd"
+              SECUREBOOT=1
+            else
+              cp /usr/share/OVMF/OVMF_VARS_4M.fd "$TEST_DIR/efivars.fd"
+              FIRMWARE_OPTS="-drive if=pflash,format=raw,readonly=on,file=/usr/share/OVMF/OVMF_CODE_4M.fd -drive if=pflash,format=raw,file=$TEST_DIR/efivars.fd"
+            fi
             ;;
           aarch64)
             QEMU_BIN="qemu-system-aarch64"
-            QEMU_MACHINE="-M virt,secure=on"
-            cp /usr/share/AAVMF/AAVMF_VARS.ms.fd "$TEST_DIR/efivars.fd"
-            FIRMWARE_OPTS="-drive if=pflash,format=raw,readonly=on,file=/usr/share/AAVMF/AAVMF_CODE.secboot.fd -drive if=pflash,format=raw,file=$TEST_DIR/efivars.fd"
-            SECUREBOOT=1
+            if [ -e /dev/kvm ]; then
+              QEMU_MACHINE="-M virt,secure=on"
+              cp /usr/share/AAVMF/AAVMF_VARS.ms.fd "$TEST_DIR/efivars.fd"
+              FIRMWARE_OPTS="-drive if=pflash,format=raw,readonly=on,file=/usr/share/AAVMF/AAVMF_CODE.secboot.fd -drive if=pflash,format=raw,file=$TEST_DIR/efivars.fd"
+              SECUREBOOT=1
+            else
+              QEMU_MACHINE="-M virt"
+              cp /usr/share/AAVMF/AAVMF_VARS.fd "$TEST_DIR/efivars.fd"
+              FIRMWARE_OPTS="-drive if=pflash,format=raw,readonly=on,file=/usr/share/AAVMF/AAVMF_CODE.fd -drive if=pflash,format=raw,file=$TEST_DIR/efivars.fd"
+            fi
             ;;
           ppc64le)
             QEMU_BIN="qemu-system-ppc64"
