@@ -187,13 +187,19 @@ runs:
       if: inputs.arch != 'riscv64'
       shell: bash
       run: |
-        if [ -e /dev/kvm ]; then
+        HOST_ARCH=$(uname -m)
+        case "${{ inputs.arch }}" in
+          x86_64|x86_64_v2) GUEST_ARCH="x86_64" ;;
+          *) GUEST_ARCH="${{ inputs.arch }}" ;;
+        esac
+
+        if [ -e /dev/kvm ] && [ "$HOST_ARCH" = "$GUEST_ARCH" ]; then
           KVM_OPTS="-enable-kvm -cpu host"
         elif [ "${{ inputs.arch }}" = "aarch64" ]; then
-          echo "NOTE: /dev/kvm not available, using TCG with cortex-a57"
+          echo "NOTE: Using TCG with cortex-a57 for aarch64"
           KVM_OPTS="-accel tcg,thread=multi -cpu cortex-a57"
         else
-          echo "NOTE: /dev/kvm not available, falling back to TCG emulation (slow)"
+          echo "NOTE: Using TCG emulation (slow)"
           KVM_OPTS="-cpu max"
         fi
 
@@ -222,7 +228,7 @@ runs:
         case "${{ inputs.arch }}" in
           x86_64|x86_64_v2)
             QEMU_BIN="qemu-system-x86_64"
-            if [ -e /dev/kvm ]; then
+            if [ -e /dev/kvm ] && [ "$HOST_ARCH" = "x86_64" ]; then
               QEMU_MACHINE="-machine q35,smm=on"
               QEMU_EXTRA="-global driver=cfi.pflash01,property=secure,value=on"
               cp /usr/share/OVMF/OVMF_VARS_4M.ms.fd "$TEST_DIR/efivars.fd"
@@ -260,7 +266,7 @@ runs:
         QEMUEOF
         chmod +x "$TEST_DIR/run-qemu.sh"
 
-        if [ -e /dev/kvm ]; then
+        if [ -e /dev/kvm ] && [ "$HOST_ARCH" = "$GUEST_ARCH" ]; then
           EXPECT_TIMEOUT=300
         else
           EXPECT_TIMEOUT=1800
