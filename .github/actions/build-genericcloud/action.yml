@@ -168,7 +168,6 @@ runs:
         path: output/${{ env.IMAGE_NAME }}.qcow2.txt
 
     - name: Boot test - Install dependencies
-      if: inputs.arch != 'riscv64'
       shell: bash
       run: |
         sudo apt-get update -q
@@ -181,10 +180,11 @@ runs:
             sudo apt-get install -y -q qemu-system-ppc expect genisoimage ;;
           s390x)
             sudo apt-get install -y -q qemu-system-s390x expect genisoimage ;;
+          riscv64)
+            sudo apt-get install -y -q qemu-system-misc qemu-efi-riscv64 expect genisoimage ;;
         esac
 
     - name: Boot test - Validate image
-      if: inputs.arch != 'riscv64'
       shell: bash
       run: |
         HOST_ARCH=$(uname -m)
@@ -253,6 +253,12 @@ runs:
           s390x)
             QEMU_BIN="qemu-system-s390x"
             QEMU_MACHINE="-M s390-ccw-virtio"
+            ;;
+          riscv64)
+            QEMU_BIN="qemu-system-riscv64"
+            QEMU_MACHINE="-M virt"
+            cp /usr/share/qemu-efi-riscv64/RISCV_VIRT_VARS.fd "$TEST_DIR/efivars.fd"
+            FIRMWARE_OPTS="-drive if=pflash,format=raw,readonly=on,file=/usr/share/qemu-efi-riscv64/RISCV_VIRT_CODE.fd -drive if=pflash,format=raw,file=$TEST_DIR/efivars.fd"
             ;;
         esac
 
