@@ -43,11 +43,6 @@ if [[ "$kiwi_profiles" != *"Container"* ]] && [[ "$kiwi_profiles" != *"WSL"* ]] 
 	echo "GRUB_DISABLE_SUBMENU=true" >> /etc/default/grub
 	## Disable recovery entries to match Fedora
 	echo "GRUB_DISABLE_RECOVERY=true" >> /etc/default/grub
-	## Set arch-appropriate GRUB terminal output
-	case "$installarch" in
-		ppc64le) echo 'GRUB_TERMINAL_OUTPUT="ofconsole"' >> /etc/default/grub ;;
-		x86_64|aarch64|riscv64) echo 'GRUB_TERMINAL_OUTPUT="console"' >> /etc/default/grub ;;
-	esac
 	## Write `menu_auto_hide=1` into grubenv to match Fedora anaconda installs
 	## Set boot_success to avoid displaying the grub menu on first boot
 	grub2-editenv /boot/grub2/grubenv set menu_auto_hide=1 boot_success=1

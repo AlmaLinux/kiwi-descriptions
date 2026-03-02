@@ -128,7 +128,7 @@
 		      bootpartition="true" bootpartsize="1024" bootfilesystem="xfs" efipartsize="200" firmware="uefi"
 		      rootfs_label="almalinux"
 		      >
-			<bootloader name="grub2" bls="true" timeout="0"/>
+			<bootloader name="grub2" bls="true" console="console" timeout="0"/>
 			<size unit="G">10</size>
 			<oemconfig>
 				<oem-resize>false</oem-resize>
@@ -143,7 +143,7 @@
 		      bootpartition="true" bootpartsize="1024" bootfilesystem="xfs" efipartsize="200" firmware="uefi"
 		      rootfs_label="almalinux"
 		      >
-			<bootloader name="grub2" bls="true" timeout="0"/>
+			<bootloader name="grub2" bls="true" console="console" timeout="0"/>
 			<size unit="G">10</size>
 			<oemconfig>
 				<oem-resize>false</oem-resize>
@@ -158,7 +158,7 @@
 		      bootpartition="true" bootpartsize="1024" bootfilesystem="xfs" firmware="ofw"
 		      rootfs_label="almalinux"
 		      >
-			<bootloader name="grub2" bls="true" timeout="0"/>
+			<bootloader name="grub2" bls="true" console="console" timeout="0"/>
 			<size unit="G">10</size>
 			<oemconfig>
 				<oem-resize>false</oem-resize>
@@ -173,7 +173,7 @@
 		      bootpartition="true" bootpartsize="1024" bootfilesystem="xfs" efipartsize="200" firmware="uefi"
 		      rootfs_label="almalinux"
 		      >
-			<bootloader name="grub2" bls="true" timeout="0"/>
+			<bootloader name="grub2" bls="true" console="console" timeout="0"/>
 			<size unit="G">10</size>
 			<oemconfig>
 				<oem-resize>false</oem-resize>
