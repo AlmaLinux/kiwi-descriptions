@@ -282,6 +282,13 @@ runs:
         }
         expect "\\\$ "
 
+        send "mokutil --sb-state\r"
+        expect {
+            "SecureBoot enabled" { puts "PASS: SecureBoot enabled" }
+            timeout { puts "FAIL: SecureBoot not enabled"; exit 1 }
+        }
+        expect "\\\$ "
+
         send "sudo poweroff\r"
         expect eof
 
