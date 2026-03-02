@@ -98,7 +98,8 @@ runs:
             dnf install -y kiwi-cli distribution-gpg-keys \
               kiwi-systemdeps-bootloaders kiwi-systemdeps-containers \
               kiwi-systemdeps-core kiwi-systemdeps-disk-images \
-              kiwi-systemdeps-filesystems kiwi-systemdeps-iso-media
+              kiwi-systemdeps-filesystems kiwi-systemdeps-iso-media \
+              gdisk
         else
           docker exec build \
             dnf install -y epel-release
