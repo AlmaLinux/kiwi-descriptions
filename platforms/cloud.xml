@@ -220,11 +220,11 @@
 		<ignore name="glibc-minimal-langpack"/>
 		<package name="cloud-init"/>
 		<package name="cloud-utils-growpart"/>
-		<package name="dosfstools"/>
+		<package name="dosfstools" arch="x86_64,aarch64,riscv64"/>
 		<package name="dracut-config-generic"/>
 		<package name="efibootmgr" arch="x86_64,aarch64,riscv64"/>
 		<package name="glibc-langpack-en"/>
-		<package name="grub2-tools-extra" arch="x86_64,aarch64,ppc64le,riscv64"/>
+		<package name="grub2-tools-extra" arch="x86_64,aarch64,riscv64"/>
 		<package name="kernel"/>
 		<package name="kernel-modules"/>
 		<package name="langpacks-en"/>
@@ -263,8 +263,12 @@
 		<package name="tuned"/>
 	</packages>
 	<packages type="uninstall" profiles="CloudCore">
-		<package name="dosfstools" arch="ppc64le"/>
-		<package name="grub2-tools-extra" arch="ppc64le"/>
+		<package name="mtools" arch="ppc64le"/>
+		<package name="freetype" arch="ppc64le"/>
+		<package name="graphite2" arch="ppc64le"/>
+		<package name="harfbuzz" arch="ppc64le"/>
+		<package name="libpng" arch="ppc64le"/>
+		<package name="glibc-gconv-extra" arch="ppc64le"/>
 	</packages>
 	<!-- We don't have the Google support tools above, so we need cloud-init
 	<packages type="uninstall" profiles="Cloud-Base-GCE">
