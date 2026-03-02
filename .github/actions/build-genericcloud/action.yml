@@ -99,7 +99,7 @@ runs:
               kiwi-systemdeps-bootloaders kiwi-systemdeps-containers \
               kiwi-systemdeps-core \
               kiwi-systemdeps-filesystems kiwi-systemdeps-iso-media \
-              gdisk
+              gdisk lvm2 parted kpartx cryptsetup mdadm util-linux
         else
           docker exec build \
             dnf install -y epel-release
