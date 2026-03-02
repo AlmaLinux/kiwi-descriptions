@@ -213,6 +213,7 @@ runs:
           "$TEST_DIR/user-data" "$TEST_DIR/meta-data" 2>/dev/null
 
         cp /usr/share/qemu-efi-riscv64/RISCV_VIRT_VARS.fd "$TEST_DIR/efivars.fd"
+        cp /output/'"${IMAGE_NAME}"'.qcow2 "$TEST_DIR/disk.qcow2"
 
         cat > "$TEST_DIR/run-qemu.sh" <<QEMUEOF
         #!/bin/bash
@@ -220,7 +221,7 @@ runs:
           -device virtio-rng-pci \
           -drive if=pflash,format=raw,readonly=on,file=/usr/share/qemu-efi-riscv64/RISCV_VIRT_CODE.fd \
           -drive if=pflash,format=raw,file=$TEST_DIR/efivars.fd \
-          -drive file=/output/'"${IMAGE_NAME}"'.qcow2,format=qcow2,if=virtio \
+          -drive file=$TEST_DIR/disk.qcow2,format=qcow2,if=virtio \
           -drive file=$TEST_DIR/cidata.iso,format=raw,if=virtio
         QEMUEOF
         chmod +x "$TEST_DIR/run-qemu.sh"
