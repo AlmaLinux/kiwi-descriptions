@@ -182,9 +182,11 @@ runs:
       if: inputs.arch == 'x86_64' || inputs.arch == 'x86_64_v2' || inputs.arch == 'aarch64'
       shell: bash
       run: |
-        if [ ! -e /dev/kvm ]; then
-          echo "WARNING: /dev/kvm not available, skipping boot test"
-          exit 0
+        if [ -e /dev/kvm ]; then
+          KVM_OPTS="-enable-kvm -cpu host"
+        else
+          echo "NOTE: /dev/kvm not available, falling back to TCG emulation (slow)"
+          KVM_OPTS="-cpu max"
         fi
 
         TEST_DIR=$(mktemp -d)
@@ -221,7 +223,7 @@ runs:
 
         cat > "$TEST_DIR/run-qemu.sh" <<QEMUEOF
         #!/bin/bash
-        exec $QEMU_BIN -enable-kvm -cpu host $QEMU_MACHINE -smp 2 -m 2048 -nographic \
+        exec $QEMU_BIN $KVM_OPTS $QEMU_MACHINE -smp 2 -m 2048 -nographic \
           $QEMU_EXTRA \
           -drive if=pflash,format=raw,readonly=on,file=$FIRMWARE_CODE \
           -drive if=pflash,format=raw,file=$TEST_DIR/efivars.fd \
@@ -230,11 +232,17 @@ runs:
         QEMUEOF
         chmod +x "$TEST_DIR/run-qemu.sh"
 
-        cat > "$TEST_DIR/boot-test.exp" <<'EXPEOF'
-        log_user 1
-        set timeout 300
+        if [ -e /dev/kvm ]; then
+          EXPECT_TIMEOUT=300
+        else
+          EXPECT_TIMEOUT=1800
+        fi
 
-        spawn [lindex $argv 0]
+        cat > "$TEST_DIR/boot-test.exp" <<EXPEOF
+        log_user 1
+        set timeout $EXPECT_TIMEOUT
+
+        spawn [lindex \$argv 0]
 
         expect {
             "login:" {}
@@ -249,7 +257,7 @@ runs:
         send "almalinux\r"
 
         expect {
-            "\$ " {}
+            "\\\$ " {}
             timeout { puts "FAIL: No shell prompt"; exit 1 }
         }
 
@@ -258,26 +266,26 @@ runs:
             "AlmaLinux" { puts "PASS: os-release" }
             timeout { puts "FAIL: os-release check"; exit 1 }
         }
-        expect "\$ "
+        expect "\\\$ "
 
         send "cloud-init status --wait\r"
         expect {
             "done" { puts "PASS: cloud-init" }
             timeout { puts "FAIL: cloud-init not done"; exit 1 }
         }
-        expect "\$ "
+        expect "\\\$ "
 
         send "tuned-adm active\r"
         expect {
             "virtual-guest" { puts "PASS: tuned profile" }
             timeout { puts "FAIL: tuned profile"; exit 1 }
         }
-        expect "\$ "
+        expect "\\\$ "
 
         send "sudo poweroff\r"
         expect eof
 
-        puts "\nAll boot tests passed!"
+        puts "\\nAll boot tests passed!"
         exit 0
         EXPEOF
 
