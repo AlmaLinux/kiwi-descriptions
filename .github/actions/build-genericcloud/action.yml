@@ -99,7 +99,7 @@ runs:
             dnf install -y epel-release
         fi
         docker exec build \
-          dnf install -y kiwi-cli distribution-gpg-keys
+          dnf install -y kiwi-cli distribution-gpg-keys qemu-img
 
     - name: Detect release version
       id: release
