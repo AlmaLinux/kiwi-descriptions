@@ -1,4 +1,4 @@
-name: Build AlmaLinux Kitten P550 (RISC-V)
+name: Build AlmaLinux Kitten 10 P550 (RISC-V)
 
 on:
   workflow_dispatch:
