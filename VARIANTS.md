@@ -1,6 +1,6 @@
 ## Image variants
 
-### For the `AlmaLinux-OS-Kitten.kiwi` and `AlmaLinux-OS.kiwi` kiwi files
+### For the `AlmaLinux-OS-Kitten-10.kiwi` and `AlmaLinux-OS-10.kiwi` kiwi files
 
 | Name                           | Image type | Image profiles                        |
 |--------------------------------|------------|---------------------------------------|

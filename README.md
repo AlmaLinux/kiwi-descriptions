@@ -22,7 +22,7 @@ Set up your development environment and run the image build (substitute `<image_
 # Install kiwi
 []$ sudo dnf --assumeyes install kiwi kiwi-systemdeps distribution-gpg-keys
 # Run the image build
-[]$ sudo ./kiwi-build --kiwi-file=AlmaLinux-OS-Kitten.kiwi --image-type=<image_type> --image-profile=<image_profile> --output-dir ./outdir
+[]$ sudo ./kiwi-build --kiwi-file=AlmaLinux-OS-Kitten-10.kiwi --image-type=<image_type> --image-profile=<image_profile> --output-dir ./outdir
 ```
 
 ## RISC-V (SiFive HiFive Premier P550)
@@ -38,7 +38,7 @@ and a 10 GB OEM disk layout.
 ```bash
 []$ sudo dnf --assumeyes install kiwi-cli distribution-gpg-keys
 []$ sudo kiwi-ng --type=oem --profile=PremierP550-Disk \
-    --kiwi-file=AlmaLinux-OS-Kitten-P550.kiwi \
+    --kiwi-file=AlmaLinux-OS-Kitten-10-P550.kiwi \
     system build --description ./ --target-dir /var/tmp/build
 ```
 
@@ -52,7 +52,7 @@ and a 10 GB OEM disk layout.
 []$ podman exec almalinux-p550-build dnf install -y almalinux-kitten-release-devel
 []$ podman exec almalinux-p550-build dnf install -y kiwi-cli distribution-gpg-keys
 []$ podman exec almalinux-p550-build kiwi-ng --type=oem --profile=PremierP550-Disk \
-    --kiwi-file=AlmaLinux-OS-Kitten-P550.kiwi \
+    --kiwi-file=AlmaLinux-OS-Kitten-10-P550.kiwi \
     system build --description /kiwi-descriptions --target-dir /var/tmp/build
 ```
 

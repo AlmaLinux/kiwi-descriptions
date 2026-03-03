@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<image schemaversion="7.4" name="AlmaLinux-OS">
+<image schemaversion="7.4" name="AlmaLinux-9">
 	<description type="system">
 		<author>AlmaLinux OS Contributors</author>
 		<contact>devel@lists.almalinux.org</contact>
-		<specification>AlmaLinux OS</specification>
+		<specification>AlmaLinux OS 9</specification>
 	</description>
 	<preferences>
-		<version>10</version>
+		<version>9</version>
 		<packagemanager>dnf4</packagemanager>
 		<locale>en_US</locale>
 		<keytable>us</keytable>
 		<timezone>Etc/UTC</timezone>
 		<rpm-check-signatures>true</rpm-check-signatures>
-		<release-version>10</release-version>
+		<release-version>9</release-version>
 	</preferences>
 	<include from="this://./repositories/core-release.xml"/>
 	<include from="this://./components/boot.xml"/>

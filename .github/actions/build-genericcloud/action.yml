@@ -114,7 +114,8 @@ runs:
         if [ -n "${{ inputs.version }}" ]; then
           echo "version=${{ inputs.version }}" >> "$GITHUB_OUTPUT"
         else
-          VERSION=$(rpm -qp --qf '%{VERSION}' "https://repo.almalinux.org/almalinux/almalinux-release-latest-10.${{ inputs.arch }}.rpm")
+          MAJOR=$(docker exec build rpm -E %{rhel})
+          VERSION=$(rpm -qp --qf '%{VERSION}' "https://repo.almalinux.org/almalinux/almalinux-release-latest-${MAJOR}.${{ inputs.arch }}.rpm")
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
         fi
 

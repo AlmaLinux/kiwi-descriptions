@@ -46,7 +46,7 @@ import xml.etree.ElementTree as ET
 
 
 parser = ArgumentParser(description="Generator of ISO labels for AlmaLinux live media builds")
-parser.add_argument("kiwi_file", type=Path, default="AlmaLinux-OS-Kitten.kiwi", help="kiwi description file")
+parser.add_argument("kiwi_file", type=Path, default="AlmaLinux-OS-Kitten-10.kiwi", help="kiwi description file")
 parser.add_argument("image_profile", type=str, help="kiwi image profile")
 parser.add_argument("--output-kiwi-args", "-k", action="store_true", help="generate kiwi args instead of csv")
 args = parser.parse_args()

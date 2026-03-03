@@ -1,4 +1,4 @@
-name: Build AlmaLinux Kitten 10 GenericCloud
+name: Build AlmaLinux 8 GenericCloud
 
 on:
   workflow_dispatch:
@@ -11,10 +11,8 @@ on:
         options:
           - all
           - x86_64
-          - x86_64_v2
           - aarch64
           - ppc64le
-          - riscv64
           - s390x
 
 jobs:
@@ -27,7 +25,7 @@ jobs:
       - id: set
         run: |
           if [ "${{ inputs.arch }}" = "all" ]; then
-            echo 'arches=["x86_64","x86_64_v2","aarch64","ppc64le","riscv64","s390x"]' >> "$GITHUB_OUTPUT"
+            echo 'arches=["x86_64","aarch64","ppc64le","s390x"]' >> "$GITHUB_OUTPUT"
           else
             echo 'arches=["${{ inputs.arch }}"]' >> "$GITHUB_OUTPUT"
           fi
@@ -50,10 +48,8 @@ jobs:
         uses: ./.github/actions/build-genericcloud
         with:
           arch: ${{ matrix.arch }}
-          docker-image: almalinux:10-kitten
-          kiwi-file: AlmaLinux-OS-Kitten-10.kiwi
-          kiwi-name: AlmaLinux-Kitten-10
-          version: '10'
-          image-name-prefix: AlmaLinux-Kitten-GenericCloud
-          x86_64_v2-repo-sed: >-
-            sed -i 's|\(mirrorlist/\$releasever-kitten/[^"?]*\)"|\1?arch=x86_64_v2"|g' repositories/core.xml
+          docker-image: almalinux:8
+          kiwi-file: AlmaLinux-OS-8.kiwi
+          kiwi-name: AlmaLinux-8
+          image-name-prefix: AlmaLinux-8-GenericCloud
+          x86_64_v2-repo-sed: ''

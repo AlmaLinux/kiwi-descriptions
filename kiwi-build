@@ -29,7 +29,7 @@ debug=
 kiwi_isolated=
 # For compatibility with older scripts where these did not exist
 kiwi_description_dir="./"
-kiwi_file="AlmaLinux-OS-Kitten.kiwi"
+kiwi_file="AlmaLinux-OS-Kitten-10.kiwi"
 kiwibuild_extra_args=
 
 while true; do

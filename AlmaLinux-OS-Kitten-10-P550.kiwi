@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<image schemaversion="7.4" name="AlmaLinux-Kitten-P550">
+<image schemaversion="7.4" name="AlmaLinux-Kitten-10-P550">
 	<description type="system">
 		<author>AlmaLinux OS Contributors</author>
 		<contact>devel@lists.almalinux.org</contact>
-		<specification>AlmaLinux OS Kitten for SiFive HiFive Premier P550</specification>
+		<specification>AlmaLinux OS Kitten 10 for SiFive HiFive Premier P550</specification>
 	</description>
 	<preferences>
 		<version>10</version>
 		<packagemanager>dnf4</packagemanager>
-		<locale>C</locale>
+		<locale>en_US</locale>
 		<keytable>us</keytable>
 		<timezone>Etc/UTC</timezone>
 		<rpm-check-signatures>true</rpm-check-signatures>

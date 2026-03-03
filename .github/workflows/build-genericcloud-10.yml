@@ -50,8 +50,8 @@ jobs:
         with:
           arch: ${{ matrix.arch }}
           docker-image: almalinux:10
-          kiwi-file: AlmaLinux-OS.kiwi
-          kiwi-name: AlmaLinux-OS
+          kiwi-file: AlmaLinux-OS-10.kiwi
+          kiwi-name: AlmaLinux-10
           image-name-prefix: AlmaLinux-10-GenericCloud
           x86_64_v2-repo-sed: >-
             sed -i 's|\(mirrorlist/\$releasever/[^"?]*\)"|\1?arch=x86_64_v2"|g' repositories/core-release.xml
