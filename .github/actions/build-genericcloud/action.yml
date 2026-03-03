@@ -191,6 +191,11 @@ runs:
         name: ${{ env.IMAGE_NAME }}.qcow2.txt
         path: output/${{ env.IMAGE_NAME }}.qcow2.txt
 
+    - name: Fix /dev/kvm permissions
+      shell: bash
+      run: |
+        [ -e /dev/kvm ] && sudo chmod 666 /dev/kvm || true
+
     - name: Boot test - Install dependencies
       if: inputs.arch != 'riscv64'
       shell: bash
