@@ -51,5 +51,6 @@ jobs:
           docker-image: almalinux:9
           kiwi-file: AlmaLinux-OS-9.kiwi
           kiwi-name: AlmaLinux
+          version: '9'
           image-name-prefix: AlmaLinux-9-GenericCloud
           x86_64_v2-repo-sed: ''
