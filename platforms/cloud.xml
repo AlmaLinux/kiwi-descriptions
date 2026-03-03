@@ -216,7 +216,7 @@
 	<packages type="image" patternType="onlyRequired" profiles="CloudCore,CloudCoreUKI">
 		<ignore name="dracut-config-rescue"/>
 		<ignore name="firewalld"/>
-		<ignore name="*-firmware"/>
+		<ignore name="iwl*-firmware"/>
 		<ignore name="glibc-minimal-langpack"/>
 		<package name="cloud-init"/>
 		<package name="cloud-utils-growpart"/>

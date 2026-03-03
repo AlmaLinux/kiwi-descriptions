@@ -34,7 +34,6 @@
 	<packages type="image" patternType="onlyRequired">
 		<namedCollection name="core"/>
 		<package name="linux-firmware"/>
-		<ignore name="iwl*-firmware"/>
 		<ignore name="nano"/>
 		<ignore name="yum-utils"/>
 	</packages>
