@@ -145,12 +145,13 @@ runs:
       run: |
         ARCH="${{ inputs.arch }}"
         KIWI_ARCH="${{ steps.vars.outputs.kiwi_arch }}"
+        MAJOR=$(docker exec build rpm -E '%{rhel}')
         BUILD_DATE=$(date +%Y%m%d)
         IMAGE_NAME="${{ inputs.image-name-prefix }}-${{ steps.release.outputs.version }}-${BUILD_DATE}.0.${ARCH}"
         echo "IMAGE_NAME=${IMAGE_NAME}" >> "$GITHUB_ENV"
         mkdir -p output
-        docker cp "build:/var/tmp/build/${{ inputs.kiwi-name }}.${KIWI_ARCH}-10.qcow2" "output/${IMAGE_NAME}.qcow2"
-        docker cp "build:/var/tmp/build/${{ inputs.kiwi-name }}.${KIWI_ARCH}-10.packages" "output/${IMAGE_NAME}.packages"
+        docker cp "build:/var/tmp/build/${{ inputs.kiwi-name }}.${KIWI_ARCH}-${MAJOR}.qcow2" "output/${IMAGE_NAME}.qcow2"
+        docker cp "build:/var/tmp/build/${{ inputs.kiwi-name }}.${KIWI_ARCH}-${MAJOR}.packages" "output/${IMAGE_NAME}.packages"
         cut -d'|' -f1 "output/${IMAGE_NAME}.packages" | sort > "output/${IMAGE_NAME}.qcow2.txt"
         rm -f "output/${IMAGE_NAME}.packages"
         sha256sum "output/${IMAGE_NAME}.qcow2" | sed 's|output/||' > "output/${IMAGE_NAME}.qcow2.sha256sum"

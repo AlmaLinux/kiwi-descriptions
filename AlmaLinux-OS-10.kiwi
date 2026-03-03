@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<image schemaversion="7.4" name="AlmaLinux-10">
+<image schemaversion="7.4" name="AlmaLinux">
 	<description type="system">
 		<author>AlmaLinux OS Contributors</author>
 		<contact>devel@lists.almalinux.org</contact>
