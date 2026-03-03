@@ -138,6 +138,15 @@ runs:
            s|https://mirrors.fedoraproject.org/metalink?repo=epel-\$releasever\&amp;arch=\$basearch|https://epel.repo.almalinux.org/$releasever/x86_64_v2/|;
            /signing key.*epel/d' repositories/epel.xml
 
+    - name: Patch kiwi setfiles detection for AL8
+      if: inputs.version == '8'
+      shell: bash
+      run: |
+        docker exec build bash -c "
+          sed -i \"s/'-T0', '-F', '-p'/'-F', '-p'/\" \
+            /usr/lib/python3.9/site-packages/kiwi/system/setup.py
+        "
+
     - name: Build GenericCloud image
       shell: bash
       run: |
