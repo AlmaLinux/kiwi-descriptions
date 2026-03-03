@@ -91,6 +91,12 @@ runs:
           ${{ inputs.docker-image }} \
           sleep infinity
 
+    - name: Allow SHA1 for older GPG keys
+      if: inputs.version == '8'
+      shell: bash
+      run: |
+        docker exec build update-crypto-policies --set DEFAULT:SHA1
+
     - name: Install kiwi-cli
       shell: bash
       run: |

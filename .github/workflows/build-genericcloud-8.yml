@@ -48,7 +48,7 @@ jobs:
         uses: ./.github/actions/build-genericcloud
         with:
           arch: ${{ matrix.arch }}
-          docker-image: almalinux:9  # TODO: switch to almalinux:8 when kiwi version there is updated
+          docker-image: almalinux:9  # TODO: switch to almalinux:8 when kiwi version in EPEL8 is updated to 10.2.37 at least
           kiwi-file: AlmaLinux-OS-8.kiwi
           kiwi-name: AlmaLinux
           version: '8'
