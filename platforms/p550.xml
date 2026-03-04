@@ -12,7 +12,7 @@
 		      bootpartition="true" bootpartsize="2000" bootfilesystem="ext4" efipartsize="500" firmware="uefi"
 		      rootfs_label="almalinux"
 		      >
-			<bootloader name="grub2" console="serial" timeout="3" timeout_style="countdown"/>
+			<bootloader name="grub2" output_console="console" timeout="3" timeout_style="countdown"/>
 			<size unit="G">10</size>
 			<oemconfig>
 				<oem-resize>false</oem-resize>
