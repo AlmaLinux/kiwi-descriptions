@@ -35,5 +35,7 @@
 		<package name="yum-utils"/>
 		<package name="dracut-config-generic"/>
 		<package name="dracut-config-rescue"/>
+		<package name="systemd-oomd"/>
+		<package name="systemd-resolved"/>
 	</packages>
 </image>
