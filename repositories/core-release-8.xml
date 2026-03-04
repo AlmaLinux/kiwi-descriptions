@@ -1,21 +1,21 @@
 <image>
-	<repository type="rpm-md" alias="extras" sourcetype="mirrorlist">
-		<source path="https://mirrors.almalinux.org/mirrorlist/$releasever/extras">
+	<repository type="rpm-md" alias="extras">
+		<source path="https://repo.almalinux.org/almalinux/$releasever/extras/$basearch/os/">
 			<signing key="file:///usr/share/distribution-gpg-keys/alma/RPM-GPG-KEY-AlmaLinux-$releasever"/>
 		</source>
 	</repository>
-	<repository type="rpm-md" alias="powertools" sourcetype="mirrorlist">
-		<source path="https://mirrors.almalinux.org/mirrorlist/$releasever/powertools">
+	<repository type="rpm-md" alias="powertools">
+		<source path="https://repo.almalinux.org/almalinux/$releasever/PowerTools/$basearch/os/">
 			<signing key="file:///usr/share/distribution-gpg-keys/alma/RPM-GPG-KEY-AlmaLinux-$releasever"/>
 		</source>
 	</repository>
-	<repository type="rpm-md" alias="appstream" sourcetype="mirrorlist">
-		<source path="https://mirrors.almalinux.org/mirrorlist/$releasever/appstream">
+	<repository type="rpm-md" alias="appstream">
+		<source path="https://repo.almalinux.org/almalinux/$releasever/AppStream/$basearch/os/">
 			<signing key="file:///usr/share/distribution-gpg-keys/alma/RPM-GPG-KEY-AlmaLinux-$releasever"/>
 		</source>
 	</repository>
-	<repository type="rpm-md" alias="baseos" sourcetype="mirrorlist">
-		<source path="https://mirrors.almalinux.org/mirrorlist/$releasever/baseos">
+	<repository type="rpm-md" alias="baseos">
+		<source path="https://repo.almalinux.org/almalinux/$releasever/BaseOS/$basearch/os/">
 			<signing key="file:///usr/share/distribution-gpg-keys/alma/RPM-GPG-KEY-AlmaLinux-$releasever"/>
 		</source>
 	</repository>

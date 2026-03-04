@@ -1,21 +1,21 @@
 <image>
-	<repository type="rpm-md" alias="extras-common" sourcetype="mirrorlist">
-		<source path="https://kitten.mirrors.almalinux.org/mirrorlist/$releasever-kitten/extras-common">
+	<repository type="rpm-md" alias="extras-common">
+		<source path="https://kitten.repo.almalinux.org/10-kitten/extras-common/$basearch/os/">
 			<signing key="file:///usr/share/distribution-gpg-keys/alma/RPM-GPG-KEY-AlmaLinux-$releasever"/>
 		</source>
 	</repository>
-	<repository type="rpm-md" alias="crb" sourcetype="mirrorlist">
-		<source path="https://kitten.mirrors.almalinux.org/mirrorlist/$releasever-kitten/crb">
+	<repository type="rpm-md" alias="crb">
+		<source path="https://kitten.repo.almalinux.org/10-kitten/CRB/$basearch/os/">
 			<signing key="file:///usr/share/distribution-gpg-keys/alma/RPM-GPG-KEY-AlmaLinux-$releasever"/>
 		</source>
 	</repository>
-	<repository type="rpm-md" alias="appstream" sourcetype="mirrorlist">
-		<source path="https://kitten.mirrors.almalinux.org/mirrorlist/$releasever-kitten/appstream">
+	<repository type="rpm-md" alias="appstream">
+		<source path="https://kitten.repo.almalinux.org/10-kitten/AppStream/$basearch/os/">
 			<signing key="file:///usr/share/distribution-gpg-keys/alma/RPM-GPG-KEY-AlmaLinux-$releasever"/>
 		</source>
 	</repository>
-	<repository type="rpm-md" alias="baseos" sourcetype="mirrorlist">
-		<source path="https://kitten.mirrors.almalinux.org/mirrorlist/$releasever-kitten/baseos">
+	<repository type="rpm-md" alias="baseos">
+		<source path="https://kitten.repo.almalinux.org/10-kitten/BaseOS/$basearch/os/">
 			<signing key="file:///usr/share/distribution-gpg-keys/alma/RPM-GPG-KEY-AlmaLinux-$releasever"/>
 		</source>
 	</repository>
