@@ -34,7 +34,11 @@ jobs:
           docker exec riscv64-build \
             dnf install -y almalinux-kitten-release-devel
           docker exec riscv64-build \
-            dnf install -y kiwi-cli distribution-gpg-keys
+            dnf install -y kiwi-cli distribution-gpg-keys \
+            kiwi-systemdeps-bootloaders kiwi-systemdeps-containers \
+            kiwi-systemdeps-core kiwi-systemdeps-filesystems \
+            kiwi-systemdeps-iso-media gdisk lvm2 parted kpartx \
+            cryptsetup mdadm util-linux
 
       - name: Build P550 disk image
         run: |
