@@ -31,6 +31,10 @@
 	<include from="this://./platforms/workstation/gnome.xml"/>
 	<include from="this://./platforms/workstation/kde.xml"/>
 	<include from="this://./platforms/wsl.xml"/>
+	<packages type="uninstall" profiles="CloudCore">
+		<package name="freetype" arch="ppc64le"/>
+		<package name="libpng" arch="ppc64le"/>
+	</packages>
 	<packages type="bootstrap">
 		<package name="basesystem"/>
 		<package name="almalinux-release"/>

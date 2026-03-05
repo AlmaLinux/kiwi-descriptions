@@ -264,10 +264,8 @@
 	</packages>
 	<packages type="uninstall" profiles="CloudCore">
 		<package name="mtools" arch="ppc64le"/>
-		<package name="freetype" arch="ppc64le"/>
 		<package name="graphite2" arch="ppc64le"/>
 		<package name="harfbuzz" arch="ppc64le"/>
-		<package name="libpng" arch="ppc64le"/>
 		<package name="glibc-gconv-extra" arch="ppc64le"/>
 	</packages>
 	<!-- We don't have the Google support tools above, so we need cloud-init

@@ -36,6 +36,10 @@
 		<ignore name="nano"/>
 		<ignore name="yum-utils"/>
 	</packages>
+	<packages type="uninstall" profiles="CloudCore">
+		<package name="freetype" arch="ppc64le"/>
+		<package name="libpng" arch="ppc64le"/>
+	</packages>
 	<packages type="bootstrap">
 		<package name="basesystem"/>
 		<package name="almalinux-release"/>
