@@ -18,7 +18,7 @@
 		      bootpartition="false" efipartsize="500" firmware="uefi"
 		      rootfs_label="centos"
 		      >
-			<bootloader name="grub2" bls="true" console="serial" timeout="1"/>
+			<bootloader name="grub2" console="serial" timeout="1"/>
 			<size unit="G">5</size>
 			<vagrantconfig provider="libvirt" virtualsize="5"/>
 			<oemconfig>
@@ -34,7 +34,7 @@
 		      bootpartition="false" efipartsize="500" firmware="uefi"
 		      rootfs_label="centos"
 		      >
-			<bootloader name="grub2" bls="true" console="serial" timeout="1"/>
+			<bootloader name="grub2" console="serial" timeout="1"/>
 			<size unit="G">5</size>
 			<vagrantconfig provider="libvirt" virtualsize="5"/>
 			<oemconfig>
@@ -50,7 +50,7 @@
 		      bootpartition="false" efipartsize="500" firmware="uefi"
 		      rootfs_label="centos"
 		      >
-			<bootloader name="grub2" bls="true" console="serial" timeout="1"/>
+			<bootloader name="grub2" console="serial" timeout="1"/>
 			<size unit="G">5</size>
 			<!-- The VirtualBox guest additions are not included in RHEL -->
 			<vagrantconfig provider="virtualbox" virtualbox_guest_additions_present="false" virtualsize="5"/>
@@ -67,7 +67,7 @@
 		      bootpartition="false" efipartsize="500" firmware="uefi"
 		      rootfs_label="centos"
 		      >
-			<bootloader name="grub2" bls="true" console="serial" timeout="1"/>
+			<bootloader name="grub2" console="serial" timeout="1"/>
 			<size unit="G">5</size>
 			<!-- The VirtualBox guest additions are not included in RHEL -->
 			<vagrantconfig provider="virtualbox" virtualbox_guest_additions_present="false" virtualsize="5"/>

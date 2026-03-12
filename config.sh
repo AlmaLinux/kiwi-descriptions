@@ -45,6 +45,8 @@ if [[ "$kiwi_profiles" != *"Container"* ]] && [[ "$kiwi_profiles" != *"WSL"* ]] 
 	echo "GRUB_DISABLE_SUBMENU=true" >> /etc/default/grub
 	## Disable recovery entries to match Fedora
 	echo "GRUB_DISABLE_RECOVERY=true" >> /etc/default/grub
+	## Enable BLS (Boot Loader Specification) support
+	echo "GRUB_ENABLE_BLSCFG=true" >> /etc/default/grub
 	## On EL8 UEFI the grub2-efi package creates /boot/grub2/grubenv as a
 	## symlink to the EFI partition. With a separate boot partition GRUB
 	## cannot follow cross-partition symlinks, causing a harmless but ugly

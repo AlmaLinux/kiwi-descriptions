@@ -11,7 +11,7 @@
 		      bootpartition="true" bootpartsize="1000" bootfilesystem="ext4" efipartsize="500" firmware="uefi"
 		      rootfs_label="almalinux"
 		      >
-			<bootloader name="grub2" bls="true" console="console" timeout="5"/>
+			<bootloader name="grub2" console="console" timeout="5"/>
 			<systemdisk name="almalinux">
 				<volume name="@root=root"/>
 				<volume name="home" parent="/"/>
@@ -29,7 +29,7 @@
 		      bootpartition="true" bootpartsize="1000" bootfilesystem="ext4" firmware="ofw"
 		      rootfs_label="almalinux"
 		      >
-			<bootloader name="grub2" bls="true" console="console" timeout="5"/>
+			<bootloader name="grub2" console="console" timeout="5"/>
 			<systemdisk name="almalinux">
 				<volume name="@root=root"/>
 				<volume name="home" parent="/"/>
