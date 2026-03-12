@@ -10,10 +10,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v4
         with:
           platforms: riscv64
 
@@ -62,26 +62,26 @@ jobs:
           xz -T0 -9 "output/${IMAGE_NAME}.raw"
 
       - name: Upload disk image
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ env.IMAGE_NAME }}.raw.xz
           path: output/${{ env.IMAGE_NAME }}.raw.xz
           compression-level: 0
 
       - name: Upload packages list
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ env.IMAGE_NAME }}.packages
           path: output/${{ env.IMAGE_NAME }}.packages
 
       - name: Upload verified log
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ env.IMAGE_NAME }}.verified
           path: output/${{ env.IMAGE_NAME }}.verified
 
       - name: Upload changes log
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ env.IMAGE_NAME }}.changes
           path: output/${{ env.IMAGE_NAME }}.changes

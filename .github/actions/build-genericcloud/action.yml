@@ -74,7 +74,7 @@ runs:
 
     - name: Set up QEMU
       if: steps.vars.outputs.qemu_platform != ''
-      uses: docker/setup-qemu-action@v3
+      uses: docker/setup-qemu-action@v4
       with:
         platforms: ${{ steps.vars.outputs.qemu_platform }}
 
@@ -158,20 +158,20 @@ runs:
         sha256sum "output/${IMAGE_NAME}.qcow2" | sed 's|output/||' > "output/${IMAGE_NAME}.qcow2.sha256sum"
 
     - name: Upload disk image
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: ${{ env.IMAGE_NAME }}.qcow2
         path: output/${{ env.IMAGE_NAME }}.qcow2
         compression-level: 0
 
     - name: Upload SHA256 checksum
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: ${{ env.IMAGE_NAME }}.qcow2.sha256sum
         path: output/${{ env.IMAGE_NAME }}.qcow2.sha256sum
 
     - name: Upload packages list
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: ${{ env.IMAGE_NAME }}.qcow2.txt
         path: output/${{ env.IMAGE_NAME }}.qcow2.txt
