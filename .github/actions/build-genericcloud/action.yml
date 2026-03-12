@@ -91,12 +91,6 @@ runs:
           ${{ inputs.docker-image }} \
           sleep infinity
 
-    - name: Allow SHA1 for older GPG keys
-      if: inputs.version == '8'
-      shell: bash
-      run: |
-        docker exec build update-crypto-policies --set DEFAULT:SHA1
-
     - name: Install kiwi-cli
       shell: bash
       run: |
@@ -137,15 +131,6 @@ runs:
           's|sourcetype="metalink" arch="x86_64,aarch64,ppc64le,s390x">|arch="x86_64">|;
            s|https://mirrors.fedoraproject.org/metalink?repo=epel-\$releasever\&amp;arch=\$basearch|https://epel.repo.almalinux.org/$releasever/x86_64_v2/|;
            /signing key.*epel/d' repositories/epel.xml
-
-    - name: Patch kiwi setfiles detection for AL8
-      if: inputs.version == '8'
-      shell: bash
-      run: |
-        docker exec build bash -c "
-          sed -i \"s/'-T0', '-F', '-p'/'-F', '-p'/\" \
-            /usr/lib/python3.9/site-packages/kiwi/system/setup.py
-        "
 
     - name: Build GenericCloud image
       shell: bash
