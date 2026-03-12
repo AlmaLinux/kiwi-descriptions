@@ -3,9 +3,6 @@
 		<profile name="CloudCore" description="Cloud spin core packages">
 			<requires profile="BootCore"/>
 		</profile>
-		<profile name="CloudCoreUKI" description="Cloud spin core packages for UKI">
-			<requires profile="BootCoreUKI"/>
-		</profile>
 		<profile name="Cloud-Base-Azure" description="Azure Base Guest Image">
 			<requires profile="CloudCore"/>
 		</profile>
@@ -17,9 +14,6 @@
 		</profile>
 		<profile name="Cloud-Base-Generic" description="Generic Base Guest Image">
 			<requires profile="CloudCore"/>
-		</profile>
-		<profile name="Cloud-Base-UEFI-UKI" description="UEFI Base Guest Image using UKIs">
-			<requires profile="CloudCoreUKI"/>
 		</profile>
 		<profile name="Cloud-Base-OpenStack" description="OpenStack Base Guest Image">
 			<requires profile="Cloud-Base-Generic"/>
@@ -199,25 +193,7 @@
 			</oemconfig>
 		</type>
 	</preferences>
-	<preferences profiles="Cloud-Base-UEFI-UKI" arch="x86_64,aarch64">
-		<type image="oem" format="qcow2"
-		      firmware="uefi" efipartsize="1000"
-		      bootpartition="false"
-		      filesystem="xfs"
-		      kernelcmdline="systemd.firstboot=off"
-		      devicepersistency="by-uuid"
-		      rootfs_label="almalinux"
-		      initrd_system="none"
-		      editbootconfig="uki-editbootconfig.sh"
-		      >
-			<bootloader name="custom"/>
-			<size unit="G">5</size>
-			<oemconfig>
-				<oem-resize>false</oem-resize>
-			</oemconfig>
-		</type>
-	</preferences>
-	<packages type="image" patternType="onlyRequired" profiles="CloudCore,CloudCoreUKI">
+	<packages type="image" patternType="onlyRequired" profiles="CloudCore">
 		<ignore name="dracut-config-rescue"/>
 		<ignore name="firewalld"/>
 		<ignore name="iwl*-firmware"/>
@@ -255,7 +231,7 @@
 		<package name="google-guest-agent"/>
 	</packages>
 	-->
-	<packages type="image" patternType="onlyRequired" profiles="Cloud-Base-Generic,Cloud-Base-UEFI-UKI">
+	<packages type="image" patternType="onlyRequired" profiles="Cloud-Base-Generic">
 		<package name="qemu-guest-agent"/>
 	</packages>
 	<packages type="image" patternType="onlyRequired" profiles="Cloud-Base-Generic">

@@ -17,6 +17,7 @@
 	</preferences>
 	<include from="this://./repositories/core-release.xml"/>
 	<include from="this://./components/boot.xml"/>
+	<include from="this://./components/boot-uki.xml"/>
 	<include from="this://./components/boot-xfsdisk.xml"/>
 	<include from="this://./components/boot-btrfsdisk.xml"/>
 	<include from="this://./components/desktops/common.xml"/>
@@ -26,6 +27,7 @@
 	<include from="this://./components/users.xml"/>
 	<include from="this://./platforms/base.xml"/>
 	<include from="this://./platforms/cloud.xml"/>
+	<include from="this://./platforms/cloud-uki.xml"/>
 	<include from="this://./platforms/container.xml"/>
 	<include from="this://./platforms/vagrant.xml"/>
 	<include from="this://./platforms/workstation/gnome.xml"/>

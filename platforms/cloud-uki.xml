@@ -1,0 +1,50 @@
+<image>
+	<profiles>
+		<profile name="CloudCoreUKI" description="Cloud spin core packages for UKI">
+			<requires profile="BootCoreUKI"/>
+		</profile>
+		<profile name="Cloud-Base-UEFI-UKI" description="UEFI Base Guest Image using UKIs">
+			<requires profile="CloudCoreUKI"/>
+		</profile>
+	</profiles>
+	<preferences profiles="Cloud-Base-UEFI-UKI" arch="x86_64,aarch64">
+		<type image="oem" format="qcow2"
+		      firmware="uefi" efipartsize="1000"
+		      bootpartition="false"
+		      filesystem="xfs"
+		      kernelcmdline="systemd.firstboot=off"
+		      devicepersistency="by-uuid"
+		      rootfs_label="almalinux"
+		      initrd_system="none"
+		      editbootconfig="uki-editbootconfig.sh"
+		      >
+			<bootloader name="custom"/>
+			<size unit="G">5</size>
+			<oemconfig>
+				<oem-resize>false</oem-resize>
+			</oemconfig>
+		</type>
+	</preferences>
+	<packages type="image" patternType="onlyRequired" profiles="CloudCoreUKI">
+		<ignore name="dracut-config-rescue"/>
+		<ignore name="firewalld"/>
+		<ignore name="iwl*-firmware"/>
+		<ignore name="glibc-minimal-langpack"/>
+		<package name="cloud-init"/>
+		<package name="cloud-utils-growpart"/>
+		<package name="dosfstools" arch="x86_64,aarch64,riscv64"/>
+		<package name="dracut-config-generic"/>
+		<package name="efibootmgr" arch="x86_64,aarch64,riscv64"/>
+		<package name="glibc-langpack-en"/>
+		<package name="grub2-tools-extra" arch="x86_64,aarch64,riscv64"/>
+		<package name="kernel"/>
+		<package name="kernel-modules"/>
+		<package name="langpacks-en"/>
+		<package name="lvm2"/>
+		<package name="mtools" arch="x86_64,aarch64,riscv64"/>
+		<package name="tar"/>
+	</packages>
+	<packages type="image" patternType="onlyRequired" profiles="Cloud-Base-UEFI-UKI">
+		<package name="qemu-guest-agent"/>
+	</packages>
+</image>
