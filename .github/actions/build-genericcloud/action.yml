@@ -103,6 +103,14 @@ runs:
               kiwi-systemdeps-core \
               kiwi-systemdeps-filesystems kiwi-systemdeps-iso-media \
               gdisk lvm2 parted kpartx cryptsetup mdadm util-linux
+        elif [ "${{ inputs.version }}" = "8" ]; then
+          docker exec build \
+            dnf install -y epel-release
+          docker exec build \
+            dnf config-manager --add-repo \
+              "https://build.almalinux.org/pulp/content/copr/andrewlukoshko-kiwi-almalinux-8-${{ steps.vars.outputs.kiwi_arch }}-dr/"
+          docker exec build \
+            dnf install -y --nogpgcheck kiwi-cli distribution-gpg-keys
         else
           docker exec build \
             dnf install -y epel-release
