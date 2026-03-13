@@ -45,16 +45,6 @@ if [[ "$kiwi_profiles" != *"Container"* ]] && [[ "$kiwi_profiles" != *"WSL"* ]] 
 	echo "GRUB_DISABLE_SUBMENU=true" >> /etc/default/grub
 	## Disable recovery entries to match Fedora
 	echo "GRUB_DISABLE_RECOVERY=true" >> /etc/default/grub
-	## Enable BLS (Boot Loader Specification) support
-	echo "GRUB_ENABLE_BLSCFG=true" >> /etc/default/grub
-	## On EL8 UEFI the grub2-efi package creates /boot/grub2/grubenv as a
-	## symlink to the EFI partition. With a separate boot partition GRUB
-	## cannot follow cross-partition symlinks, causing a harmless but ugly
-	## "file `/grub2/grubenv' not found" error. Replace with a real file.
-	if [ -L /boot/grub2/grubenv ] && [ "$(rpm -E %rhel)" = "8" ]; then
-		rm /boot/grub2/grubenv
-		grub2-editenv /boot/grub2/grubenv create
-	fi
 	## Write `menu_auto_hide=1` into grubenv to match Fedora anaconda installs
 	## Set boot_success to avoid displaying the grub menu on first boot
 	grub2-editenv /boot/grub2/grubenv set menu_auto_hide=1 boot_success=1

@@ -120,7 +120,6 @@
 		      kernelcmdline="ro no_timer_check biosdevname=0 net.ifnames=0 console=tty0 console=ttyS0,115200n8 systemd.firstboot=off"
 		      devicepersistency="by-uuid"
 		      bootpartition="true" bootpartsize="1024" bootfilesystem="xfs" efipartsize="200" firmware="uefi"
-		      editbootconfig="el8-bls-editbootconfig.sh"
 		      rootfs_label="almalinux"
 		      >
 			<bootloader name="grub2" console="console" timeout="0"/>
@@ -136,7 +135,6 @@
 		      kernelcmdline="ro no_timer_check biosdevname=0 net.ifnames=0 console=tty0 console=ttyS0,115200n8 systemd.firstboot=off"
 		      devicepersistency="by-uuid"
 		      bootpartition="true" bootpartsize="1024" bootfilesystem="xfs" efipartsize="200" firmware="uefi"
-		      editbootconfig="el8-bls-editbootconfig.sh"
 		      rootfs_label="almalinux"
 		      >
 			<bootloader name="grub2" console="console" timeout="0"/>
@@ -152,7 +150,6 @@
 		      kernelcmdline="ro no_timer_check biosdevname=0 net.ifnames=0 console=tty0 console=ttyS0,115200n8 systemd.firstboot=off"
 		      devicepersistency="by-uuid"
 		      bootpartition="true" bootpartsize="1024" bootfilesystem="xfs" firmware="ofw"
-		      editbootconfig="el8-bls-editbootconfig.sh"
 		      rootfs_label="almalinux"
 		      >
 			<bootloader name="grub2" console="console" timeout="0"/>
@@ -168,7 +165,6 @@
 		      kernelcmdline="ro no_timer_check biosdevname=0 net.ifnames=0 console=tty0 console=ttyS0,115200n8 systemd.firstboot=off"
 		      devicepersistency="by-uuid"
 		      bootpartition="true" bootpartsize="1024" bootfilesystem="xfs" efipartsize="200" firmware="uefi"
-		      editbootconfig="el8-bls-editbootconfig.sh"
 		      rootfs_label="almalinux"
 		      >
 			<bootloader name="grub2" console="console" timeout="0"/>
