@@ -326,6 +326,9 @@ runs:
         elif [ "${{ inputs.arch }}" = "aarch64" ]; then
           echo "NOTE: Using TCG with cortex-a57 for aarch64"
           KVM_OPTS="-accel tcg,thread=multi -cpu cortex-a57"
+        elif [ "${{ inputs.arch }}" = "ppc64le" ]; then
+          echo "NOTE: Using TCG with power9 for ppc64le"
+          KVM_OPTS="-accel tcg -cpu power9"
         else
           echo "NOTE: Using TCG emulation (slow)"
           KVM_OPTS="-accel tcg -cpu max"
