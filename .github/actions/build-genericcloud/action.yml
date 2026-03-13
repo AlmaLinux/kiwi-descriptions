@@ -291,6 +291,15 @@ runs:
         }
         expect "\\\$ "
 
+        send "echo === /etc/default/grub === && cat /etc/default/grub\r"
+        expect "\\\$ "
+        send "echo === /boot/grub2/grub.cfg === && cat /boot/grub2/grub.cfg\r"
+        expect "\\\$ "
+        send "echo === /boot/grub2/grubenv === && cat /boot/grub2/grubenv\r"
+        expect "\\\$ "
+        send "echo === BLS entries === && ls -la /boot/loader/entries/ && cat /boot/loader/entries/*.conf\r"
+        expect "\\\$ "
+
         send "sudo poweroff\r"
         expect eof
 
@@ -408,6 +417,27 @@ runs:
         expect "\\\$ "'
         fi
 
+        EXP_BOOTLOADER_INFO=""
+        if [ "${{ inputs.arch }}" = "s390x" ]; then
+          EXP_BOOTLOADER_INFO='
+        send "echo === /etc/zipl.conf === && cat /etc/zipl.conf\r"
+        expect "\\\$ "
+        send "echo === /etc/zipl.d/ === && ls -la /etc/zipl.d/ 2>/dev/null; cat /etc/zipl.d/*.conf 2>/dev/null; echo === end zipl.d ===\r"
+        expect "\\\$ "
+        send "echo === BLS entries === && ls -la /boot/loader/entries/ && cat /boot/loader/entries/*.conf\r"
+        expect "\\\$ "'
+        else
+          EXP_BOOTLOADER_INFO='
+        send "echo === /etc/default/grub === && cat /etc/default/grub\r"
+        expect "\\\$ "
+        send "echo === /boot/grub2/grub.cfg === && cat /boot/grub2/grub.cfg\r"
+        expect "\\\$ "
+        send "echo === /boot/grub2/grubenv === && cat /boot/grub2/grubenv\r"
+        expect "\\\$ "
+        send "echo === BLS entries === && ls -la /boot/loader/entries/ && cat /boot/loader/entries/*.conf\r"
+        expect "\\\$ "'
+        fi
+
         cat > "$TEST_DIR/boot-test.exp" <<EXPEOF
         log_user 1
         set timeout $EXPECT_TIMEOUT
@@ -452,6 +482,7 @@ runs:
         }
         expect "\\\$ "
         $EXP_SECUREBOOT
+        $EXP_BOOTLOADER_INFO
 
         send "sudo poweroff\r"
         expect eof
