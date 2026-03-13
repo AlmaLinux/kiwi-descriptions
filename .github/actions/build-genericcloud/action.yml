@@ -110,7 +110,7 @@ runs:
             dnf config-manager --add-repo \
               "https://build.almalinux.org/pulp/content/copr/andrewlukoshko-kiwi-almalinux-8-${{ steps.vars.outputs.kiwi_arch }}-dr/"
           docker exec build \
-            dnf install -y --nogpgcheck kiwi-cli distribution-gpg-keys
+            dnf install -y kiwi-cli distribution-gpg-keys
         else
           docker exec build \
             dnf install -y epel-release
