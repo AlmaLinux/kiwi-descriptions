@@ -291,13 +291,13 @@ runs:
         }
         expect "\\\$ "
 
-        send "echo === /etc/default/grub === && cat /etc/default/grub\r"
+        send "echo === /etc/default/grub === && sudo cat /etc/default/grub\r"
         expect "\\\$ "
-        send "echo === /boot/grub2/grub.cfg === && cat /boot/grub2/grub.cfg\r"
+        send "echo === /boot/grub2/grub.cfg === && sudo cat /boot/grub2/grub.cfg\r"
         expect "\\\$ "
-        send "echo === /boot/grub2/grubenv === && cat /boot/grub2/grubenv\r"
+        send "echo === /boot/grub2/grubenv === && sudo cat /boot/grub2/grubenv\r"
         expect "\\\$ "
-        send "echo === BLS entries === && ls -la /boot/loader/entries/ && cat /boot/loader/entries/*.conf\r"
+        send "echo === BLS entries === && sudo ls -la /boot/loader/entries/ && sudo cat /boot/loader/entries/*.conf\r"
         expect "\\\$ "
 
         send "sudo poweroff\r"
@@ -423,21 +423,21 @@ runs:
         EXP_BOOTLOADER_INFO=""
         if [ "${{ inputs.arch }}" = "s390x" ]; then
           EXP_BOOTLOADER_INFO='
-        send "echo === /etc/zipl.conf === && cat /etc/zipl.conf\r"
+        send "echo === /etc/zipl.conf === && sudo cat /etc/zipl.conf\r"
         expect "\\\$ "
-        send "echo === /etc/zipl.d/ === && ls -la /etc/zipl.d/ 2>/dev/null; cat /etc/zipl.d/*.conf 2>/dev/null; echo === end zipl.d ===\r"
+        send "echo === /etc/zipl.d/ === && sudo ls -la /etc/zipl.d/ 2>/dev/null; sudo cat /etc/zipl.d/*.conf 2>/dev/null; echo === end zipl.d ===\r"
         expect "\\\$ "
-        send "echo === BLS entries === && ls -la /boot/loader/entries/ && cat /boot/loader/entries/*.conf\r"
+        send "echo === BLS entries === && sudo ls -la /boot/loader/entries/ && sudo cat /boot/loader/entries/*.conf\r"
         expect "\\\$ "'
         else
           EXP_BOOTLOADER_INFO='
-        send "echo === /etc/default/grub === && cat /etc/default/grub\r"
+        send "echo === /etc/default/grub === && sudo cat /etc/default/grub\r"
         expect "\\\$ "
-        send "echo === /boot/grub2/grub.cfg === && cat /boot/grub2/grub.cfg\r"
+        send "echo === /boot/grub2/grub.cfg === && sudo cat /boot/grub2/grub.cfg\r"
         expect "\\\$ "
-        send "echo === /boot/grub2/grubenv === && cat /boot/grub2/grubenv\r"
+        send "echo === /boot/grub2/grubenv === && sudo cat /boot/grub2/grubenv\r"
         expect "\\\$ "
-        send "echo === BLS entries === && ls -la /boot/loader/entries/ && cat /boot/loader/entries/*.conf\r"
+        send "echo === BLS entries === && sudo ls -la /boot/loader/entries/ && sudo cat /boot/loader/entries/*.conf\r"
         expect "\\\$ "'
         fi
 
