@@ -233,6 +233,7 @@
 	<packages type="image" patternType="onlyRequired" profiles="Cloud-Base-Generic">
 		<package name="grub2-pc" arch="x86_64"/>
 		<package name="nfs-utils"/>
+		<package name="pciutils"/>
 		<package name="rsync"/>
 		<package name="jq"/>
 		<package name="tcpdump"/>
