@@ -186,7 +186,7 @@
 		      bootpartition="true" bootpartsize="1024" bootfilesystem="xfs"
 		      rootfs_label="almalinux"
 		      >
-			<bootloader name="zipl"/>
+			<bootloader name="zipl" timeout="1"/>
 			<size unit="G">10</size>
 			<oemconfig>
 				<oem-resize>false</oem-resize>
