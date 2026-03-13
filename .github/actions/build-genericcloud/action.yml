@@ -108,6 +108,8 @@ runs:
             dnf install -y epel-release
           if [ "${{ inputs.version }}" = "8" ]; then
             docker exec build \
+              dnf install -y dnf-plugins-core
+            docker exec build \
               dnf config-manager --add-repo \
                 "https://build.almalinux.org/pulp/content/copr/andrewlukoshko-kiwi-almalinux-8-${{ steps.vars.outputs.kiwi_arch }}-dr/"
           fi
