@@ -188,32 +188,51 @@ runs:
       run: |
         [ -e /dev/kvm ] && sudo chmod 666 /dev/kvm || true
 
-    - name: Boot test - Install dependencies
-      if: inputs.arch != 'riscv64'
+    - name: Boot test
       shell: bash
       run: |
-        sudo apt-get update -q
-        case "${{ inputs.arch }}" in
+        KVM_DEVICE=""
+        [ -e /dev/kvm ] && KVM_DEVICE="--device /dev/kvm"
+
+        cat <<'BOOTSCRIPT' > /tmp/boot-test.sh
+        #!/bin/bash
+        set -euo pipefail
+
+        apt-get update -q >/dev/null 2>&1
+        case "$ARCH" in
           x86_64|x86_64_v2)
-            sudo apt-get install -y -q qemu-system-x86 ovmf expect genisoimage ;;
+            apt-get install -y -q qemu-system-x86 ovmf expect genisoimage >/dev/null 2>&1 ;;
           aarch64)
-            sudo apt-get install -y -q qemu-system-arm qemu-efi-aarch64 expect genisoimage ;;
+            apt-get install -y -q qemu-system-arm qemu-efi-aarch64 expect genisoimage >/dev/null 2>&1 ;;
           ppc64le)
-            sudo apt-get install -y -q qemu-system-ppc expect genisoimage ;;
+            apt-get install -y -q qemu-system-ppc expect genisoimage >/dev/null 2>&1 ;;
           s390x)
-            sudo apt-get install -y -q qemu-system-s390x expect genisoimage ;;
+            apt-get install -y -q qemu-system-s390x expect genisoimage >/dev/null 2>&1 ;;
+          riscv64)
+            apt-get install -y -q qemu-system-misc qemu-efi-riscv64 expect genisoimage >/dev/null 2>&1 ;;
         esac
 
-    - name: Boot test - Validate riscv64 image (container)
-      if: inputs.arch == 'riscv64'
-      shell: bash
-      run: |
-        docker run --rm \
-          -v "$PWD/output:/output:ro" \
-          ubuntu:25.10 bash -c '
-        set -euo pipefail
-        apt-get update -q >/dev/null 2>&1
-        apt-get install -y -q qemu-system-misc qemu-efi-riscv64 expect genisoimage >/dev/null 2>&1
+        HOST_ARCH=$(uname -m)
+        case "$ARCH" in
+          x86_64|x86_64_v2) GUEST_ARCH="x86_64" ;;
+          *) GUEST_ARCH="$ARCH" ;;
+        esac
+
+        if [ -e /dev/kvm ] && [ "$HOST_ARCH" = "$GUEST_ARCH" ]; then
+          KVM_OPTS="-enable-kvm -cpu host"
+        elif [ "$ARCH" = "aarch64" ]; then
+          echo "NOTE: Using TCG with cortex-a57 for aarch64"
+          KVM_OPTS="-accel tcg,thread=multi -cpu cortex-a57"
+        elif [ "$ARCH" = "ppc64le" ]; then
+          echo "NOTE: Using TCG for ppc64le"
+          KVM_OPTS="-accel tcg"
+        elif [ "$ARCH" = "riscv64" ]; then
+          echo "NOTE: Using TCG for riscv64"
+          KVM_OPTS="-accel tcg,tb-size=1024"
+        else
+          echo "NOTE: Using TCG emulation (slow)"
+          KVM_OPTS="-accel tcg -cpu max"
+        fi
 
         TEST_DIR=$(mktemp -d)
 
@@ -233,130 +252,12 @@ runs:
         genisoimage -output "$TEST_DIR/cidata.iso" -volid cidata -joliet -rock \
           "$TEST_DIR/user-data" "$TEST_DIR/meta-data" 2>/dev/null
 
-        cp /usr/share/qemu-efi-riscv64/RISCV_VIRT_VARS.fd "$TEST_DIR/efivars.fd"
-        cp /output/'"${IMAGE_NAME}"'.qcow2 "$TEST_DIR/disk.qcow2"
-
-        cat > "$TEST_DIR/run-qemu.sh" <<QEMUEOF
-        #!/bin/bash
-        exec qemu-system-riscv64 -accel tcg,tb-size=1024 -M virt -smp 2 -m 4096 -nographic \
-          -device virtio-rng-pci \
-          -drive if=pflash,format=raw,readonly=on,file=/usr/share/qemu-efi-riscv64/RISCV_VIRT_CODE.fd \
-          -drive if=pflash,format=raw,file=$TEST_DIR/efivars.fd \
-          -drive file=$TEST_DIR/disk.qcow2,format=qcow2,if=virtio \
-          -drive file=$TEST_DIR/cidata.iso,format=raw,if=virtio
-        QEMUEOF
-        chmod +x "$TEST_DIR/run-qemu.sh"
-
-        cat > "$TEST_DIR/boot-test.exp" <<EXPEOF
-        log_user 1
-        set timeout 1800
-
-        spawn [lindex \$argv 0]
-
-        expect {
-            "login:" {}
-            timeout { puts "FAIL: No login prompt"; exit 1 }
-        }
-        send "almalinux\r"
-
-        expect {
-            "Password:" {}
-            timeout { puts "FAIL: No password prompt"; exit 1 }
-        }
-        send "almalinux\r"
-
-        expect {
-            "\\\$ " {}
-            timeout { puts "FAIL: No shell prompt"; exit 1 }
-        }
-
-        send "cat /etc/os-release\r"
-        expect {
-            "AlmaLinux" { puts "PASS: os-release" }
-            timeout { puts "FAIL: os-release check"; exit 1 }
-        }
-        expect "\\\$ "
-
-        send "cloud-init status --wait\r"
-        expect {
-            "done" { puts "PASS: cloud-init" }
-            timeout { puts "FAIL: cloud-init not done"; exit 1 }
-        }
-        expect "\\\$ "
-
-        send "tuned-adm active\r"
-        expect {
-            "virtual-guest" { puts "PASS: tuned profile" }
-            timeout { puts "FAIL: tuned profile"; exit 1 }
-        }
-        expect "\\\$ "
-
-        send "echo === /etc/default/grub === && sudo cat /etc/default/grub\r"
-        expect "\\\$ "
-        send "echo === /boot/grub2/grub.cfg === && sudo cat /boot/grub2/grub.cfg\r"
-        expect "\\\$ "
-        send "echo === /boot/grub2/grubenv === && sudo cat /boot/grub2/grubenv\r"
-        expect "\\\$ "
-        send "echo === BLS entries === && sudo ls -la /boot/loader/entries/ && sudo cat /boot/loader/entries/*.conf\r"
-        expect "\\\$ "
-
-        send "sudo poweroff\r"
-        expect eof
-
-        puts "\nAll boot tests passed!"
-        exit 0
-        EXPEOF
-
-        expect "$TEST_DIR/boot-test.exp" "$TEST_DIR/run-qemu.sh"
-        rm -rf "$TEST_DIR"
-        '
-
-    - name: Boot test - Validate image
-      if: inputs.arch != 'riscv64'
-      shell: bash
-      run: |
-        HOST_ARCH=$(uname -m)
-        case "${{ inputs.arch }}" in
-          x86_64|x86_64_v2) GUEST_ARCH="x86_64" ;;
-          *) GUEST_ARCH="${{ inputs.arch }}" ;;
-        esac
-
-        if [ -e /dev/kvm ] && [ "$HOST_ARCH" = "$GUEST_ARCH" ]; then
-          KVM_OPTS="-enable-kvm -cpu host"
-        elif [ "${{ inputs.arch }}" = "aarch64" ]; then
-          echo "NOTE: Using TCG with cortex-a57 for aarch64"
-          KVM_OPTS="-accel tcg,thread=multi -cpu cortex-a57"
-        elif [ "${{ inputs.arch }}" = "ppc64le" ]; then
-          echo "NOTE: Using TCG with power9 for ppc64le"
-          KVM_OPTS="-accel tcg -cpu power9"
-        else
-          echo "NOTE: Using TCG emulation (slow)"
-          KVM_OPTS="-accel tcg -cpu max"
-        fi
-
-        TEST_DIR=$(mktemp -d)
-
-        cat > "$TEST_DIR/meta-data" <<'METAEOF'
-        instance-id: test
-        local-hostname: test
-        METAEOF
-
-        cat > "$TEST_DIR/user-data" <<'USEREOF'
-        #cloud-config
-        password: almalinux
-        chpasswd:
-          expire: false
-        ssh_pwauth: true
-        USEREOF
-
-        genisoimage -output "$TEST_DIR/cidata.iso" -volid cidata -joliet -rock \
-          "$TEST_DIR/user-data" "$TEST_DIR/meta-data"
-
         SECUREBOOT=0
         FIRMWARE_OPTS=""
         QEMU_EXTRA=""
+        QEMU_MEM=2048
 
-        case "${{ inputs.arch }}" in
+        case "$ARCH" in
           x86_64|x86_64_v2)
             QEMU_BIN="qemu-system-x86_64"
             if [ -e /dev/kvm ] && [ "$HOST_ARCH" = "x86_64" ]; then
@@ -391,14 +292,23 @@ runs:
             QEMU_BIN="qemu-system-s390x"
             QEMU_MACHINE="-M s390-ccw-virtio"
             ;;
+          riscv64)
+            QEMU_BIN="qemu-system-riscv64"
+            QEMU_MACHINE="-M virt"
+            QEMU_EXTRA="-device virtio-rng-pci"
+            cp /usr/share/qemu-efi-riscv64/RISCV_VIRT_VARS.fd "$TEST_DIR/efivars.fd"
+            FIRMWARE_OPTS="-drive if=pflash,format=raw,readonly=on,file=/usr/share/qemu-efi-riscv64/RISCV_VIRT_CODE.fd -drive if=pflash,format=raw,file=$TEST_DIR/efivars.fd"
+            ;;
         esac
+
+        cp /output/$IMAGE_NAME.qcow2 "$TEST_DIR/disk.qcow2"
 
         cat > "$TEST_DIR/run-qemu.sh" <<QEMUEOF
         #!/bin/bash
-        exec $QEMU_BIN $KVM_OPTS $QEMU_MACHINE -smp 2 -m 2048 -nographic \
+        exec $QEMU_BIN $KVM_OPTS $QEMU_MACHINE -smp 2 -m $QEMU_MEM -nographic \
           $QEMU_EXTRA \
           $FIRMWARE_OPTS \
-          -drive file=output/${IMAGE_NAME}.qcow2,format=qcow2,if=virtio \
+          -drive file=$TEST_DIR/disk.qcow2,format=qcow2,if=virtio \
           -drive file=$TEST_DIR/cidata.iso,format=raw,if=virtio
         QEMUEOF
         chmod +x "$TEST_DIR/run-qemu.sh"
@@ -421,7 +331,7 @@ runs:
         fi
 
         EXP_BOOTLOADER_INFO=""
-        if [ "${{ inputs.arch }}" = "s390x" ]; then
+        if [ "$ARCH" = "s390x" ]; then
           EXP_BOOTLOADER_INFO='
         send "echo === /etc/zipl.conf === && sudo cat /etc/zipl.conf\r"
         expect "\\\$ "
@@ -490,9 +400,18 @@ runs:
         send "sudo poweroff\r"
         expect eof
 
-        puts "\\nAll boot tests passed!"
+        puts "\nAll boot tests passed!"
         exit 0
         EXPEOF
 
         expect "$TEST_DIR/boot-test.exp" "$TEST_DIR/run-qemu.sh"
         rm -rf "$TEST_DIR"
+        BOOTSCRIPT
+
+        docker run --rm \
+          -v "$PWD/output:/output:ro" \
+          -v /tmp/boot-test.sh:/boot-test.sh:ro \
+          $KVM_DEVICE \
+          -e ARCH="${{ inputs.arch }}" \
+          -e IMAGE_NAME="${IMAGE_NAME}" \
+          ubuntu:25.10 bash /boot-test.sh
