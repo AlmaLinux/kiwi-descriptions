@@ -191,25 +191,25 @@ runs:
     - name: Boot test
       shell: bash
       run: |
-        KVM_DEVICE=""
-        [ -e /dev/kvm ] && KVM_DEVICE="--device /dev/kvm"
-
         cat <<'BOOTSCRIPT' > /tmp/boot-test.sh
         #!/bin/bash
         set -euo pipefail
 
-        apt-get update -q >/dev/null 2>&1
+        SUDO=""
+        [ "$(id -u)" -ne 0 ] && SUDO="sudo"
+
+        $SUDO apt-get update -q >/dev/null 2>&1
         case "$ARCH" in
           x86_64|x86_64_v2)
-            apt-get install -y -q qemu-system-x86 ovmf expect genisoimage >/dev/null 2>&1 ;;
+            $SUDO apt-get install -y -q qemu-system-x86 ovmf expect genisoimage >/dev/null 2>&1 ;;
           aarch64)
-            apt-get install -y -q qemu-system-arm qemu-efi-aarch64 expect genisoimage >/dev/null 2>&1 ;;
+            $SUDO apt-get install -y -q qemu-system-arm qemu-efi-aarch64 expect genisoimage >/dev/null 2>&1 ;;
           ppc64le)
-            apt-get install -y -q qemu-system-ppc expect genisoimage >/dev/null 2>&1 ;;
+            $SUDO apt-get install -y -q qemu-system-ppc expect genisoimage >/dev/null 2>&1 ;;
           s390x)
-            apt-get install -y -q qemu-system-s390x expect genisoimage >/dev/null 2>&1 ;;
+            $SUDO apt-get install -y -q qemu-system-s390x expect genisoimage >/dev/null 2>&1 ;;
           riscv64)
-            apt-get install -y -q qemu-system-misc qemu-efi-riscv64 expect genisoimage >/dev/null 2>&1 ;;
+            $SUDO apt-get install -y -q qemu-system-misc qemu-efi-riscv64 expect genisoimage >/dev/null 2>&1 ;;
         esac
 
         HOST_ARCH=$(uname -m)
@@ -301,7 +301,7 @@ runs:
             ;;
         esac
 
-        cp /output/$IMAGE_NAME.qcow2 "$TEST_DIR/disk.qcow2"
+        cp "$OUTPUT_DIR/$IMAGE_NAME.qcow2" "$TEST_DIR/disk.qcow2"
 
         cat > "$TEST_DIR/run-qemu.sh" <<QEMUEOF
         #!/bin/bash
@@ -408,10 +408,17 @@ runs:
         rm -rf "$TEST_DIR"
         BOOTSCRIPT
 
-        docker run --rm \
-          -v "$PWD/output:/output:ro" \
-          -v /tmp/boot-test.sh:/boot-test.sh:ro \
-          $KVM_DEVICE \
-          -e ARCH="${{ inputs.arch }}" \
-          -e IMAGE_NAME="${IMAGE_NAME}" \
-          ubuntu:26.04 bash /boot-test.sh
+        if [ "${{ inputs.arch }}" = "riscv64" ]; then
+          docker run --rm \
+            -v "$PWD/output:/output:ro" \
+            -v /tmp/boot-test.sh:/boot-test.sh:ro \
+            -e ARCH="${{ inputs.arch }}" \
+            -e IMAGE_NAME="${IMAGE_NAME}" \
+            -e OUTPUT_DIR="/output" \
+            ubuntu:26.04 bash /boot-test.sh
+        else
+          ARCH="${{ inputs.arch }}" \
+          IMAGE_NAME="${IMAGE_NAME}" \
+          OUTPUT_DIR="$PWD/output" \
+          bash /tmp/boot-test.sh
+        fi
