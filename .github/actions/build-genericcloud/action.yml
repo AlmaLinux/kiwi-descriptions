@@ -220,6 +220,9 @@ runs:
 
         if [ -e /dev/kvm ] && [ "$HOST_ARCH" = "$GUEST_ARCH" ]; then
           KVM_OPTS="-enable-kvm -cpu host"
+        elif [ "$ARCH" = "aarch64" ]; then
+          echo "NOTE: Using TCG with neoverse-n1 for aarch64"
+          KVM_OPTS="-accel tcg -cpu neoverse-n1"
         elif [ "$ARCH" = "ppc64le" ]; then
           echo "NOTE: Using TCG for ppc64le"
           KVM_OPTS="-accel tcg"
