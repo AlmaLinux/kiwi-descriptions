@@ -209,7 +209,7 @@ runs:
           s390x)
             $SUDO apt-get install -y -q qemu-system-s390x expect genisoimage >/dev/null 2>&1 ;;
           riscv64)
-            $SUDO apt-get install -y -q qemu-system-misc qemu-efi-riscv64 expect genisoimage >/dev/null 2>&1 ;;
+            $SUDO apt-get install -y -q qemu-system-riscv expect genisoimage >/dev/null 2>&1 ;;
         esac
 
         HOST_ARCH=$(uname -m)
