@@ -220,9 +220,6 @@ runs:
 
         if [ -e /dev/kvm ] && [ "$HOST_ARCH" = "$GUEST_ARCH" ]; then
           KVM_OPTS="-enable-kvm -cpu host"
-        elif [ "$ARCH" = "aarch64" ]; then
-          echo "NOTE: Using TCG with cortex-a57 for aarch64"
-          KVM_OPTS="-accel tcg,thread=multi -cpu cortex-a57"
         elif [ "$ARCH" = "ppc64le" ]; then
           echo "NOTE: Using TCG for ppc64le"
           KVM_OPTS="-accel tcg"
@@ -414,4 +411,4 @@ runs:
           $KVM_DEVICE \
           -e ARCH="${{ inputs.arch }}" \
           -e IMAGE_NAME="${IMAGE_NAME}" \
-          ubuntu:25.10 bash /boot-test.sh
+          ubuntu:26.04 bash /boot-test.sh
