@@ -7,12 +7,12 @@
 	<preferences profiles="PremierP550-Disk" arch="riscv64">
 		<type image="oem"
 		      filesystem="xfs"
-		      kernelcmdline="earlycon console=tty1 console=ttyS0,115200n8"
+		      kernelcmdline="earlycon"
 		      devicepersistency="by-uuid"
 		      bootpartition="true" bootpartsize="2000" bootfilesystem="ext4" efipartsize="500" firmware="uefi"
 		      rootfs_label="almalinux"
 		      >
-			<bootloader name="grub2" console="console" timeout="3" timeout_style="countdown"/>
+			<bootloader name="grub2" bls="true" console="serial" timeout="3" timeout_style="countdown"/>
 			<size unit="G">10</size>
 			<oemconfig>
 				<oem-resize>false</oem-resize>
