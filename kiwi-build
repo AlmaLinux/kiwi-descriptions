@@ -23,23 +23,24 @@ unset optTemp
 
 output_dir=
 image_type=
-image_profile=
+image_profiles=()
 image_release=
 debug=
 kiwi_isolated=
 # For compatibility with older scripts where these did not exist
 kiwi_description_dir="./"
 kiwi_file="AlmaLinux-OS-Kitten.kiwi"
+kiwibuild_profile_args=
 kiwibuild_extra_args=
 
-while true; do
+while [[ $# -gt 0 ]]; do
 	case "$1" in
 		-i|--isolated) kiwi_isolated=1; shift ;;
 		-k|--kiwi-description-dir) kiwi_description_dir="$2" ; shift 2 ;;
 		-f|--kiwi-file) kiwi_file="$2" ; shift 2 ;;
 		-o|--output-dir) output_dir="$2" ; shift 2 ;;
 		-t|--image-type) image_type="$2" ; shift 2 ;;
-		-p|--image-profile) image_profile="$2" ; shift 2 ;;
+		-p|--image-profile) image_profiles+=("$2") ; shift 2 ;;
 		-r|--image-release) image_release="$2" ; shift 2 ;;
 		-d|--debug) debug="--debug" ; shift ;;
 		-h|--help) usage ;;
@@ -50,10 +51,15 @@ done
 # Capture arguments after --
 kiwibuild_extra_args=("$@")
 
-if [ -z "$output_dir" ] || [ -z "$image_type" ] || [ -z "$image_profile" ] || [ -z "$kiwi_file" ]; then
+if [ -z "$output_dir" ] || [ -z "$image_type" ] || [ -z "$image_profiles" ] || [ -z "$kiwi_file" ]; then
 	echo "Options not set!"
 	usage
 fi
+
+for image_profile in "${image_profiles[@]}"; do
+	# Enumerate image profiles
+	kiwibuild_profile_args="${kiwibuild_profile_args:+${kiwibuild_profile_args}} --profile=${image_profile}"
+done
 
 # Set the bundle format after we know the profile
 kiwi_bundle_format=$("${kiwibuild_scriptdir}/scripts/almalinux-kiwi-bundle-format-generator" "${kiwi_file}" "${image_profile}")
@@ -66,9 +72,9 @@ fi
 
 set +e
 if [ ! ${kiwi_isolated} ]; then
-	kiwi-ng ${debug} --type="${image_type}" --profile="${image_profile}" --kiwi-file="${kiwi_file}" --color-output system build --description "${kiwi_description_dir}" --target-dir "${output_dir}-build" ${kiwibuild_extra_args:+${kiwibuild_extra_args}}
+	kiwi-ng ${debug} --type="${image_type}" ${kiwibuild_profile_args} --kiwi-file="${kiwi_file}" --color-output system build --description "${kiwi_description_dir}" --target-dir "${output_dir}-build" ${kiwibuild_extra_args:+${kiwibuild_extra_args}}
 else
-	kiwi-ng ${debug} --type="${image_type}" --profile="${image_profile}" --kiwi-file="${kiwi_file}" --color-output system boxbuild --box universal --sshfs-sharing -- --description "${kiwi_description_dir}" --target-dir "${output_dir}-build" ${kiwibuild_extra_args:+${kiwibuild_extra_args}}
+	kiwi-ng ${debug} --type="${image_type}" ${kiwibuild_profile_args} --kiwi-file="${kiwi_file}" --color-output system boxbuild --box universal --sshfs-sharing -- --description "${kiwi_description_dir}" --target-dir "${output_dir}-build" ${kiwibuild_extra_args:+${kiwibuild_extra_args}}
 fi
 kiwi_status=$?
 set -e

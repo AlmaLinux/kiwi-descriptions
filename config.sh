@@ -41,10 +41,13 @@ if [[ "$kiwi_profiles" != *"Container"* ]] && [[ "$kiwi_profiles" != *"WSL"* ]];
 	echo "GRUB_DISABLE_SUBMENU=true" >> /etc/default/grub
 	## Disable recovery entries to match Fedora
 	echo "GRUB_DISABLE_RECOVERY=true" >> /etc/default/grub
-	## Write `menu_auto_hide=1` into grubenv to match Fedora anaconda installs
-	## Set boot_success to avoid displaying the grub menu on first boot
-	grub2-editenv /boot/grub2/grubenv set menu_auto_hide=1 boot_success=1
-
+	if [[ "$kiwi_profiles" == *"Disk"* ]]; then
+		## Write `menu_auto_hide=1` into grubenv to match Fedora anaconda installs
+		## Set boot_indeterminate to avoid displaying the grub menu on first boot
+		if [[ "$kiwi_profiles" != *"Cloud"* ]]; then
+			grub2-editenv /boot/grub2/grubenv set menu_auto_hide=1 boot_indeterminate=1
+		fi
+	fi
 fi
 
 #======================================
@@ -108,18 +111,22 @@ mkdir -p /var/log/journal
 #--------------------------------------
 
 if [[ "$kiwi_profiles" == *"Disk"* ]]; then
-	if [[ "$kiwi_profiles" != *"GNOME"* ]]; then
+	if [[ "$kiwi_profiles" != *"GNOME"* ]] || [[ "$kiwi_profiles" != *"KDE"* ]]; then
 		## Enable initial-setup
 		systemctl enable initial-setup.service
 		## Enable reconfig mode
 		touch /etc/reconfigSys
+	fi
+	if [[ "$kiwi_profiles" != *"KDE"* ]]; then
+		## Enable Plasma Setup
+		systemctl enable plasma-setup.service
 	fi
 fi
 
 #======================================
 # Setup default target
 #--------------------------------------
-if [[ "$kiwi_profiles" == *"Live"* ]]; then
+if [[ "$kiwi_profiles" == *"Desktop"* ]]; then
 	systemctl set-default graphical.target
 else
 	systemctl set-default multi-user.target

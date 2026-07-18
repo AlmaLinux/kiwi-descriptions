@@ -1,0 +1,33 @@
+<image>
+	<profiles>
+		<profile name="NVIDIACore" description="Core NVIDIA packages" arch="aarch64,x86_64"/>
+		<profile name="NVIDIABootCore" description="Boot disk core configuration" arch="aarch64,x86_64">
+			<requires profile="NVIDIACore"/>
+		</profile>
+	</profiles>
+	<repository type="rpm-md" alias="almalinux-nvidia" sourcetype="baseurl" profiles="NVIDIACore">
+		<source path="https://nvidia.repo.almalinux.org/cuda/$releasever/$basearch/">
+			<signing key="file:///usr/share/distribution-gpg-keys/alma/RPM-GPG-KEY-AlmaLinux-$releasever"/>
+			<signing key="https://developer.download.nvidia.com/compute/cuda/repos/rhel$releasever/x86_64/CDF6BA43.pub"/>
+		</source>
+	</repository>
+	<packages type="image" patternType="plusRecommended" profiles="NVIDIACore">
+		<package name="almalinux-release-nvidia-driver"/>
+		<!-- From the cuda-nvidia repo file -->
+		<ignore name="akmod-nvidia"/>
+		<ignore name="dkms-nvidia"/>
+		<ignore name="kmod-nvidia-*-dkms"/>
+		<ignore name="nvidia-fs*"/>
+		<ignore name="nvidia-gds*"/>
+		<ignore name="cuda-drivers"/>
+	</packages>
+	<packages type="image" patternType="plusRecommended" profiles="NVIDIACore">
+		<!-- Basic userspace enablement -->
+		<package name="nvidia-driver-libs"/>
+		<package name="nvidia-driver-cuda-libs"/>
+	</packages>
+	<packages type="image" patternType="plusRecommended" profiles="NVIDIABootCore">
+		<!-- Basic driver enablement -->
+		<package name="nvidia-open-kmod"/>
+	</packages>
+</image>
