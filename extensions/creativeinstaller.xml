@@ -1,0 +1,14 @@
+<image>
+	<profiles>
+		<profile name="AlmaCreativeInstaller" description="AlmaLinux Creative Installer packages" arch="x86_64"/>
+	</profiles>
+	<repository type="rpm-md" alias="copr_copr.fedorainfracloud.org_tristantheroux_AlmaLinux-Creative-Installer" sourcetype="baseurl"
+		    imageinclude="true" repository_gpgcheck="false" profiles="AlmaCreativeInstaller">
+		<source path="https://download.copr.fedorainfracloud.org/results/tristantheroux/AlmaLinux-Creative-Installer/epel-$releasever-$basearch/">
+			<signing key="https://download.copr.fedorainfracloud.org/results/tristantheroux/AlmaLinux-Creative-Installer/pubkey.gpg"/>
+		</source>
+	</repository>
+	<packages type="image" patternType="plusRecommended" profiles="AlmaCreativeInstaller">
+		<package name="almalinux-creative-installer"/>
+	</packages>
+</image>

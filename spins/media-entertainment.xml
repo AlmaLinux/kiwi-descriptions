@@ -1,0 +1,16 @@
+<image>
+	<profiles>
+		<profile name="MediaEntDesktop" description="Media and Entertainment Desktop packages">
+			<requires profile="AlmaCreativeInstaller" arch="x86_64"/>
+			<requires profile="KDE-Desktop"/>
+		</profile>
+		<profile name="ME-Desktop-Live" description="Media and Entertainment Desktop Live DVD">
+			<requires profile="MediaEntDesktop"/>
+			<requires profile="LiveInstall"/>
+		</profile>
+		<profile name="ME-Desktop-Disk" description="Media and Entertainment Desktop Install Disk">
+			<requires profile="MediaEntDesktop"/>
+			<requires profile="BootDiskBtrfs"/>
+		</profile>
+	</profiles>
+</image>

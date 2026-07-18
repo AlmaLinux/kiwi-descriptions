@@ -23,6 +23,7 @@
 	<include from="this://./components/desktops/gnome.xml"/>
 	<include from="this://./components/liveinstall.xml"/>
 	<include from="this://./components/users.xml"/>
+	<include from="this://./extensions/creativeinstaller.xml"/>
 	<include from="this://./extensions/nvidia.xml"/>
 	<include from="this://./platforms/base.xml"/>
 	<include from="this://./platforms/cloud.xml"/>
@@ -33,6 +34,7 @@
 	<include from="this://./platforms/wsl.xml"/>
 	<include from="this://./repositories/core.xml"/>
 	<include from="this://./repositories/epel.xml"/>
+	<include from="this://./spins/media-entertainment.xml"/>
 	<packages type="image" patternType="plusRecommended">
 		<namedCollection name="core"/>
 		<package name="nano"/>

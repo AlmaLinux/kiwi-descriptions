@@ -106,6 +106,19 @@ fi
 ## Enable persistent journal
 mkdir -p /var/log/journal
 
+#================================================
+# Setup Anaconda to install with Btrfs by default
+#------------------------------------------------
+
+if [[ "$kiwi_profiles" == *"MediaEntDesktop"* ]] && rpm --quiet --query anaconda-core; then
+mkdir -p /etc/anaconda/conf.d/
+cat > /etc/anaconda/conf.d/99-btrfs-by-default.conf << ANACONDA_EOF
+[Storage]
+default_scheme = BTRFS
+btrfs_compression = zstd:1
+ANACONDA_EOF
+fi
+
 #======================================
 # Setup firstboot initial setup
 #--------------------------------------

@@ -10,6 +10,7 @@ profile_to_application_id = {
           "GNOME-Desktop": "GNOME_Desktop",
           "KDE-Desktop": "KDE_Desktop",
            "KDE-Mobile": "KDE_Mobile",
+          "MediaEntDesktop": "ME_Desktop",
 }
 
 # Used by Pungi to replace "Cloud" with "C" (etc.) in ISO volume IDs.
@@ -35,6 +36,7 @@ volume_id_substitutions = {
           "KDE_Desktop": "KDE",
            "KDE_Mobile": "KDEM",
         "GNOME_Desktop": "GNOME",
+           "ME_Desktop": "ME",
 }
 
 
