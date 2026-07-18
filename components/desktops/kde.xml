@@ -9,8 +9,10 @@
 		<namedCollection name="kde-apps"/>
 		<namedCollection name="kde-media"/>
 		<namedCollection name="kde-pim"/>
-		<namedCollection name="kde-spin-initial-setup"/>
 		<package name="fuse3"/>
+		<package name="plasma-login-manager"/>
+		<package name="kcm-plasmalogin"/>
+		<package name="plasma-setup"/>
 		<ignore name="gnome-disk-utility"/>
 		<ignore name="system-config-printer"/>
 		<ignore name="digikam"/>

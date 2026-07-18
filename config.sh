@@ -133,6 +133,13 @@ else
 fi
 
 #======================================
+# Setup Plasma Login Manager for KDE
+#--------------------------------------
+if [[ "$kiwi_profiles" == *"KDE"* ]]; then
+	systemctl enable --force plasmalogin.service
+fi
+
+#======================================
 # Finalization steps
 #--------------------------------------
 # Inhibit the ldconfig cache generation unit, see rhbz2348669
