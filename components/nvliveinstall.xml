@@ -1,0 +1,38 @@
+<image>
+	<profiles>
+		<profile name="NVLiveInstall" description="Live Install ISO">
+			<requires profile="NVBootCore"/>
+		</profile>
+	</profiles>
+	<preferences profiles="NVLiveInstall">
+		<type image="iso" publisher="AlmaLinux OS Foundation" volid="AlmaLinux_OS" application_id="AlmaLinux OS"
+			primary="true" flags="dmsquash" mediacheck="true"
+			filesystem="erofs" erofscompression="lzma,level=9" fscreateoptions="-Eall-fragments,fragdedupe=inode -C 1048576"
+			firmware="uefi" efifatimagesize="30" kernelcmdline="quiet rhgb"
+		>
+			<bootloader name="grub2" grub_template="grub.cfg.iso-template" console="console" kernel_flavor="none" timeout="60"/>
+		</type>
+	</preferences>
+	<packages type="iso" patternType="plusRecommended" profiles="NVLiveInstall">
+		<!-- Filter out unwanted EFI files from the embedded ESP, see rhbz#2358785 -->
+		<file name="iso-esp-excludes.yaml" target="image/exclude_files_efifatimage.yaml"/>
+		<!-- The point of a live image is to install -->
+		<namedCollection name="anaconda-tools"/>
+		<package name="anaconda"/>
+		<package name="anaconda-install-env-deps"/>
+		<package name="anaconda-live"/>
+		<package name="dracut-live"/>
+		<package name="glibc-all-langpacks"/>
+		<package name="isomd5sum"/>
+		<package name="kernel"/>
+		<package name="kernel-modules"/>
+		<package name="kernel-modules-extra"/>
+		<package name="kernel-64k" arch="aarch64"/>
+		<package name="kernel-64k-modules" arch="aarch64"/>
+		<package name="kernel-64k-modules-extra" arch="aarch64"/>
+		<package name="livesys-scripts"/>
+		<package name="btrfs-progs"/>
+		<package name="udisks2-btrfs"/>
+		<ignore name="gfs2-utils"/>
+	</packages>
+</image>

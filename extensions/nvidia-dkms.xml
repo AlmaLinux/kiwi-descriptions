@@ -1,0 +1,31 @@
+<image>
+	<profiles>
+		<profile name="NVIDIADKMSCore" description="Core NVIDIA packages" arch="aarch64,x86_64"/>
+		<profile name="NVIDIADKMSBootCore" description="Boot disk core configuration" arch="aarch64,x86_64">
+			<requires profile="NVIDIADKMSCore"/>
+		</profile>
+	</profiles>
+	<repository type="rpm-md" alias="nvkernel" sourcetype="baseurl" profiles="NVIDIADKMSBootCore" arch="aarch64" package_gpgcheck="false" repository_gpgcheck="false" imageinclude="true">
+		<source path="https://ngompa.almapeople.org/sc26/kernel-7.3.4-0.hs+nv0.el$releasever.$basearch-results/">
+		</source>
+	</repository>
+	<repository type="rpm-md" alias="nvidia" sourcetype="baseurl" profiles="NVIDIADKMSCore" arch="x86_64" imageinclude="true">
+		<source path="https://developer.download.nvidia.com/compute/cuda/repos/rhel$releasever/x86_64/">
+			<signing key="https://developer.download.nvidia.com/compute/cuda/repos/rhel$releasever/x86_64/CDF6BA43.pub"/>
+		</source>
+	</repository>
+	<repository type="rpm-md" alias="nvidia" sourcetype="baseurl" profiles="NVIDIADKMSCore" arch="aarch64" imageinclude="true">
+		<source path="https://developer.download.nvidia.com/compute/cuda/repos/rhel$releasever/sbsa/">
+			<signing key="https://developer.download.nvidia.com/compute/cuda/repos/rhel$releasever/sbsa/CDF6BA43.pub"/>
+		</source>
+	</repository>
+	<packages type="image" patternType="plusRecommended" profiles="NVIDIADKMSCore">
+		<!-- Basic userspace enablement -->
+		<package name="nvidia-driver-libs"/>
+		<package name="nvidia-driver-cuda-libs"/>
+	</packages>
+	<packages type="image" patternType="plusRecommended" profiles="NVIDIADKMSBootCore">
+		<!-- Basic driver enablement -->
+		<package name="kmod-nvidia-open-dkms"/>
+	</packages>
+</image>

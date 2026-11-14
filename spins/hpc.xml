@@ -1,0 +1,12 @@
+<image>
+	<profiles>
+		<profile name="HPC-Desktop-Live" description="HPC Desktop Live DVD">
+			<requires profile="KDE-Desktop"/>
+			<requires profile="NVLiveInstall"/>
+		</profile>
+		<profile name="HPC-Desktop-Disk" description="HPC Desktop Install Disk">
+			<requires profile="KDE-Desktop"/>
+			<requires profile="NVBootDiskBtrfs"/>
+		</profile>
+	</profiles>
+</image>

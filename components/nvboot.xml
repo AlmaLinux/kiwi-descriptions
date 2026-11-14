@@ -1,0 +1,51 @@
+<image>
+	<profiles>
+		<profile name="NVBootCore" description="Boot core packages"/>
+		<profile name="NVBootCoreUKI" description="Boot core packages for UKI"/>
+		<profile name="NVBootDiskCore" description="Boot disk core configuration">
+			<requires profile="NVBootCore"/>
+		</profile>
+	</profiles>
+	<packages type="bootstrap" patternType="plusRecommended" profiles="NVBootCore,NVBootCoreUKI">
+		<package name="grubby"/>
+	</packages>
+	<packages type="image" patternType="plusRecommended" profiles="NVBootCore">
+		<package name="grub2-efi-aa64" arch="aarch64"/>
+		<package name="grub2-efi-aa64-modules" arch="aarch64"/>
+		<package name="grub2-efi-x64" arch="x86_64"/>
+		<package name="grub2-efi-x64-modules" arch="x86_64"/>
+		<package name="grub2-pc" arch="x86_64"/>
+		<package name="grub2-pc-modules" arch="x86_64"/>
+		<package name="grub2-ppc64le" arch="ppc64le"/>
+		<package name="s390utils-base" arch="s390x"/>
+		<package name="shim-signed-aa64" arch="aarch64"/>
+		<package name="shim-signed-x64" arch="x86_64"/>
+		<package name="kernel-core"/>
+		<package name="kernel-64k-core" arch="aarch64"/>
+		<package name="chrony"/>
+		<package name="systemd-oomd"/>
+		<package name="systemd-resolved"/>
+	</packages>
+	<packages type="image" patternType="plusRecommended" profiles="NVBootCoreUKI">
+		<package name="shim-signed-aa64" arch="aarch64"/>
+		<package name="shim-signed-x64" arch="x86_64"/>
+		<package name="systemd-oomd"/>
+		<package name="systemd-resolved"/>
+		<package name="kernel-uki-virt"/>
+		<package name="python3-virt-firmware"/>
+		<package name="uki-direct"/>
+	</packages>
+	<packages type="iso" patternType="plusRecommended" profiles="NVBootCore">
+		<package name="grub2-efi-aa64-cdboot" arch="aarch64"/>
+		<package name="grub2-efi-x64-cdboot" arch="x86_64"/>
+	</packages>
+	<packages type="image" patternType="plusRecommended" profiles="NVBootDiskCore">
+		<package name="glibc-all-langpacks"/>
+		<package name="kernel"/>
+		<package name="kernel-modules"/>
+		<package name="kernel-modules-extra"/>
+		<package name="kernel-64k" arch="aarch64"/>
+		<package name="kernel-64k-modules" arch="aarch64"/>
+		<package name="kernel-64k-modules-extra" arch="aarch64"/>
+	</packages>
+</image>
