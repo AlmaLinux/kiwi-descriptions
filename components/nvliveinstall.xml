@@ -10,7 +10,7 @@
 			filesystem="erofs" erofscompression="lzma,level=9" fscreateoptions="-Eall-fragments,fragdedupe=inode -C 1048576"
 			firmware="uefi" efifatimagesize="30" kernelcmdline="quiet rhgb"
 		>
-			<bootloader name="grub2" grub_template="grub.cfg.iso-template" console="console" kernel_flavor="none" timeout="60"/>
+			<bootloader name="grub2" grub_template="grub.cfg.iso-template" console="console" timeout="60"/>
 		</type>
 	</preferences>
 	<packages type="iso" patternType="plusRecommended" profiles="NVLiveInstall">
@@ -27,9 +27,6 @@
 		<package name="kernel"/>
 		<package name="kernel-modules"/>
 		<package name="kernel-modules-extra"/>
-		<package name="kernel-64k" arch="aarch64"/>
-		<package name="kernel-64k-modules" arch="aarch64"/>
-		<package name="kernel-64k-modules-extra" arch="aarch64"/>
 		<package name="livesys-scripts"/>
 		<package name="btrfs-progs"/>
 		<package name="udisks2-btrfs"/>
