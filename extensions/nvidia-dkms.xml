@@ -27,5 +27,6 @@
 	<packages type="image" patternType="plusRecommended" profiles="NVIDIADKMSBootCore">
 		<!-- Basic driver enablement -->
 		<package name="kmod-nvidia-open-dkms"/>
+		<package name="nvidia-open"/>
 	</packages>
 </image>
